@@ -1,0 +1,115 @@
+---
+import { pricingRepository, projectRepository } from '@/lib/repositories';
+import type { SupportedLanguage } from '@/i18n/ui';
+
+interface Props {
+  lang: SupportedLanguage;
+  canonicalUrl: string;
+}
+
+const { lang, canonicalUrl } = Astro.props;
+
+const pricingServices = await pricingRepository.getAll();
+const featuredProjects = await projectRepository.getFeatured();
+
+const inLanguage = lang === 'id' ? 'id-ID' : 'en-US';
+
+// 1. Person Schema (Identity & Professional Authority)
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://novendra.dev/#person',
+  name: 'Adi Novendra Putra',
+  givenName: 'Adi Novendra',
+  familyName: 'Putra',
+  honorificSuffix: 'S.Kom.',
+  jobTitle: 'Fullstack Developer & Software Engineer',
+  description:
+    lang === 'id'
+      ? 'Software Engineer spesialisasi Java Spring Boot, Apache Kafka, Go, Laravel, Algoritma Genetika, React, dan Astro.'
+      : 'Software Engineer specializing in Java Spring Boot, Apache Kafka, Go, Laravel, Genetic Algorithms, React, and Astro.',
+  url: 'https://novendra.dev',
+  image: 'https://novendra.dev/images/avatar.webp',
+  sameAs: [
+    'https://www.linkedin.com/in/adi-novendra',
+    'https://github.com/novendra27',
+  ],
+  alumniOf: {
+    '@type': 'EducationalOrganization',
+    name: 'Universitas Islam Negeri Maulana Malik Ibrahim Malang',
+    url: 'https://uin-malang.ac.id',
+  },
+  knowsAbout: [
+    'Software Engineering',
+    'Fullstack Web Development',
+    'Java Spring Boot',
+    'Apache Kafka',
+    'Event-Driven Microservices',
+    'Genetic Algorithm Optimization',
+    'Go (Golang)',
+    'Laravel',
+    'React.js',
+    'Next.js',
+    'Astro Framework',
+    'PostgreSQL',
+    'Utility Billing Systems',
+    'RESTful API Architecture',
+  ],
+  inLanguage,
+};
+
+// 2. WebSite Schema
+const webSiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://novendra.dev/#website',
+  url: 'https://novendra.dev',
+  name: 'Adi Novendra Putra | Software Engineer Portfolio',
+  publisher: {
+    '@id': 'https://novendra.dev/#person',
+  },
+  inLanguage,
+};
+
+// 3. FAQPage Schema (AEO Instant Answer Extraction)
+const allFaqs = pricingServices.flatMap((srv) => srv.faq_items);
+const faqPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: allFaqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question[lang],
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer[lang],
+    },
+  })),
+  inLanguage,
+};
+
+// 4. SoftwareApplication Schema for Featured Projects
+const softwareItemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: lang === 'id' ? 'Koleksi Proyek Unggulan' : 'Featured Software Projects',
+  itemListElement: featuredProjects.map((proj, idx) => ({
+    '@type': 'ListItem',
+    position: idx + 1,
+    item: {
+      '@type': 'SoftwareApplication',
+      name: proj.title,
+      description: proj.summary_bluf[lang],
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'All',
+      url: `${canonicalUrl}#project-${proj.slug}`,
+      inLanguage,
+    },
+  })),
+};
+---
+
+<!-- Schema.org JSON-LD Structured Data (GEO & AEO Foundation) -->
+<script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(webSiteSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(faqPageSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(softwareItemListSchema)} />
