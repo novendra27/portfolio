@@ -1,0 +1,47 @@
+---
+import type { SupportedLanguage } from '@/i18n/ui';
+import '@/styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: SupportedLanguage;
+}
+
+const {
+  title = 'Adi Novendra Putra | Fullstack Developer & Software Engineer',
+  description = 'Portfolio rekayasa perangkat lunak Adi Novendra Putra. Spesialisasi Java Spring Boot, Apache Kafka, Go, Laravel, React, Next.js, dan arsitektur sistem performa tinggi.',
+  lang = 'id',
+} = Astro.props;
+
+const siteUrl = 'https://novendra.dev';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const alternateIdUrl = new URL('/', siteUrl).toString();
+const alternateEnUrl = new URL('/en/', siteUrl).toString();
+---
+
+<!doctype html>
+<html lang={lang} class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+
+    <!-- Canonical & Bilingual Hreflang SEO -->
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="id" href={alternateIdUrl} />
+    <link rel="alternate" hreflang="en" href={alternateEnUrl} />
+    <link rel="alternate" hreflang="x-default" href={alternateIdUrl} />
+  </head>
+  <body class="min-h-screen bg-canvas text-text-contrast antialiased selection:bg-accent-primary/20 selection:text-accent-primary-light">
+    <div class="relative min-h-screen flex flex-col">
+      <slot />
+    </div>
+  </body>
+</html>
