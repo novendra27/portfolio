@@ -1,0 +1,47 @@
+import type { LocalizedString } from './common';
+
+export type ProjectLinkType =
+  | 'github'
+  | 'live_demo'
+  | 'api_docs'
+  | 'video'
+  | 'presentation'
+  | 'other';
+
+export interface ProjectLink {
+  id: string;
+  project_id: string;
+  title: string;
+  url: string;
+  type: ProjectLinkType;
+  is_primary: boolean;
+  order: number;
+}
+
+export type ProjectConfidentiality = 'public' | 'confidential_nda';
+export type ProjectMediaType = 'image' | 'gif';
+
+export interface ProjectMetric {
+  label: LocalizedString;
+  value: string;
+}
+
+export interface Project {
+  id: string;
+  title: string;
+  slug: string;
+  summary_bluf: LocalizedString;
+  organization_id: string;
+  architecture_system_id: string | null;
+  category_ids: string[];
+  technology_ids: string[];
+  confidentiality: ProjectConfidentiality;
+  thumbnail: string;
+  media_type: ProjectMediaType;
+  core_code_snippet: string;
+  is_featured: boolean;
+  order: number;
+  problem_statement?: LocalizedString;
+  solution_statement?: LocalizedString;
+  key_metrics?: ProjectMetric[];
+}
