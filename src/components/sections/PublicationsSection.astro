@@ -1,0 +1,90 @@
+---
+import { publicationRepository } from '@/lib/repositories';
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+import SectionHeading from '../SectionHeading.astro';
+import ArchitecturalCard from '../ArchitecturalCard.astro';
+import Badge from '../Badge.astro';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const publications = await publicationRepository.getAllWithRelations();
+
+const categoryLabels = {
+  architecture: 'SYSTEM ARCHITECTURE',
+  ai_optimization: 'AI & OPTIMIZATION',
+  career: 'CAREER & GROWTH',
+  engineering: 'ENGINEERING CRAFT',
+};
+---
+
+<section id="publications" class="py-16 md:py-24 border-b border-border-architectural">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <SectionHeading
+      index={t('section.publications.index')}
+      title={t('section.publications.title')}
+      subtitle={lang === 'id'
+        ? 'Refleksi teknis, materi sesi pembicara Google Developer Groups, artikel riset optimasi, dan catatan di balik layar proyek rekayasa.'
+        : 'Technical reflections, Google Developer Groups speaking materials, optimization research notes, and behind-the-scenes engineering logs.'}
+    />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {publications.map((pub) => (
+        <ArchitecturalCard interactive class="flex flex-col justify-between p-6 h-full">
+          <div class="space-y-4">
+            <!-- Meta Header -->
+            <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-3 text-[11px] font-mono text-text-dim">
+              <Badge variant="outline" text={categoryLabels[pub.category]} class="text-[10px]" />
+              <span>{pub.reading_time}</span>
+            </div>
+
+            <!-- Title -->
+            <h3 class="text-base font-semibold text-text-contrast leading-snug">
+              {pub.title}
+            </h3>
+
+            <!-- Published Date -->
+            <div class="font-mono text-xs text-text-dim">
+              {pub.published_date}
+            </div>
+
+            <!-- Excerpt -->
+            <p class="text-xs text-text-muted leading-relaxed">
+              {pub.excerpt[lang]}
+            </p>
+          </div>
+
+          <!-- Bottom Footer: Link & Technologies -->
+          <div class="pt-6 border-t border-border-architectural space-y-3 mt-4">
+            {pub.technologies.length > 0 && (
+              <div class="flex flex-wrap gap-1.5">
+                {pub.technologies.map((tech) => (
+                  <Badge variant="default" text={tech.name} class="text-[10px]" />
+                ))}
+              </div>
+            )}
+
+            {pub.external_url ? (
+              <a
+                href={pub.external_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-xs font-mono text-accent-primary hover:text-accent-primary-light transition-colors font-medium"
+              >
+                <span>{lang === 'id' ? 'Buka Publikasi Asli' : 'Read Full Post'}</span>
+                <span>↗</span>
+              </a>
+            ) : (
+              <span class="font-mono text-[11px] text-text-dim">
+                {lang === 'id' ? 'Publikasi Internal' : 'Internal Case Study'}
+              </span>
+            )}
+          </div>
+        </ArchitecturalCard>
+      ))}
+    </div>
+  </div>
+</section>

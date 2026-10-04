@@ -1,0 +1,186 @@
+---
+import { projectRepository } from '@/lib/repositories';
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+import SectionHeading from '../SectionHeading.astro';
+import ArchitecturalCard from '../ArchitecturalCard.astro';
+import ArchitecturalTabs from '../ArchitecturalTabs.astro';
+import Badge from '../Badge.astro';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const projects = await projectRepository.getAllWithRelations();
+---
+
+<section id="projects" class="py-16 md:py-24 border-b border-border-architectural">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <SectionHeading
+      index={t('section.projects.index')}
+      title={t('section.projects.title')}
+      subtitle={lang === 'id'
+        ? 'Koleksi 9 studi kasus rekayasa perangkat lunak nyata dari sistem backend event-driven, optimasi kecerdasan buatan, hingga platform penagihan utilitas desa.'
+        : 'Curated 9 real-world engineering case studies spanning event-driven streaming, AI optimization algorithms, and municipal utility billing systems.'}
+    />
+
+    <div class="space-y-12">
+      {projects.map((proj, idx) => (
+        <ArchitecturalCard id={`project-${proj.slug}`} class="p-6 md:p-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <!-- Left: Interactive Preview Tabs (7 cols) -->
+            <div class="lg:col-span-7 w-full">
+              <ArchitecturalTabs
+                cardId={`tabs-${proj.id}`}
+                labels={{
+                  ui: t('tab.uiPreview'),
+                  arch: t('tab.architecture'),
+                  code: t('tab.codeSnippet'),
+                }}
+                hasArch={Boolean(proj.problem_statement || proj.architecture_system)}
+                hasCode={Boolean(proj.core_code_snippet)}
+              >
+                <!-- Tab Panel 1: UI Preview / Thumbnail -->
+                <div slot="ui" class="relative aspect-video w-full overflow-hidden bg-canvas flex items-center justify-center">
+                  <img
+                    src={proj.thumbnail}
+                    alt={proj.title}
+                    class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                  <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-canvas/80 backdrop-blur-sm border border-border-architectural text-[10px] font-mono text-text-dim">
+                    FORMAT: {proj.media_type.toUpperCase()}
+                  </div>
+                </div>
+
+                <!-- Tab Panel 2: Architecture Flow Details -->
+                <div slot="arch" class="p-4 sm:p-5 space-y-3 font-mono text-xs bg-canvas/90 text-text-muted min-h-[220px]">
+                  {proj.organization && (
+                    <div class="flex items-center justify-between border-b border-border-architectural/60 pb-2">
+                      <span class="text-text-dim">// ORGANIZATION</span>
+                      <span class="text-text-contrast font-medium">{proj.organization.name}</span>
+                    </div>
+                  )}
+
+                  {proj.architecture_system && (
+                    <div class="flex items-center justify-between border-b border-border-architectural/60 pb-2">
+                      <span class="text-text-dim">// SYSTEM PATTERN</span>
+                      <span class="text-accent-primary">{proj.architecture_system.title}</span>
+                    </div>
+                  )}
+
+                  {proj.problem_statement && (
+                    <div class="space-y-1 pt-1">
+                      <span class="text-accent-primary">// PROBLEM STATEMENT</span>
+                      <p class="font-sans text-xs text-text-muted leading-relaxed">
+                        {proj.problem_statement[lang]}
+                      </p>
+                    </div>
+                  )}
+
+                  {proj.solution_statement && (
+                    <div class="space-y-1 pt-1">
+                      <span class="text-text-contrast">// SOLUTION HIGHLIGHT</span>
+                      <p class="font-sans text-xs text-text-muted leading-relaxed">
+                        {proj.solution_statement[lang]}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <!-- Tab Panel 3: Core Code Snippet -->
+                <div slot="code" class="p-4 overflow-x-auto bg-canvas/95 font-mono text-[11px] text-text-contrast min-h-[220px] max-h-[340px]">
+                  <pre class="leading-relaxed"><code>{proj.core_code_snippet}</code></pre>
+                </div>
+              </ArchitecturalTabs>
+            </div>
+
+            <!-- Right: Metadata, BLUF Narrative & Links (5 cols) -->
+            <div class="lg:col-span-5 space-y-5">
+              <!-- Top Header & Confidentiality Indicator -->
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-border-architectural pb-3">
+                <span class="font-mono text-xs font-semibold text-accent-primary">
+                  [0{idx + 1} // CASE STUDY]
+                </span>
+
+                {proj.confidentiality === 'confidential_nda' ? (
+                  <Badge variant="outline" text="CONFIDENTIAL (NDA)" class="text-[10px]" />
+                ) : (
+                  <Badge variant="accent" text="PUBLIC / OPEN" class="text-[10px]" />
+                )}
+              </div>
+
+              <!-- Title & Organization -->
+              <div>
+                <h3 class="text-lg sm:text-xl font-bold text-text-contrast tracking-tight mb-1">
+                  {proj.title}
+                </h3>
+                {proj.organization && (
+                  <p class="font-mono text-xs text-text-dim">
+                    Client/Institution: {proj.organization.name}
+                  </p>
+                )}
+              </div>
+
+              <!-- BLUF Summary -->
+              <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
+                {proj.summary_bluf[lang]}
+              </p>
+
+              <!-- Key Metrics (if available) -->
+              {proj.key_metrics && proj.key_metrics.length > 0 && (
+                <div class="grid grid-cols-3 gap-2 py-2 border-y border-border-architectural/60">
+                  {proj.key_metrics.map((metric) => (
+                    <div class="text-center font-mono">
+                      <div class="text-sm font-bold text-accent-primary">
+                        {metric.value}
+                      </div>
+                      <div class="text-[10px] text-text-dim truncate">
+                        {metric.label[lang]}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <!-- Technologies Badges -->
+              <div class="space-y-1.5">
+                <div class="font-mono text-[11px] text-text-dim uppercase tracking-wider">
+                  Technologies Utilized
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                  {proj.technologies.map((tech) => (
+                    <Badge variant="default" text={tech.name} />
+                  ))}
+                </div>
+              </div>
+
+              <!-- Dynamic Multi-Link Buttons -->
+              {proj.links.length > 0 && (
+                <div class="pt-3 border-t border-border-architectural flex flex-wrap gap-2">
+                  {proj.links.map((link) => (
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class:list={[
+                        'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-control text-xs font-mono transition-all',
+                        link.is_primary
+                          ? 'bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light'
+                          : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast',
+                      ]}
+                    >
+                      <span>{link.title}</span>
+                      <span class="text-[11px]">↗</span>
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </ArchitecturalCard>
+      ))}
+    </div>
+  </div>
+</section>

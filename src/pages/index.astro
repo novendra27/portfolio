@@ -1,89 +1,28 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import ArchitecturalCard from '@/components/ArchitecturalCard.astro';
-import StatusPill from '@/components/StatusPill.astro';
-import Badge from '@/components/Badge.astro';
-import { useTranslations } from '@/i18n/ui';
-
-const t = useTranslations('id');
+import HeroSection from '@/components/sections/HeroSection.astro';
+import ArchitectureSection from '@/components/sections/ArchitectureSection.astro';
+import ProjectsSection from '@/components/sections/ProjectsSection.astro';
+import TechStackSection from '@/components/sections/TechStackSection.astro';
+import ExperienceSection from '@/components/sections/ExperienceSection.astro';
+import PricingSection from '@/components/sections/PricingSection.astro';
+import PublicationsSection from '@/components/sections/PublicationsSection.astro';
+import ContactSection from '@/components/sections/ContactSection.astro';
 ---
 
-<BaseLayout lang="id" title="Adi Novendra Putra | Fullstack Developer & Software Engineer">
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-24">
-    <!-- Hero Architectural Section -->
-    <section class="max-w-4xl mx-auto text-center space-y-6">
-      <div class="inline-block">
-        <StatusPill text={t('hero.badge')} />
-      </div>
-
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-text-contrast">
-        Adi Novendra Putra, S.Kom.
-      </h1>
-
-      <p class="font-mono text-sm md:text-base text-accent-primary tracking-wide">
-        FULLSTACK DEVELOPER // SOFTWARE ENGINEER
-      </p>
-
-      <p class="text-base sm:text-lg text-text-muted max-w-2xl mx-auto leading-relaxed">
-        Lulusan S1 Teknik Informatika UIN Malang (Fast-Track 3,5 Tahun) berfokus pada arsitektur sistem enterprise, event-driven streaming Apache Kafka, Algoritma Genetika, dan pengembangan web performa tinggi.
-      </p>
-
-      <!-- Quick Action Buttons -->
-      <div class="flex flex-wrap items-center justify-center gap-4 pt-4 font-mono text-xs">
-        <a
-          href="#projects"
-          class="px-5 py-2.5 rounded-control bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light transition-all shadow-sm"
-        >
-          {t('hero.cta.projects')} →
-        </a>
-        <a
-          href="#architecture"
-          class="px-5 py-2.5 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast transition-all"
-        >
-          {t('nav.architecture')}
-        </a>
-        <a
-          href="https://wa.me/628993580311"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="px-5 py-2.5 rounded-control border border-border-architectural bg-surface-card hover:border-accent-primary/40 text-text-muted hover:text-text-contrast transition-all"
-        >
-          {t('hero.cta.contact')}
-        </a>
-      </div>
-
-      <!-- Architectural Feature Card Preview -->
-      <div class="pt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-        <ArchitecturalCard interactive class="p-5">
-          <Badge variant="accent" text="[01 // EVENT-DRIVEN]" class="mb-3" />
-          <h3 class="font-semibold text-text-contrast text-sm mb-1">
-            Apache Kafka & Spring Boot
-          </h3>
-          <p class="text-xs text-text-muted leading-relaxed">
-            Asynchronous decoupling antara module Producer dan Consumer untuk ketersediaan tinggi dan eliminasi race condition.
-          </p>
-        </ArchitecturalCard>
-
-        <ArchitecturalCard interactive class="p-5">
-          <Badge variant="accent" text="[02 // ALGORITHM ENGINE]" class="mb-3" />
-          <h3 class="font-semibold text-text-contrast text-sm mb-1">
-            Genetic Algorithm Python & Laravel
-          </h3>
-          <p class="text-xs text-text-muted leading-relaxed">
-            Optimasi multi-constraint pengelompokan 2.338 mahasiswa dengan tingkat pemenuhan kendala &gt;90%.
-          </p>
-        </ArchitecturalCard>
-
-        <ArchitecturalCard interactive class="p-5">
-          <Badge variant="accent" text="[03 // UTILITY BILLING]" class="mb-3" />
-          <h3 class="font-semibold text-text-contrast text-sm mb-1">
-            Progressive Utility Billing
-          </h3>
-          <p class="text-xs text-text-muted leading-relaxed">
-            Platform billing pamdesku.com dengan tarif kubikasi progresif dan auto-invoicing transaksi berkala.
-          </p>
-        </ArchitecturalCard>
-      </div>
-    </section>
+<BaseLayout
+  lang="id"
+  title="Adi Novendra Putra, S.Kom. | Fullstack Developer & Software Engineer"
+  description="Portofolio resmi Adi Novendra Putra. Rekayasa sistem berskala tinggi, Apache Kafka event-driven, Algoritma Genetika, Spring Boot, Go, Laravel, React, dan Astro."
+>
+  <main class="w-full">
+    <HeroSection lang="id" />
+    <ArchitectureSection lang="id" />
+    <ProjectsSection lang="id" />
+    <TechStackSection lang="id" />
+    <ExperienceSection lang="id" />
+    <PricingSection lang="id" />
+    <PublicationsSection lang="id" />
+    <ContactSection lang="id" />
   </main>
 </BaseLayout>

@@ -1,0 +1,86 @@
+---
+import { categoryRepository, technologyRepository } from '@/lib/repositories';
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+import SectionHeading from '../SectionHeading.astro';
+import ArchitecturalCard from '../ArchitecturalCard.astro';
+import Badge from '../Badge.astro';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const techCategories = await categoryRepository.getByScope('technology');
+const allTechnologies = await technologyRepository.getAll();
+---
+
+<section id="tech-stack" class="py-16 md:py-24 border-b border-border-architectural">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <SectionHeading
+      index={t('section.tech.index')}
+      title={t('section.tech.title')}
+      subtitle={lang === 'id'
+        ? 'Taksonomi keahlian rekayasa terstruktur berdasarkan lapisan sistem, membedakan spesialisasi inti (Core Specialty) dan kompetensi sekunder.'
+        : 'Structured engineering taxonomy grouped by architectural system tiers, highlighting core production specialties and secondary tools.'}
+    />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {techCategories.map((cat) => {
+        const catTechs = allTechnologies.filter((t) => t.category_id === cat.id);
+
+        return (
+          <ArchitecturalCard class="p-6 space-y-4">
+            <!-- Tier Header -->
+            <div class="flex items-center justify-between border-b border-border-architectural pb-3">
+              <div>
+                <h3 class="font-semibold text-text-contrast text-base">
+                  {cat.name}
+                </h3>
+                <p class="text-xs text-text-muted mt-0.5">
+                  {cat.description[lang]}
+                </p>
+              </div>
+              <span class="font-mono text-xs text-accent-primary font-semibold">
+                {catTechs.length} Tools
+              </span>
+            </div>
+
+            <!-- Tech Badges Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2">
+              {catTechs.map((tech) => (
+                <a
+                  href={tech.official_docs_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class:list={[
+                    'p-2.5 rounded-control border text-left font-mono transition-all duration-150 group block',
+                    tech.proficiency === 'core_specialty'
+                      ? 'border-accent-primary/30 bg-surface-elevated/40 hover:border-accent-primary hover:bg-surface-elevated'
+                      : 'border-border-architectural bg-canvas/60 hover:border-border-architectural-hover hover:bg-surface-card',
+                  ]}
+                >
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-semibold text-text-contrast group-hover:text-accent-primary transition-colors">
+                      {tech.name}
+                    </span>
+                    <span class="text-[10px] text-text-dim group-hover:text-text-muted">↗</span>
+                  </div>
+
+                  <div class="text-[10px] text-text-dim mt-1 flex items-center gap-1">
+                    {tech.proficiency === 'core_specialty' ? (
+                      <span class="text-accent-primary font-medium">★ CORE</span>
+                    ) : (
+                      <span>SECONDARY</span>
+                    )}
+                  </div>
+                </a>
+              ))}
+            </div>
+          </ArchitecturalCard>
+        );
+      })}
+    </div>
+  </div>
+</section>

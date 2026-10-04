@@ -1,0 +1,110 @@
+---
+import { architectureRepository } from '@/lib/repositories';
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+import SectionHeading from '../SectionHeading.astro';
+import ArchitecturalCard from '../ArchitecturalCard.astro';
+import Badge from '../Badge.astro';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const architectures = await architectureRepository.getAllWithRelations();
+
+const patternLabels = {
+  event_driven: 'EVENT-DRIVEN ARCHITECTURE',
+  hybrid_algorithmic: 'HYBRID ALGORITHMIC ENGINE',
+  progressive_billing: 'PROGRESSIVE TIER BILLING',
+  serverless_edge: 'SERVERLESS HEADLESS EDGE',
+};
+---
+
+<section id="architecture" class="py-16 md:py-24 border-b border-border-architectural">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <SectionHeading
+      index={t('section.architecture.index')}
+      title={t('section.architecture.title')}
+      subtitle={lang === 'id'
+        ? 'Prinsip desain rekayasa perangkat lunak berskala tinggi yang diterapkan untuk menyelesaikan kendala komputasi, konkurensi, dan integritas data nyata.'
+        : 'Enterprise system design patterns implemented to eliminate computation bottlenecks, concurrency races, and transactional integrity issues.'}
+    />
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {architectures.map((arch) => (
+        <ArchitecturalCard interactive class="flex flex-col p-6 h-full justify-between">
+          <div class="space-y-4">
+            <!-- Header Pattern Type -->
+            <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-3">
+              <Badge variant="accent" text={patternLabels[arch.pattern_type]} />
+              <span class="font-mono text-[10px] text-text-dim">#{arch.order}</span>
+            </div>
+
+            <!-- Title -->
+            <h3 class="text-base sm:text-lg font-semibold text-text-contrast leading-snug">
+              {arch.title}
+            </h3>
+
+            <!-- Problem Domain Block -->
+            <div class="space-y-1 rounded bg-canvas/60 p-3 border border-border-architectural/60">
+              <div class="font-mono text-[11px] text-accent-primary font-medium uppercase tracking-wider">
+                {lang === 'id' ? '// Tantangan Domain' : '// Problem Domain'}
+              </div>
+              <p class="text-xs text-text-muted leading-relaxed">
+                {arch.problem_domain[lang]}
+              </p>
+            </div>
+
+            <!-- Architectural Solution Block -->
+            <div class="space-y-1 rounded bg-canvas/60 p-3 border border-border-architectural/60">
+              <div class="font-mono text-[11px] text-text-contrast font-medium uppercase tracking-wider">
+                {lang === 'id' ? '// Solusi Rekayasa' : '// Engineered Solution'}
+              </div>
+              <p class="text-xs text-text-muted leading-relaxed">
+                {arch.architectural_solution[lang]}
+              </p>
+            </div>
+
+            <!-- Resilience & Tradeoffs -->
+            <div class="space-y-1">
+              <div class="font-mono text-[11px] text-text-dim uppercase tracking-wider">
+                {lang === 'id' ? '// Ketahanan & Kompromi' : '// Resilience & Tradeoffs'}
+              </div>
+              <p class="text-xs text-text-muted/80 leading-relaxed italic">
+                "{arch.resilience_and_tradeoffs[lang]}"
+              </p>
+            </div>
+          </div>
+
+          <!-- Footer: Technologies Used & Connected Projects -->
+          <div class="pt-6 border-t border-border-architectural space-y-3 mt-4">
+            <div class="flex flex-wrap gap-1.5">
+              {arch.technologies.map((tech) => (
+                <Badge variant="default" text={tech.name} />
+              ))}
+            </div>
+
+            {arch.projects.length > 0 && (
+              <div class="flex items-center justify-between text-[11px] font-mono pt-1">
+                <span class="text-text-dim">
+                  {lang === 'id' ? 'Diimplementasikan pada:' : 'Implemented in:'}
+                </span>
+                <div class="flex items-center gap-2">
+                  {arch.projects.map((proj) => (
+                    <a
+                      href={`#project-${proj.slug}`}
+                      class="text-accent-primary hover:text-accent-primary-light underline transition-colors"
+                    >
+                      {proj.title.split(' ')[0]}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </ArchitecturalCard>
+      ))}
+    </div>
+  </div>
+</section>

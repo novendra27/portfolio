@@ -1,0 +1,139 @@
+---
+import { pricingRepository } from '@/lib/repositories';
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+import SectionHeading from '../SectionHeading.astro';
+import ArchitecturalCard from '../ArchitecturalCard.astro';
+import Badge from '../Badge.astro';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const pricingServices = await pricingRepository.getAll();
+
+const waNumber = '628993580311';
+---
+
+<section id="pricing" class="py-16 md:py-24 border-b border-border-architectural">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <SectionHeading
+      index={t('section.pricing.index')}
+      title={t('section.pricing.title')}
+      subtitle={lang === 'id'
+        ? 'Paket penawaran jasa rekayasa perangkat lunak transparan, terstruktur, dan berorientasi hasil untuk founder, korporasi, dan pemilik bisnis.'
+        : 'Transparent, structured engineering engagement packages designed for founders, businesses, and enterprise teams.'}
+    />
+
+    <!-- Pricing Grid (3 Cards) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+      {pricingServices.map((srv) => {
+        const waMessage = encodeURIComponent(
+          lang === 'id'
+            ? `Halo Adi Novendra, saya tertarik untuk berkonsultasi mengenai paket jasa: ${srv.tier_name}.`
+            : `Hello Adi Novendra, I would like to consult about the engagement tier: ${srv.tier_name}.`
+        );
+        const waUrl = `https://wa.me/${waNumber}?text=${waMessage}`;
+
+        return (
+          <ArchitecturalCard
+            interactive
+            class:list={[
+              'flex flex-col justify-between p-6 md:p-8 h-full',
+              srv.is_popular && 'border-accent-primary/50 shadow-md ring-1 ring-accent-primary/20',
+            ]}
+          >
+            <div class="space-y-6">
+              <!-- Header & Popular Badge -->
+              <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-4">
+                <span class="font-mono text-xs text-text-dim">
+                  #{srv.order} // TIER
+                </span>
+                {srv.is_popular && (
+                  <Badge variant="accent" text={lang === 'id' ? 'PALING POPULER' : 'MOST POPULAR'} />
+                )}
+              </div>
+
+              <!-- Title & Tagline -->
+              <div class="space-y-2">
+                <h3 class="text-xl font-bold text-text-contrast">
+                  {srv.tier_name}
+                </h3>
+                <p class="text-xs text-text-muted leading-relaxed min-h-[48px]">
+                  {srv.tagline[lang]}
+                </p>
+              </div>
+
+              <!-- Price & Timeline -->
+              <div class="p-4 rounded-control bg-canvas/70 border border-border-architectural space-y-2">
+                <div class="text-[11px] font-mono text-text-dim uppercase tracking-wider">
+                  {lang === 'id' ? 'Estimasi Investasi Mulai' : 'Starting Investment'}
+                </div>
+                <div class="font-mono text-2xl font-bold text-accent-primary">
+                  {srv.price_starting}
+                </div>
+                <div class="flex items-center gap-2 pt-1 font-mono text-xs text-text-muted border-t border-border-architectural/60">
+                  <span class="text-text-dim">⏱</span>
+                  <span>{srv.estimated_timeline[lang]}</span>
+                </div>
+              </div>
+
+              <!-- Deliverables Checklist -->
+              <div class="space-y-3 pt-2">
+                <div class="font-mono text-xs font-semibold text-text-contrast uppercase tracking-wider">
+                  {t('pricing.deliverables')}
+                </div>
+                <ul class="space-y-2 text-xs text-text-muted">
+                  {srv.deliverables[lang].map((item) => (
+                    <li class="flex items-start gap-2">
+                      <span class="text-accent-primary font-bold shrink-0">✓</span>
+                      <span class="leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <!-- FAQ Section for the Tier -->
+              {srv.faq_items.length > 0 && (
+                <div class="pt-4 border-t border-border-architectural/60 space-y-2">
+                  <div class="font-mono text-[11px] text-text-dim uppercase tracking-wider">
+                    FAQ
+                  </div>
+                  {srv.faq_items.map((faq) => (
+                    <div class="text-xs space-y-1">
+                      <div class="text-text-contrast font-medium">
+                        Q: {faq.question[lang]}
+                      </div>
+                      <div class="text-text-muted/80 text-[11px] pl-3 border-l border-border-architectural">
+                        {faq.answer[lang]}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <!-- WhatsApp Action Button -->
+            <div class="pt-8">
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class:list={[
+                  'w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-control text-xs font-mono font-semibold transition-all shadow-sm',
+                  srv.is_popular
+                    ? 'bg-accent-primary text-canvas hover:bg-accent-primary-light'
+                    : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast hover:border-accent-primary/40',
+                ]}
+              >
+                <span>{t('pricing.cta')}</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </ArchitecturalCard>
+        );
+      })}
+    </div>
+  </div>
+</section>

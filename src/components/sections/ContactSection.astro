@@ -1,0 +1,105 @@
+---
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+import SectionHeading from '../SectionHeading.astro';
+import ArchitecturalCard from '../ArchitecturalCard.astro';
+import StatusPill from '../StatusPill.astro';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="contact" class="py-16 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <SectionHeading
+      index={lang === 'id' ? '[07 // KONTAK & DISKUSI]' : '[07 // CONTACT & INQUIRY]'}
+      title={lang === 'id' ? 'Mari Kolaborasi & Diskusikan Sistem Anda' : 'Let\'s Discuss Your Next Engineering System'}
+      subtitle={lang === 'id'
+        ? 'Terbuka untuk posisi Software Engineer, proyek freelance arsitektur enterprise, implementasi sistem kustom, atau audit performa.'
+        : 'Open for Software Engineering roles, enterprise contract architecture, custom system implementation, or performance audits.'}
+    />
+
+    <ArchitecturalCard class="p-8 md:p-12">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        <!-- Left: Status & Pitch -->
+        <div class="md:col-span-7 space-y-4">
+          <StatusPill text={t('hero.badge')} />
+          <h3 class="text-2xl sm:text-3xl font-bold text-text-contrast tracking-tight">
+            {lang === 'id'
+              ? 'Siap Mewujudkan Arsitektur Sistem yang Tangguh & Skalabel'
+              : 'Ready to Engineer Resilient, High-Performance Systems'}
+          </h3>
+          <p class="text-sm text-text-muted leading-relaxed max-w-xl">
+            {lang === 'id'
+              ? 'Silakan hubungi saya melalui WhatsApp untuk respon cepat, atau jadwalkan diskusi teknis melalui email untuk kebutuhan enterprise dan NDA.'
+              : 'Reach out directly via WhatsApp for fast responses, or email for detailed enterprise inquiries, RFPs, and NDAs.'}
+          </p>
+        </div>
+
+        <!-- Right: Direct Channels Grid -->
+        <div class="md:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
+          <!-- WhatsApp -->
+          <a
+            href="https://wa.me/628993580311"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="p-4 rounded-control border border-accent-primary/40 bg-accent-primary/10 hover:bg-accent-primary/20 transition-all text-text-contrast block"
+          >
+            <div class="text-[10px] text-accent-primary font-semibold uppercase tracking-wider mb-1">
+              WhatsApp // Fast Response
+            </div>
+            <div class="font-bold text-text-contrast truncate">
+              +62 899-3580-311
+            </div>
+          </a>
+
+          <!-- Email -->
+          <a
+            href="mailto:adi.novendra.p@gmail.com"
+            class="p-4 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated hover:border-border-architectural-hover transition-all text-text-contrast block"
+          >
+            <div class="text-[10px] text-text-dim uppercase tracking-wider mb-1">
+              Direct Email
+            </div>
+            <div class="font-bold text-text-contrast truncate">
+              adi.novendra.p@gmail.com
+            </div>
+          </a>
+
+          <!-- LinkedIn -->
+          <a
+            href="https://linkedin.com/in/adi-novendra"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="p-4 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated hover:border-border-architectural-hover transition-all text-text-contrast block"
+          >
+            <div class="text-[10px] text-text-dim uppercase tracking-wider mb-1">
+              LinkedIn Profile
+            </div>
+            <div class="font-bold text-text-contrast truncate">
+              in/adi-novendra
+            </div>
+          </a>
+
+          <!-- GitHub -->
+          <a
+            href="https://github.com/novendra27"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="p-4 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated hover:border-border-architectural-hover transition-all text-text-contrast block"
+          >
+            <div class="text-[10px] text-text-dim uppercase tracking-wider mb-1">
+              GitHub Repositories
+            </div>
+            <div class="font-bold text-text-contrast truncate">
+              @novendra27
+            </div>
+          </a>
+        </div>
+      </div>
+    </ArchitecturalCard>
+  </div>
+</section>

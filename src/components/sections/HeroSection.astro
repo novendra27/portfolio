@@ -1,0 +1,125 @@
+---
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+import StatusPill from '../StatusPill.astro';
+import Badge from '../Badge.astro';
+import ArchitecturalCard from '../ArchitecturalCard.astro';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const stats = [
+  {
+    value: '3.5 Yrs',
+    label: lang === 'id' ? 'Lulusan S1 Fast-Track' : 'Fast-Track CS Degree',
+    sub: 'UIN Maliki Malang',
+  },
+  {
+    value: '19+',
+    label: lang === 'id' ? 'Repositori GitHub' : 'GitHub Repositories',
+    sub: '@novendra27',
+  },
+  {
+    value: '9',
+    label: lang === 'id' ? 'Studi Kasus Proyek' : 'Case Study Projects',
+    sub: 'Kafka, AI, SaaS & Utilities',
+  },
+  {
+    value: '100%',
+    label: lang === 'id' ? 'Zero-JS Core Vitals' : 'Zero-JS Core Vitals',
+    sub: 'Astro SSG Performance',
+  },
+];
+---
+
+<section id="hero" class="relative pt-8 pb-16 md:pt-16 md:pb-24 border-b border-border-architectural">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <!-- Left Column: Narrative & Identification (7 cols) -->
+      <div class="lg:col-span-7 space-y-6 text-left">
+        <div class="flex flex-wrap items-center gap-3">
+          <StatusPill text={t('hero.badge')} />
+          <Badge variant="outline" text="MALANG, ID // UTC+7" />
+        </div>
+
+        <div class="space-y-2">
+          <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-text-contrast">
+            Adi Novendra Putra, <span class="text-accent-primary">S.Kom.</span>
+          </h1>
+          <p class="font-mono text-sm sm:text-base text-accent-primary font-medium tracking-wide">
+            FULLSTACK DEVELOPER // SOFTWARE ENGINEER
+          </p>
+        </div>
+
+        <p class="text-base sm:text-lg text-text-muted leading-relaxed max-w-2xl">
+          {lang === 'id'
+            ? 'Lulusan S1 Teknik Informatika UIN Maulana Malik Ibrahim Malang dengan keahlian rekayasa sistem terdistribusi, event-driven streaming Apache Kafka, algoritma optimasi genetika, dan pengembangan aplikasi web skala produksi berbasis Java Spring Boot, Go, Laravel, React, dan Astro.'
+            : 'Computer Science graduate from UIN Maliki Malang specializing in distributed system architectures, Apache Kafka event-driven streaming, genetic optimization algorithms, and enterprise web engineering using Java Spring Boot, Go, Laravel, React, and Astro.'}
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-wrap items-center gap-4 pt-2 font-mono text-xs">
+          <a
+            href="#projects"
+            class="px-5 py-2.5 rounded-control bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light transition-all shadow-sm"
+          >
+            {t('hero.cta.projects')} →
+          </a>
+          <a
+            href="#architecture"
+            class="px-5 py-2.5 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast transition-all"
+          >
+            {t('nav.architecture')}
+          </a>
+          <a
+            href="#contact"
+            class="px-5 py-2.5 rounded-control border border-border-architectural bg-surface-card hover:border-accent-primary/40 text-text-muted hover:text-text-contrast transition-all"
+          >
+            {t('hero.cta.contact')}
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Avatar Frame & Metrics Card (5 cols) -->
+      <div class="lg:col-span-5 flex flex-col items-center lg:items-end space-y-6">
+        <!-- Framed Avatar with Crosshairs -->
+        <ArchitecturalCard class="p-3 w-64 sm:w-72 max-w-full">
+          <div class="relative aspect-square overflow-hidden rounded border border-border-architectural bg-canvas">
+            <img
+              src="/images/avatar.webp"
+              alt="Adi Novendra Putra"
+              width="288"
+              height="288"
+              class="w-full h-full object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-300"
+              loading="eager"
+            />
+            <div class="absolute bottom-2 left-2 right-2 px-2 py-1 bg-canvas/85 backdrop-blur-sm border border-border-architectural rounded font-mono text-[10px] text-text-muted flex justify-between">
+              <span>@novendra27</span>
+              <span class="text-accent-primary font-semibold">VERIFIED</span>
+            </div>
+          </div>
+        </ArchitecturalCard>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 gap-3 w-full max-w-sm">
+          {stats.map((stat) => (
+            <div class="p-3 rounded-control border border-border-architectural bg-surface-card/60">
+              <div class="font-mono text-xl sm:text-2xl font-bold text-text-contrast">
+                {stat.value}
+              </div>
+              <div class="text-[11px] font-medium text-text-muted">
+                {stat.label}
+              </div>
+              <div class="font-mono text-[10px] text-text-dim">
+                {stat.sub}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
