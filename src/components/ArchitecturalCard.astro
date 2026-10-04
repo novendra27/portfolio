@@ -1,0 +1,59 @@
+---
+interface Props {
+  as?: 'div' | 'article' | 'section' | 'aside';
+  withCrosshairs?: boolean;
+  interactive?: boolean;
+  class?: string;
+  id?: string;
+}
+
+const {
+  as: Component = 'div',
+  withCrosshairs = true,
+  interactive = false,
+  class: className = '',
+  id,
+} = Astro.props;
+---
+
+<Component
+  id={id}
+  class:list={[
+    'relative rounded-card border border-border-architectural bg-surface-card transition-all duration-200',
+    interactive &&
+      'group hover:border-border-architectural-hover hover:bg-surface-elevated/40 hover:shadow-lg',
+    className,
+  ]}
+>
+  {withCrosshairs && (
+    <>
+      <!-- Corner Crosshairs (+) on Border Intersections -->
+      <span
+        aria-hidden="true"
+        class="absolute -top-2 -left-2 text-border-architectural-hover font-mono text-xs select-none pointer-events-none group-hover:text-accent-primary transition-colors leading-none"
+      >
+        +
+      </span>
+      <span
+        aria-hidden="true"
+        class="absolute -top-2 -right-2 text-border-architectural-hover font-mono text-xs select-none pointer-events-none group-hover:text-accent-primary transition-colors leading-none"
+      >
+        +
+      </span>
+      <span
+        aria-hidden="true"
+        class="absolute -bottom-2 -left-2 text-border-architectural-hover font-mono text-xs select-none pointer-events-none group-hover:text-accent-primary transition-colors leading-none"
+      >
+        +
+      </span>
+      <span
+        aria-hidden="true"
+        class="absolute -bottom-2 -right-2 text-border-architectural-hover font-mono text-xs select-none pointer-events-none group-hover:text-accent-primary transition-colors leading-none"
+      >
+        +
+      </span>
+    </>
+  )}
+
+  <slot />
+</Component>

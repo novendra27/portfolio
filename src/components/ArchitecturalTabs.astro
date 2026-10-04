@@ -1,0 +1,108 @@
+---
+interface Props {
+  cardId: string;
+  labels?: {
+    ui?: string;
+    arch?: string;
+    code?: string;
+  };
+  hasArch?: boolean;
+  hasCode?: boolean;
+}
+
+const {
+  cardId,
+  labels = {
+    ui: 'UI Preview',
+    arch: 'Architecture Flow',
+    code: 'Core Snippet',
+  },
+  hasArch = true,
+  hasCode = true,
+} = Astro.props;
+---
+
+<div class="arch-tabs-container w-full" data-card-id={cardId}>
+  <!-- Segmented Control Tab Header -->
+  <div class="flex items-center gap-1.5 p-1 rounded-control bg-canvas/70 border border-border-architectural mb-4 text-xs font-mono">
+    <button
+      type="button"
+      data-tab="ui"
+      class="tab-btn px-3 py-1 rounded transition-colors active-tab bg-white/10 text-text-contrast font-medium"
+    >
+      [{labels.ui}]
+    </button>
+
+    {hasArch && (
+      <button
+        type="button"
+        data-tab="arch"
+        class="tab-btn px-3 py-1 rounded transition-colors text-text-muted hover:text-text-contrast hover:bg-white/5"
+      >
+        [{labels.arch}]
+      </button>
+    )}
+
+    {hasCode && (
+      <button
+        type="button"
+        data-tab="code"
+        class="tab-btn px-3 py-1 rounded transition-colors text-text-muted hover:text-text-contrast hover:bg-white/5"
+      >
+        [{labels.code}]
+      </button>
+    )}
+  </div>
+
+  <!-- Tab Panels -->
+  <div class="tab-panels relative overflow-hidden rounded-md border border-border-architectural bg-canvas">
+    <div data-panel="ui" class="tab-panel block transition-opacity duration-200">
+      <slot name="ui" />
+    </div>
+
+    {hasArch && (
+      <div data-panel="arch" class="tab-panel hidden transition-opacity duration-200">
+        <slot name="arch" />
+      </div>
+    )}
+
+    {hasCode && (
+      <div data-panel="code" class="tab-panel hidden transition-opacity duration-200">
+        <slot name="code" />
+      </div>
+    )}
+  </div>
+</div>
+
+<script>
+  // Scoped vanilla tab switching for all architectural tab instances
+  document.querySelectorAll('.arch-tabs-container').forEach((container) => {
+    const buttons = container.querySelectorAll<HTMLButtonElement>('.tab-btn');
+    const panels = container.querySelectorAll<HTMLElement>('.tab-panel');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetTab = btn.getAttribute('data-tab');
+
+        // Update button active styling
+        buttons.forEach((b) => {
+          b.classList.remove('bg-white/10', 'text-text-contrast', 'font-medium', 'active-tab');
+          b.classList.add('text-text-muted');
+        });
+        btn.classList.add('bg-white/10', 'text-text-contrast', 'font-medium', 'active-tab');
+        btn.classList.remove('text-text-muted');
+
+        // Switch panel visibility
+        panels.forEach((p) => {
+          if (p.getAttribute('data-panel') === targetTab) {
+            p.classList.remove('hidden');
+            p.classList.add('block');
+          } else {
+            p.classList.remove('block');
+            p.classList.add('hidden');
+          }
+        });
+      });
+    });
+  });
+</script>

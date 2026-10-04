@@ -1,0 +1,29 @@
+---
+interface Props {
+  text?: string;
+  pulse?: boolean;
+  class?: string;
+}
+
+const {
+  text = 'Available for Engineering Roles & Contracts',
+  pulse = true,
+  class: className = '',
+} = Astro.props;
+---
+
+<div
+  class:list={[
+    'inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono tracking-tight',
+    'border border-accent-primary/20 bg-surface-card/80 text-text-contrast shadow-sm backdrop-blur-sm',
+    className,
+  ]}
+>
+  {pulse && (
+    <span class="relative flex h-2 w-2">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-primary opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-2 w-2 bg-accent-primary"></span>
+    </span>
+  )}
+  <span>{text}</span>
+</div>

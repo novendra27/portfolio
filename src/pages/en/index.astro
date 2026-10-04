@@ -1,32 +1,89 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArchitecturalCard from '@/components/ArchitecturalCard.astro';
+import StatusPill from '@/components/StatusPill.astro';
+import Badge from '@/components/Badge.astro';
 import { useTranslations } from '@/i18n/ui';
 
 const t = useTranslations('en');
 ---
 
 <BaseLayout lang="en" title="Adi Novendra Putra | Fullstack Developer & Software Engineer">
-  <main class="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-4xl mx-auto">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border-architectural bg-surface-card text-xs text-accent-primary mb-6">
-      <span class="w-2 h-2 rounded-full bg-accent-primary animate-pulse"></span>
-      <span>{t('hero.badge')}</span>
-    </div>
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-24">
+    <!-- Hero Architectural Section -->
+    <section class="max-w-4xl mx-auto text-center space-y-6">
+      <div class="inline-block">
+        <StatusPill text={t('hero.badge')} />
+      </div>
 
-    <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-text-contrast mb-4">
-      Adi Novendra Putra
-    </h1>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-text-contrast">
+        Adi Novendra Putra, B.Comp.
+      </h1>
 
-    <p class="text-lg md:text-xl text-text-muted mb-8 max-w-2xl">
-      Fullstack Developer & Software Engineer specializing in scalable system architecture, event-driven integration, and high-performance engineering.
-    </p>
+      <p class="font-mono text-sm md:text-base text-accent-primary tracking-wide">
+        FULLSTACK DEVELOPER // SOFTWARE ENGINEER
+      </p>
 
-    <div class="flex items-center gap-4">
-      <a
-        href="/"
-        class="px-4 py-2 text-sm rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast transition-colors"
-      >
-        Beralih ke Bahasa Indonesia (ID)
-      </a>
-    </div>
+      <p class="text-base sm:text-lg text-text-muted max-w-2xl mx-auto leading-relaxed">
+        B.Comp graduate from UIN Maliki Malang (Fast-Track 3.5 Years) specializing in enterprise architectures, Apache Kafka event-driven streaming, Genetic Algorithms, and high-performance engineering.
+      </p>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-4 pt-4 font-mono text-xs">
+        <a
+          href="#projects"
+          class="px-5 py-2.5 rounded-control bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light transition-all shadow-sm"
+        >
+          {t('hero.cta.projects')} →
+        </a>
+        <a
+          href="#architecture"
+          class="px-5 py-2.5 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast transition-all"
+        >
+          {t('nav.architecture')}
+        </a>
+        <a
+          href="https://wa.me/628993580311"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-5 py-2.5 rounded-control border border-border-architectural bg-surface-card hover:border-accent-primary/40 text-text-muted hover:text-text-contrast transition-all"
+        >
+          {t('hero.cta.contact')}
+        </a>
+      </div>
+
+      <!-- Architectural Feature Card Preview -->
+      <div class="pt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+        <ArchitecturalCard interactive class="p-5">
+          <Badge variant="accent" text="[01 // EVENT-DRIVEN]" class="mb-3" />
+          <h3 class="font-semibold text-text-contrast text-sm mb-1">
+            Apache Kafka & Spring Boot
+          </h3>
+          <p class="text-xs text-text-muted leading-relaxed">
+            Asynchronous decoupling between Producer and Consumer services ensuring high availability and race condition elimination.
+          </p>
+        </ArchitecturalCard>
+
+        <ArchitecturalCard interactive class="p-5">
+          <Badge variant="accent" text="[02 // ALGORITHM ENGINE]" class="mb-3" />
+          <h3 class="font-semibold text-text-contrast text-sm mb-1">
+            Genetic Algorithm Python & Laravel
+          </h3>
+          <p class="text-xs text-text-muted leading-relaxed">
+            Multi-constraint combinatorial optimization allocating 2,338 students with &gt;90% simultaneous constraint compliance.
+          </p>
+        </ArchitecturalCard>
+
+        <ArchitecturalCard interactive class="p-5">
+          <Badge variant="accent" text="[03 // UTILITY BILLING]" class="mb-3" />
+          <h3 class="font-semibold text-text-contrast text-sm mb-1">
+            Progressive Utility Billing
+          </h3>
+          <p class="text-xs text-text-muted leading-relaxed">
+            Production water billing engine pamdesku.com handling tiered consumption tariffs and batch billing automation.
+          </p>
+        </ArchitecturalCard>
+      </div>
+    </section>
   </main>
 </BaseLayout>

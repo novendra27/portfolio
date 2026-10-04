@@ -1,5 +1,7 @@
 ---
 import type { SupportedLanguage } from '@/i18n/ui';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
 import '@/styles/global.css';
 
 interface Props {
@@ -39,9 +41,16 @@ const alternateEnUrl = new URL('/en/', siteUrl).toString();
     <link rel="alternate" hreflang="en" href={alternateEnUrl} />
     <link rel="alternate" hreflang="x-default" href={alternateIdUrl} />
   </head>
-  <body class="min-h-screen bg-canvas text-text-contrast antialiased selection:bg-accent-primary/20 selection:text-accent-primary-light">
-    <div class="relative min-h-screen flex flex-col">
-      <slot />
+  <body class="min-h-screen bg-canvas text-text-contrast antialiased selection:bg-accent-primary/20 selection:text-accent-primary-light flex flex-col">
+    <!-- Subtle Blueprint Grid Layer -->
+    <div class="fixed inset-0 bg-grid pointer-events-none z-0 opacity-80" aria-hidden="true"></div>
+
+    <div class="relative z-10 flex flex-col min-h-screen">
+      <Header lang={lang} />
+      <div class="flex-1">
+        <slot />
+      </div>
+      <Footer lang={lang} />
     </div>
   </body>
 </html>

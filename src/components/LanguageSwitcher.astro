@@ -1,0 +1,61 @@
+---
+import type { SupportedLanguage } from '@/i18n/ui';
+
+interface Props {
+  lang?: SupportedLanguage;
+  class?: string;
+}
+
+const { lang, class: className = '' } = Astro.props;
+
+const pathname = Astro.url.pathname;
+const currentLang: SupportedLanguage =
+  lang ?? (pathname.startsWith('/en') ? 'en' : 'id');
+
+// Hitung rute alternatif
+let idPath = pathname.startsWith('/en')
+  ? pathname.replace(/^\/en(\/|$)/, '/$1')
+  : pathname;
+if (!idPath.startsWith('/')) idPath = '/' + idPath;
+idPath = idPath.replace(/\/{2,}/g, '/');
+
+let enPath = pathname.startsWith('/en')
+  ? pathname
+  : `/en${pathname === '/' ? '/' : pathname}`;
+enPath = enPath.replace(/\/{2,}/g, '/');
+---
+
+<div
+  class:list={[
+    'inline-flex items-center rounded-control border border-border-architectural bg-surface-card/90 p-0.5 text-xs font-mono',
+    className,
+  ]}
+  role="group"
+  aria-label="Language selection"
+>
+  <a
+    href={idPath}
+    class:list={[
+      'px-2.5 py-1 rounded transition-all duration-150',
+      currentLang === 'id'
+        ? 'bg-white/10 text-text-contrast font-semibold shadow-xs'
+        : 'text-text-muted hover:text-text-contrast hover:bg-white/5',
+    ]}
+    aria-current={currentLang === 'id' ? 'page' : undefined}
+  >
+    ID
+  </a>
+  <span class="text-border-architectural select-none">|</span>
+  <a
+    href={enPath}
+    class:list={[
+      'px-2.5 py-1 rounded transition-all duration-150',
+      currentLang === 'en'
+        ? 'bg-white/10 text-text-contrast font-semibold shadow-xs'
+        : 'text-text-muted hover:text-text-contrast hover:bg-white/5',
+    ]}
+    aria-current={currentLang === 'en' ? 'page' : undefined}
+  >
+    EN
+  </a>
+</div>
