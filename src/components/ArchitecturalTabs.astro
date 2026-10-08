@@ -24,11 +24,11 @@ const {
 
 <div class="arch-tabs-container w-full" data-card-id={cardId}>
   <!-- Segmented Control Tab Header -->
-  <div class="flex items-center gap-1.5 p-1 rounded-control bg-canvas/70 border border-border-architectural mb-4 text-xs font-mono">
+  <div class="flex items-center gap-1.5 p-1 rounded-control bg-surface-card/80 border border-border-architectural mb-4 text-xs font-mono">
     <button
       type="button"
       data-tab="ui"
-      class="tab-btn px-3 py-1 rounded transition-colors active-tab bg-white/10 text-text-contrast font-medium"
+      class="tab-btn px-3 py-1 rounded transition-all active-tab bg-surface-elevated text-text-contrast font-medium border border-border-architectural shadow-tactile-surface"
     >
       [{labels.ui}]
     </button>
@@ -37,7 +37,7 @@ const {
       <button
         type="button"
         data-tab="arch"
-        class="tab-btn px-3 py-1 rounded transition-colors text-text-muted hover:text-text-contrast hover:bg-white/5"
+        class="tab-btn px-3 py-1 rounded transition-all text-text-muted hover:text-text-contrast hover:bg-white/5 border border-transparent"
       >
         [{labels.arch}]
       </button>
@@ -47,15 +47,24 @@ const {
       <button
         type="button"
         data-tab="code"
-        class="tab-btn px-3 py-1 rounded transition-colors text-text-muted hover:text-text-contrast hover:bg-white/5"
+        class="tab-btn px-3 py-1 rounded transition-all text-text-muted hover:text-text-contrast hover:bg-white/5 border border-transparent"
       >
         [{labels.code}]
       </button>
     )}
   </div>
 
-  <!-- Tab Panels -->
+  <!-- Tab Panels with Developer Viewport Bar -->
   <div class="tab-panels relative overflow-hidden rounded-md border border-border-architectural bg-canvas">
+    <div class="flex items-center justify-between px-3 py-1.5 border-b border-border-architectural bg-surface-card/90 text-[10px] font-mono text-text-dim select-none">
+      <div class="flex items-center gap-1.5">
+        <span class="size-2 rounded-full bg-white/20"></span>
+        <span class="size-2 rounded-full bg-white/20"></span>
+        <span class="size-2 rounded-full bg-white/20"></span>
+      </div>
+      <span class="tracking-widest uppercase text-text-dim">// ARCHITECTURAL_VIEWPORT</span>
+    </div>
+
     <div data-panel="ui" class="tab-panel block transition-opacity duration-200">
       <slot name="ui" />
     </div>
@@ -86,11 +95,11 @@ const {
 
         // Update button active styling
         buttons.forEach((b) => {
-          b.classList.remove('bg-white/10', 'text-text-contrast', 'font-medium', 'active-tab');
-          b.classList.add('text-text-muted');
+          b.classList.remove('bg-surface-elevated', 'text-text-contrast', 'font-medium', 'active-tab', 'border-border-architectural', 'shadow-tactile-surface');
+          b.classList.add('text-text-muted', 'border-transparent');
         });
-        btn.classList.add('bg-white/10', 'text-text-contrast', 'font-medium', 'active-tab');
-        btn.classList.remove('text-text-muted');
+        btn.classList.add('bg-surface-elevated', 'text-text-contrast', 'font-medium', 'active-tab', 'border-border-architectural', 'shadow-tactile-surface');
+        btn.classList.remove('text-text-muted', 'border-transparent');
 
         // Switch panel visibility
         panels.forEach((p) => {

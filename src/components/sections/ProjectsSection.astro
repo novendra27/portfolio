@@ -15,7 +15,7 @@ const t = useTranslations(lang);
 const projects = await projectRepository.getAllWithRelations();
 ---
 
-<section id="projects" class="py-16 md:py-24 border-b border-border-architectural">
+<section id="projects" class="py-16 md:py-24 border-b border-border-architectural arch-bleed-line-bottom">
   <div class="max-w-6xl mx-auto px-4 sm:px-6">
     <SectionHeading
       index={t('section.projects.index')}
@@ -165,10 +165,10 @@ const projects = await projectRepository.getAllWithRelations();
                       target="_blank"
                       rel="noopener noreferrer"
                       class:list={[
-                        'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-control text-xs font-mono transition-all',
+                        'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-control text-xs font-mono transition-all active:translate-y-px',
                         link.is_primary
-                          ? 'bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light'
-                          : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast',
+                          ? 'bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light shadow-tactile-primary'
+                          : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast shadow-tactile-surface',
                       ]}
                     >
                       <span>{link.title}</span>

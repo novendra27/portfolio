@@ -20,7 +20,7 @@ const navItems = [
 ---
 
 <header
-  class="sticky top-0 z-50 w-full border-b border-border-architectural bg-canvas/80 backdrop-blur-md transition-all"
+  class="sticky top-0 z-50 w-full border-b border-border-architectural bg-canvas/80 backdrop-blur-md transition-all arch-bleed-line-bottom"
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
     <!-- Brand / Architectural Monogram -->
@@ -28,7 +28,7 @@ const navItems = [
       href={lang === 'en' ? '/en/' : '/'}
       class="group flex items-center gap-2 font-mono text-xs tracking-tight text-text-contrast hover:text-accent-primary transition-colors"
     >
-      <span class="inline-flex items-center justify-center w-6 h-6 rounded border border-border-architectural bg-surface-card text-accent-primary font-bold group-hover:border-accent-primary/40 transition-colors">
+      <span class="inline-flex items-center justify-center w-6 h-6 rounded border border-border-architectural bg-surface-card text-accent-primary font-bold group-hover:border-accent-primary/40 shadow-tactile-surface transition-colors">
         A
       </span>
       <span class="font-semibold hidden sm:inline">ADI NOVENDRA</span>
@@ -40,7 +40,7 @@ const navItems = [
       {navItems.map((item) => (
         <a
           href={item.href}
-          class="text-text-muted hover:text-text-contrast transition-colors py-1"
+          class="text-text-muted hover:text-text-contrast transition-colors py-1 hover:underline underline-offset-4 decoration-accent-primary/50"
         >
           {item.label}
         </a>
@@ -53,7 +53,7 @@ const navItems = [
 
       <a
         href="#contact"
-        class="hidden sm:inline-flex items-center px-3 py-1.5 rounded-control text-xs font-mono font-medium border border-border-architectural bg-surface-card hover:bg-surface-elevated hover:border-border-architectural-hover text-text-contrast transition-all"
+        class="hidden sm:inline-flex items-center px-3 py-1.5 rounded-control text-xs font-mono font-medium border border-border-architectural bg-surface-card hover:bg-surface-elevated hover:border-border-architectural-hover text-text-contrast shadow-tactile-surface transition-all active:translate-y-px"
       >
         {t('nav.contact')}
       </a>

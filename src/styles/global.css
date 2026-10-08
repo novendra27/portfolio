@@ -23,6 +23,47 @@ body {
     linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
+/* 45-degree diagonal hatching accent (inspired by Zed & Tailwind gutter) */
+.bg-hatch-45 {
+  background-image: repeating-linear-gradient(
+    315deg,
+    rgba(255, 255, 255, 0.04) 0,
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 0,
+    transparent 50%
+  );
+  background-size: 8px 8px;
+}
+
+/* Infinite horizontal architectural bleed lines (inspired by Tailwind) */
+.arch-bleed-line {
+  position: relative;
+}
+.arch-bleed-line::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100vw;
+  width: 200vw;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+.arch-bleed-line-bottom {
+  position: relative;
+}
+.arch-bleed-line-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -100vw;
+  width: 200vw;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
 /* Garis arsitektural dan seleksi */
 ::selection {
   background: rgba(16, 185, 129, 0.25);

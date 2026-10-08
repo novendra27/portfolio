@@ -16,7 +16,7 @@ const pricingServices = await pricingRepository.getAll();
 const waNumber = '628993580311';
 ---
 
-<section id="pricing" class="py-16 md:py-24 border-b border-border-architectural">
+<section id="pricing" class="py-16 md:py-24 border-b border-border-architectural arch-bleed-line-bottom">
   <div class="max-w-6xl mx-auto px-4 sm:px-6">
     <SectionHeading
       index={t('section.pricing.index')}
@@ -121,10 +121,10 @@ const waNumber = '628993580311';
                 target="_blank"
                 rel="noopener noreferrer"
                 class:list={[
-                  'w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-control text-xs font-mono font-semibold transition-all shadow-sm',
+                  'w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-control text-xs font-mono font-semibold transition-all active:translate-y-px',
                   srv.is_popular
-                    ? 'bg-accent-primary text-canvas hover:bg-accent-primary-light'
-                    : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast hover:border-accent-primary/40',
+                    ? 'bg-accent-primary text-canvas hover:bg-accent-primary-light shadow-tactile-primary'
+                    : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast hover:border-accent-primary/40 shadow-tactile-surface',
                 ]}
               >
                 <span>{t('pricing.cta')}</span>

@@ -27,7 +27,7 @@ enPath = enPath.replace(/\/{2,}/g, '/');
 
 <div
   class:list={[
-    'inline-flex items-center rounded-control border border-border-architectural bg-surface-card/90 p-0.5 text-xs font-mono',
+    'inline-flex items-center rounded-control border border-border-architectural bg-surface-card/90 p-0.5 text-xs font-mono shadow-xs',
     className,
   ]}
   role="group"
@@ -36,23 +36,23 @@ enPath = enPath.replace(/\/{2,}/g, '/');
   <a
     href={idPath}
     class:list={[
-      'px-2.5 py-1 rounded transition-all duration-150',
+      'px-2.5 py-0.5 rounded transition-all duration-150',
       currentLang === 'id'
-        ? 'bg-white/10 text-text-contrast font-semibold shadow-xs'
-        : 'text-text-muted hover:text-text-contrast hover:bg-white/5',
+        ? 'bg-surface-elevated text-text-contrast font-semibold border border-border-architectural shadow-tactile-surface'
+        : 'text-text-muted hover:text-text-contrast hover:bg-white/5 border border-transparent',
     ]}
     aria-current={currentLang === 'id' ? 'page' : undefined}
   >
     ID
   </a>
-  <span class="text-border-architectural select-none">|</span>
+  <span class="text-border-architectural select-none mx-0.5">|</span>
   <a
     href={enPath}
     class:list={[
-      'px-2.5 py-1 rounded transition-all duration-150',
+      'px-2.5 py-0.5 rounded transition-all duration-150',
       currentLang === 'en'
-        ? 'bg-white/10 text-text-contrast font-semibold shadow-xs'
-        : 'text-text-muted hover:text-text-contrast hover:bg-white/5',
+        ? 'bg-surface-elevated text-text-contrast font-semibold border border-border-architectural shadow-tactile-surface'
+        : 'text-text-muted hover:text-text-contrast hover:bg-white/5 border border-transparent',
     ]}
     aria-current={currentLang === 'en' ? 'page' : undefined}
   >

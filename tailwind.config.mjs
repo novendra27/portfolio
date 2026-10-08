@@ -32,6 +32,10 @@ export default {
         card: '8px',
         control: '6px',
       },
+      boxShadow: {
+        'tactile-primary': 'inset 0 -2px 0 0 hsl(160, 84%, 25%), 0 1px 3px 0 rgba(0, 0, 0, 0.3)',
+        'tactile-surface': 'inset 0 -1px 0 0 rgba(255, 255, 255, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.4)',
+      },
     },
   },
   plugins: [],
