@@ -1,5 +1,5 @@
 ---
-import { projectRepository } from '@/lib/repositories';
+import { projectRepository, categoryRepository } from '@/lib/repositories';
 import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
 import SectionHeading from '../SectionHeading.astro';
 import ArchitecturalTabs from '../ArchitecturalTabs.astro';
@@ -12,6 +12,15 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const projects = await projectRepository.getAllWithRelations();
+const allCategories = await categoryRepository.getAll();
+
+// Compute categories with active projects for dynamic filtering
+const activeCategories = allCategories
+  .map((cat) => {
+    const count = projects.filter((p) => p.category_ids.includes(cat.id)).length;
+    return { ...cat, count };
+  })
+  .filter((c) => c.count > 0);
 ---
 
 <section id="projects" class="py-16 md:py-24 border-b border-border-architectural arch-bleed-line-bottom">
@@ -24,187 +33,592 @@ const projects = await projectRepository.getAllWithRelations();
         : 'Curated 9 real-world engineering case studies spanning event-driven streaming, AI optimization algorithms, and municipal utility billing systems.'}
     />
 
-    <div class="space-y-12">
-      {projects.map((proj, idx) => (
-        <>
-          {idx > 0 && (
-            <div class="arch-slice" aria-hidden="true">
-              <div class="px-4 py-2 border-x border-border-architectural flex items-center justify-between font-mono text-[10px] text-text-dim bg-surface-card/40 select-none">
-                <span class="text-accent-primary font-bold">// SYSTEM ARCH // CASE_STUDY [0{idx + 1}]</span>
-                <span class="text-border-architectural hidden sm:inline">├── ARTIFACT DELTA ──┤</span>
-                <span>PRODUCTION STAGE</span>
-              </div>
+    <!-- Unified Master-Detail Blueprint Showcase Console -->
+    <div class="arch-slice">
+      <div class="border-x border-border-architectural bg-canvas" id="project-showcase-console">
+        
+        <!-- ==================================================================== -->
+        <!-- DESKTOP TIER 1: Blueprint Spec, Category Filter Bar & Navigation (md+) -->
+        <!-- ==================================================================== -->
+        <div class="hidden md:flex px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/70 items-center justify-between gap-3 font-mono text-[10px] select-none">
+          <div class="flex items-center gap-2">
+            <span class="text-accent-primary font-bold">// SPEC_02:PROJECT_SHOWCASE</span>
+            <span class="text-border-architectural">|</span>
+            <span class="text-text-dim">// FILTER:</span>
+            <div class="flex items-center gap-1.5" id="desktop-category-filters">
+              <button
+                type="button"
+                data-cat-filter="all"
+                class="cat-filter-btn px-2.5 py-0.5 rounded border border-accent-primary bg-surface-elevated text-accent-primary font-semibold transition-all shrink-0 cursor-pointer shadow-tactile-primary"
+              >
+                ALL ({projects.length})
+              </button>
+              {activeCategories.map((cat) => (
+                <button
+                  type="button"
+                  data-cat-filter={cat.id}
+                  class="cat-filter-btn px-2.5 py-0.5 rounded border border-border-architectural bg-surface-card text-text-muted hover:text-text-contrast hover:border-accent-primary/40 transition-all shrink-0 cursor-pointer"
+                >
+                  {cat.name.split('&')[0].trim().toUpperCase()} ({cat.count})
+                </button>
+              ))}
             </div>
-          )}
+          </div>
 
-          <div id={`project-${proj.slug}`} class="arch-slice">
-            <div class="border-x border-border-architectural">
+          <div class="flex items-center gap-3 shrink-0 ml-auto">
+            <div class="flex items-center gap-1.5">
+              <span class="text-text-dim">INDEX:</span>
+              <span class="text-accent-primary font-bold tabular-nums desktop-index-counter">
+                01 / {String(projects.length).padStart(2, '0')}
+              </span>
+            </div>
+            <span class="text-border-architectural">|</span>
+            <div class="flex items-center gap-1">
+              <button
+                type="button"
+                aria-label="Previous project"
+                class="btn-prev-proj px-2 py-1 rounded border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-muted hover:text-text-contrast transition-colors active:translate-y-px text-[10px] cursor-pointer"
+              >
+                &lt; PREV
+              </button>
+              <button
+                type="button"
+                aria-label="Next project"
+                class="btn-next-proj px-2 py-1 rounded border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-muted hover:text-text-contrast transition-colors active:translate-y-px text-[10px] cursor-pointer"
+              >
+                NEXT &gt;
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================================================================== -->
+        <!-- DESKTOP TIER 2: Horizontal Segmented Project Selector Ribbon (md+)   -->
+        <!-- ==================================================================== -->
+        <div class="hidden md:block border-b border-border-architectural bg-canvas/90 overflow-x-auto arch-scrollbar scroll-smooth relative" id="project-ribbon-container">
+          <div class="flex items-stretch min-w-max divide-x divide-border-architectural font-mono text-xs" role="tablist" aria-label="Project Case Studies">
+            {projects.map((proj, idx) => (
+              <button
+                type="button"
+                role="tab"
+                id={`tab-${proj.id}`}
+                aria-controls={`panel-${proj.id}`}
+                aria-selected={idx === 0 ? 'true' : 'false'}
+                data-project-id={proj.id}
+                data-project-idx={idx}
+                data-slug={proj.slug}
+                data-categories={proj.category_ids.join(' ')}
+                class:list={[
+                  'project-selector-tab flex items-center gap-2.5 px-4 sm:px-5 py-3 text-left transition-all shrink-0 cursor-pointer select-none',
+                  idx === 0
+                    ? 'active-tab bg-surface-elevated text-text-contrast font-semibold border-b-2 border-accent-primary shadow-tactile-primary'
+                    : 'bg-surface-card/40 text-text-muted hover:text-text-contrast hover:bg-surface-card/70 border-b-2 border-transparent',
+                ]}
+              >
+                <span class="text-[10px] text-accent-primary font-bold">[0{idx + 1}]</span>
+                <span class="truncate max-w-[150px] sm:max-w-[210px] text-xs">
+                  {proj.title.split('(')[0].trim()}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- ==================================================================== -->
+        <!-- MOBILE TIER 1: Category Filter Bar (Smooth touch swipe, no scrollbar) -->
+        <!-- ==================================================================== -->
+        <div class="md:hidden border-b border-border-architectural bg-surface-card/80 px-3 py-2 select-none">
+          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar font-mono text-[10px]">
+            <span class="text-accent-primary font-bold shrink-0 mr-1">// FILTER:</span>
+            <button
+              type="button"
+              data-cat-filter="all"
+              class="cat-filter-btn px-2.5 py-1 rounded border border-accent-primary bg-surface-elevated text-accent-primary font-semibold transition-all shrink-0 cursor-pointer shadow-tactile-primary"
+            >
+              ALL ({projects.length})
+            </button>
+            {activeCategories.map((cat) => (
+              <button
+                type="button"
+                data-cat-filter={cat.id}
+                class="cat-filter-btn px-2 py-1 rounded border border-border-architectural bg-surface-card text-text-muted hover:text-text-contrast transition-all shrink-0 cursor-pointer"
+              >
+                {cat.name.split('&')[0].trim().toUpperCase()} ({cat.count})
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- ==================================================================== -->
+        <!-- MOBILE TIER 2: Status Index Counter & Sequential Controls (< md)     -->
+        <!-- ==================================================================== -->
+        <div class="md:hidden border-b border-border-architectural bg-surface-card/50 px-3 py-2 flex items-center justify-between font-mono text-xs select-none">
+          <div class="flex items-center gap-2">
+            <span class="text-text-dim text-[10px]">// SPEC_02</span>
+            <span class="text-border-architectural">|</span>
+            <span class="text-accent-primary font-bold text-xs tabular-nums mobile-index-counter">
+              01 / {String(projects.length).padStart(2, '0')}
+            </span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button
+              type="button"
+              aria-label="Previous project"
+              class="btn-prev-proj px-3 py-1.5 rounded border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-muted hover:text-text-contrast transition-colors active:translate-y-px text-xs font-mono font-medium cursor-pointer shadow-tactile-surface"
+            >
+              &lt; PREV
+            </button>
+            <button
+              type="button"
+              aria-label="Next project"
+              class="btn-next-proj px-3 py-1.5 rounded border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-muted hover:text-text-contrast transition-colors active:translate-y-px text-xs font-mono font-medium cursor-pointer shadow-tactile-surface"
+            >
+              NEXT &gt;
+            </button>
+          </div>
+        </div>
+
+        <!-- ==================================================================== -->
+        <!-- MOBILE TIER 3: 9-Column Coordinate Matrix Keypad (1-Tap Access)      -->
+        <!-- ==================================================================== -->
+        <div class="md:hidden border-b border-border-architectural bg-canvas select-none">
+          <div class="grid grid-cols-9 divide-x divide-border-architectural font-mono text-xs text-center" role="tablist" aria-label="Mobile Project Selector">
+            {projects.map((proj, idx) => (
+              <button
+                type="button"
+                role="tab"
+                data-project-idx={idx}
+                data-categories={proj.category_ids.join(' ')}
+                aria-label={`Project 0${idx + 1}: ${proj.title}`}
+                class:list={[
+                  'mobile-keypad-btn py-2.5 transition-all cursor-pointer font-bold',
+                  idx === 0
+                    ? 'active-tab bg-surface-elevated text-accent-primary border-b-2 border-accent-primary shadow-tactile-primary'
+                    : 'bg-surface-card/40 text-text-dim hover:text-text-contrast hover:bg-surface-card border-b-2 border-transparent',
+                ]}
+              >
+                0{idx + 1}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- ==================================================================== -->
+        <!-- TIER 4: Unified Showcase Panels Container (Pre-rendered for SEO/LLM) -->
+        <!-- ==================================================================== -->
+        <div class="relative bg-canvas min-h-[500px]" id="project-panels-wrapper">
+          {projects.map((proj, idx) => (
+            <div
+              id={`panel-${proj.id}`}
+              role="tabpanel"
+              aria-labelledby={`tab-${proj.id}`}
+              data-project-id={proj.id}
+              data-project-idx={idx}
+              data-categories={proj.category_ids.join(' ')}
+              class:list={[
+                'project-showcase-panel transition-opacity duration-200',
+                idx === 0 ? 'block' : 'hidden',
+              ]}
+            >
               <!-- Full-Width Blueprint Header Bar -->
-              <div class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
+              <div id={`project-${proj.slug}`} class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/50 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
                 <div class="flex items-center gap-2">
                   <span class="text-accent-primary font-bold">[0{idx + 1} // CASE_STUDY]</span>
                   <span class="text-border-architectural">|</span>
                   <span class="text-text-contrast font-semibold uppercase">{proj.title}</span>
                 </div>
-              <div class="flex items-center gap-2">
-                {proj.organization && (
-                  <>
-                    <span>CLIENT: {proj.organization.name}</span>
-                    <span class="text-border-architectural">|</span>
-                  </>
-                )}
-                {proj.confidentiality === 'confidential_nda' ? (
-                  <Badge variant="outline" text="CONFIDENTIAL (NDA)" class="text-[9px]" />
-                ) : (
-                  <Badge variant="accent" text="PUBLIC / OPEN" class="text-[9px]" />
-                )}
+                <div class="flex items-center gap-2">
+                  {proj.organization && (
+                    <>
+                      <span>CLIENT: {proj.organization.name}</span>
+                      <span class="text-border-architectural">|</span>
+                    </>
+                  )}
+                  {proj.confidentiality === 'confidential_nda' ? (
+                    <Badge variant="outline" text="CONFIDENTIAL (NDA)" class="text-[9px]" />
+                  ) : (
+                    <Badge variant="accent" text="PUBLIC / OPEN" class="text-[9px]" />
+                  )}
+                </div>
               </div>
-            </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural items-stretch">
-              <!-- Left: Interactive Preview Tabs (7 cols) -->
-              <div class="lg:col-span-7 w-full p-4 sm:p-6 bg-canvas/40 flex flex-col justify-between">
-                <ArchitecturalTabs
-                  cardId={`tabs-${proj.id}`}
-                  labels={{
-                    ui: t('tab.uiPreview'),
-                    arch: t('tab.architecture'),
-                    code: t('tab.codeSnippet'),
-                  }}
-                  hasArch={Boolean(proj.problem_statement || proj.architecture_system)}
-                  hasCode={Boolean(proj.core_code_snippet)}
-                >
-                  <!-- Tab Panel 1: UI Preview / Thumbnail -->
-                  <div slot="ui" class="relative aspect-video w-full overflow-hidden bg-canvas flex items-center justify-center">
-                    <img
-                      src={proj.thumbnail}
-                      alt={proj.title}
-                      class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
-                      loading="lazy"
-                    />
-                    <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-canvas/80 backdrop-blur-sm border border-border-architectural text-[10px] font-mono text-text-dim">
-                      FORMAT: {proj.media_type.toUpperCase()}
+              <!-- 7:5 Split Cartesian Chamber -->
+              <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural items-stretch">
+                <!-- Left: Interactive Preview Tabs (7 cols) -->
+                <div class="lg:col-span-7 w-full p-4 sm:p-6 bg-canvas/40 flex flex-col justify-between">
+                  <ArchitecturalTabs
+                    cardId={`tabs-${proj.id}`}
+                    labels={{
+                      ui: t('tab.uiPreview'),
+                      arch: t('tab.architecture'),
+                      code: t('tab.codeSnippet'),
+                    }}
+                    hasArch={Boolean(proj.problem_statement || proj.architecture_system)}
+                    hasCode={Boolean(proj.core_code_snippet)}
+                  >
+                    <!-- Tab Panel 1: UI Preview / Thumbnail -->
+                    <div slot="ui" class="relative aspect-video w-full overflow-hidden bg-canvas flex items-center justify-center">
+                      <img
+                        src={proj.thumbnail}
+                        alt={proj.title}
+                        class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
+                        loading={idx === 0 ? 'eager' : 'lazy'}
+                      />
+                      <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-canvas/80 backdrop-blur-sm border border-border-architectural text-[10px] font-mono text-text-dim">
+                        FORMAT: {proj.media_type.toUpperCase()}
+                      </div>
+                    </div>
+
+                    <!-- Tab Panel 2: Architecture Flow Details -->
+                    <div slot="arch" class="p-4 sm:p-5 space-y-3 font-mono text-xs bg-canvas/90 text-text-muted min-h-[220px]">
+                      {proj.organization && (
+                        <div class="flex items-center justify-between border-b border-border-architectural/60 pb-2">
+                          <span class="text-text-dim">// ORGANIZATION</span>
+                          <span class="text-text-contrast font-medium">{proj.organization.name}</span>
+                        </div>
+                      )}
+
+                      {proj.architecture_system && (
+                        <div class="flex items-center justify-between border-b border-border-architectural/60 pb-2">
+                          <span class="text-text-dim">// SYSTEM PATTERN</span>
+                          <span class="text-accent-primary">{proj.architecture_system.title}</span>
+                        </div>
+                      )}
+
+                      {proj.problem_statement && (
+                        <div class="space-y-1 pt-1">
+                          <span class="text-accent-primary">// PROBLEM STATEMENT</span>
+                          <p class="font-sans text-xs text-text-muted leading-relaxed">
+                            {proj.problem_statement[lang]}
+                          </p>
+                        </div>
+                      )}
+
+                      {proj.solution_statement && (
+                        <div class="space-y-1 pt-1">
+                          <span class="text-text-contrast">// SOLUTION HIGHLIGHT</span>
+                          <p class="font-sans text-xs text-text-muted leading-relaxed">
+                            {proj.solution_statement[lang]}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    <!-- Tab Panel 3: Core Code Snippet -->
+                    <div slot="code" class="p-4 overflow-x-auto bg-canvas/95 font-mono text-[11px] text-text-contrast min-h-[220px] max-h-[340px]">
+                      <pre class="leading-relaxed"><code>{proj.core_code_snippet}</code></pre>
+                    </div>
+                  </ArchitecturalTabs>
+                </div>
+
+                <!-- Right: Metadata, BLUF Narrative & Links (5 cols) -->
+                <div class="lg:col-span-5 flex flex-col justify-between divide-y divide-border-architectural bg-surface-card/30">
+                  <div class="p-5 sm:p-6 space-y-4">
+                    <!-- Title & Organization -->
+                    <div>
+                      <h3 class="text-lg sm:text-xl font-bold text-text-contrast tracking-tight mb-1">
+                        {proj.title}
+                      </h3>
+                      {proj.organization && (
+                        <p class="font-mono text-xs text-text-dim">
+                          Client/Institution: {proj.organization.name}
+                        </p>
+                      )}
+                    </div>
+
+                    <!-- BLUF Summary -->
+                    <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
+                      {proj.summary_bluf[lang]}
+                    </p>
+
+                    <!-- Key Metrics (if available) -->
+                    {proj.key_metrics && proj.key_metrics.length > 0 && (
+                      <div class="grid grid-cols-3 divide-x divide-border-architectural border border-border-architectural rounded bg-canvas/40 py-2">
+                        {proj.key_metrics.map((metric) => (
+                          <div class="text-center font-mono px-2">
+                            <div class="text-sm font-bold text-accent-primary tabular-nums">
+                              {metric.value}
+                            </div>
+                            <div class="text-[10px] text-text-dim truncate">
+                              {metric.label[lang]}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    <!-- Technologies Badges -->
+                    <div class="space-y-1.5 pt-1">
+                      <div class="font-mono text-[11px] text-text-dim uppercase tracking-wider">
+                        Technologies Utilized
+                      </div>
+                      <div class="flex flex-wrap gap-1.5">
+                        {proj.technologies.map((tech) => (
+                          <Badge variant="default" text={tech.name} />
+                        ))}
+                      </div>
                     </div>
                   </div>
 
-                  <!-- Tab Panel 2: Architecture Flow Details -->
-                  <div slot="arch" class="p-4 sm:p-5 space-y-3 font-mono text-xs bg-canvas/90 text-text-muted min-h-[220px]">
-                    {proj.organization && (
-                      <div class="flex items-center justify-between border-b border-border-architectural/60 pb-2">
-                        <span class="text-text-dim">// ORGANIZATION</span>
-                        <span class="text-text-contrast font-medium">{proj.organization.name}</span>
-                      </div>
-                    )}
-
-                    {proj.architecture_system && (
-                      <div class="flex items-center justify-between border-b border-border-architectural/60 pb-2">
-                        <span class="text-text-dim">// SYSTEM PATTERN</span>
-                        <span class="text-accent-primary">{proj.architecture_system.title}</span>
-                      </div>
-                    )}
-
-                    {proj.problem_statement && (
-                      <div class="space-y-1 pt-1">
-                        <span class="text-accent-primary">// PROBLEM STATEMENT</span>
-                        <p class="font-sans text-xs text-text-muted leading-relaxed">
-                          {proj.problem_statement[lang]}
-                        </p>
-                      </div>
-                    )}
-
-                    {proj.solution_statement && (
-                      <div class="space-y-1 pt-1">
-                        <span class="text-text-contrast">// SOLUTION HIGHLIGHT</span>
-                        <p class="font-sans text-xs text-text-muted leading-relaxed">
-                          {proj.solution_statement[lang]}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  <!-- Tab Panel 3: Core Code Snippet -->
-                  <div slot="code" class="p-4 overflow-x-auto bg-canvas/95 font-mono text-[11px] text-text-contrast min-h-[220px] max-h-[340px]">
-                    <pre class="leading-relaxed"><code>{proj.core_code_snippet}</code></pre>
-                  </div>
-                </ArchitecturalTabs>
-              </div>
-
-              <!-- Right: Metadata, BLUF Narrative & Links (5 cols) -->
-              <div class="lg:col-span-5 flex flex-col justify-between divide-y divide-border-architectural bg-surface-card/30">
-                <div class="p-5 sm:p-6 space-y-4">
-                  <!-- Title & Organization -->
-                  <div>
-                    <h3 class="text-lg sm:text-xl font-bold text-text-contrast tracking-tight mb-1">
-                      {proj.title}
-                    </h3>
-                    {proj.organization && (
-                      <p class="font-mono text-xs text-text-dim">
-                        Client/Institution: {proj.organization.name}
-                      </p>
-                    )}
-                  </div>
-
-                  <!-- BLUF Summary -->
-                  <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
-                    {proj.summary_bluf[lang]}
-                  </p>
-
-                  <!-- Key Metrics (if available) -->
-                  {proj.key_metrics && proj.key_metrics.length > 0 && (
-                    <div class="grid grid-cols-3 divide-x divide-border-architectural border border-border-architectural rounded bg-canvas/40 py-2">
-                      {proj.key_metrics.map((metric) => (
-                        <div class="text-center font-mono px-2">
-                          <div class="text-sm font-bold text-accent-primary tabular-nums">
-                            {metric.value}
-                          </div>
-                          <div class="text-[10px] text-text-dim truncate">
-                            {metric.label[lang]}
-                          </div>
-                        </div>
+                  <!-- Dynamic Multi-Link Buttons Bottom Strip -->
+                  {proj.links.length > 0 && (
+                    <div class="p-4 sm:px-6 bg-surface-card/70 flex flex-wrap gap-2">
+                      {proj.links.map((link) => (
+                        <a
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class:list={[
+                            'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-control text-xs font-mono transition-all active:translate-y-px',
+                            link.is_primary
+                              ? 'bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light shadow-tactile-primary'
+                              : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast shadow-tactile-surface',
+                          ]}
+                        >
+                          <span>{link.title}</span>
+                          <span class="text-[11px]">↗</span>
+                        </a>
                       ))}
                     </div>
                   )}
-
-                  <!-- Technologies Badges -->
-                  <div class="space-y-1.5 pt-1">
-                    <div class="font-mono text-[11px] text-text-dim uppercase tracking-wider">
-                      Technologies Utilized
-                    </div>
-                    <div class="flex flex-wrap gap-1.5">
-                      {proj.technologies.map((tech) => (
-                        <Badge variant="default" text={tech.name} />
-                      ))}
-                    </div>
-                  </div>
                 </div>
-
-                <!-- Dynamic Multi-Link Buttons Bottom Strip -->
-                {proj.links.length > 0 && (
-                  <div class="p-4 sm:px-6 bg-surface-card/70 flex flex-wrap gap-2">
-                    {proj.links.map((link) => (
-                      <a
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class:list={[
-                          'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-control text-xs font-mono transition-all active:translate-y-px',
-                          link.is_primary
-                            ? 'bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light shadow-tactile-primary'
-                            : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast shadow-tactile-surface',
-                        ]}
-                      >
-                        <span>{link.title}</span>
-                        <span class="text-[11px]">↗</span>
-                      </a>
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
-          </div>
+          ))}
         </div>
-      </>
-      ))}
+
+        <!-- ==================================================================== -->
+        <!-- BOTTOM FOOTER: Blueprint Spec Summary Bar                            -->
+        <!-- ==================================================================== -->
+        <div class="px-4 sm:px-6 py-2 border-t border-border-architectural bg-surface-card/60 flex items-center justify-between font-mono text-[10px] text-text-dim select-none">
+          <div class="flex items-center gap-2">
+            <span class="text-accent-primary font-bold">// WORKSTATION_SPEC: INTERACTIVE_SHOWCASE</span>
+            <span class="text-border-architectural hidden sm:inline">|</span>
+            <span class="hidden sm:inline">MODE: HYBRID_ADAPTIVE_GRID</span>
+          </div>
+          <span>SSG PRE-RENDERED // 100% ZERO-JS COMPATIBLE</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<script>
+  // Scoped Interactive Showcase Console Controller (Responsive Hybrid Grid)
+  function initProjectShowcase() {
+    const section = document.getElementById('project-showcase-console');
+    if (!section) return;
+
+    const catButtons = section.querySelectorAll<HTMLButtonElement>('.cat-filter-btn');
+    const desktopTabs = section.querySelectorAll<HTMLButtonElement>('.project-selector-tab');
+    const mobileKeys = section.querySelectorAll<HTMLButtonElement>('.mobile-keypad-btn');
+    const panels = section.querySelectorAll<HTMLElement>('.project-showcase-panel');
+    const desktopCounter = section.querySelector<HTMLElement>('.desktop-index-counter');
+    const mobileCounter = section.querySelector<HTMLElement>('.mobile-index-counter');
+    const prevButtons = section.querySelectorAll<HTMLButtonElement>('.btn-prev-proj');
+    const nextButtons = section.querySelectorAll<HTMLButtonElement>('.btn-next-proj');
+    const ribbonContainer = section.querySelector<HTMLElement>('#project-ribbon-container');
+
+    let currentCat = 'all';
+    let currentIdx = 0;
+
+    // Get array of valid project indices based on category filter
+    function getValidIndices(): number[] {
+      const indices: number[] = [];
+      panels.forEach((p, idx) => {
+        if (currentCat === 'all') {
+          indices.push(idx);
+        } else {
+          const cats = (p.getAttribute('data-categories') || '').split(' ');
+          if (cats.includes(currentCat)) {
+            indices.push(idx);
+          }
+        }
+      });
+      return indices;
+    }
+
+    // Activate a project by its index
+    function activateProject(idx: number, scrollIntoView: boolean = true) {
+      if (idx < 0 || idx >= panels.length) return;
+      currentIdx = idx;
+
+      // Update Desktop Tabs
+      desktopTabs.forEach((btn, i) => {
+        const isTarget = i === idx;
+        btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+        if (isTarget) {
+          btn.classList.add('active-tab', 'bg-surface-elevated', 'text-text-contrast', 'font-semibold', 'border-accent-primary', 'shadow-tactile-primary');
+          btn.classList.remove('bg-surface-card/40', 'text-text-muted', 'border-transparent');
+        } else {
+          btn.classList.remove('active-tab', 'bg-surface-elevated', 'text-text-contrast', 'font-semibold', 'border-accent-primary', 'shadow-tactile-primary');
+          btn.classList.add('bg-surface-card/40', 'text-text-muted', 'border-transparent');
+        }
+      });
+
+      // Update Mobile Keypad Buttons
+      mobileKeys.forEach((btn, i) => {
+        const isTarget = i === idx;
+        btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+        if (isTarget) {
+          btn.classList.add('active-tab', 'bg-surface-elevated', 'text-accent-primary', 'border-accent-primary', 'shadow-tactile-primary');
+          btn.classList.remove('bg-surface-card/40', 'text-text-dim', 'border-transparent');
+        } else {
+          btn.classList.remove('active-tab', 'bg-surface-elevated', 'text-accent-primary', 'border-accent-primary', 'shadow-tactile-primary');
+          btn.classList.add('bg-surface-card/40', 'text-text-dim', 'border-transparent');
+        }
+      });
+
+      // Smoothly scroll ONLY the internal desktop ribbon container
+      if (scrollIntoView && ribbonContainer && desktopTabs[idx]) {
+        const targetBtn = desktopTabs[idx];
+        const containerWidth = ribbonContainer.clientWidth;
+        const btnLeft = targetBtn.offsetLeft;
+        const btnWidth = targetBtn.clientWidth;
+        const targetScrollLeft = btnLeft - (containerWidth / 2) + (btnWidth / 2);
+        ribbonContainer.scrollTo({
+          left: Math.max(0, targetScrollLeft),
+          behavior: 'smooth',
+        });
+      }
+
+      // Defensive guard against browser viewport horizontal displacement
+      if (window.scrollX !== 0) {
+        window.scrollTo({ left: 0, top: window.scrollY });
+      }
+
+      // Update Panels
+      panels.forEach((p, i) => {
+        if (i === idx) {
+          p.classList.remove('hidden');
+          p.classList.add('block');
+        } else {
+          p.classList.add('hidden');
+          p.classList.remove('block');
+        }
+      });
+
+      // Update Counters
+      const validIndices = getValidIndices();
+      const pos = validIndices.indexOf(idx);
+      const displayPos = pos >= 0 ? pos + 1 : idx + 1;
+      const counterStr = `${String(displayPos).padStart(2, '0')} / ${String(validIndices.length).padStart(2, '0')}`;
+      if (desktopCounter) desktopCounter.textContent = counterStr;
+      if (mobileCounter) mobileCounter.textContent = counterStr;
+    }
+
+    // Filter by Category
+    function filterCategory(catId: string) {
+      currentCat = catId;
+
+      // Update Category Buttons styling
+      catButtons.forEach((btn) => {
+        const isMatch = btn.getAttribute('data-cat-filter') === catId;
+        if (isMatch) {
+          btn.classList.add('border-accent-primary', 'bg-surface-elevated', 'text-accent-primary', 'font-semibold', 'shadow-tactile-primary');
+          btn.classList.remove('border-border-architectural', 'bg-surface-card', 'text-text-muted');
+        } else {
+          btn.classList.remove('border-accent-primary', 'bg-surface-elevated', 'text-accent-primary', 'font-semibold', 'shadow-tactile-primary');
+          btn.classList.add('border-border-architectural', 'bg-surface-card', 'text-text-muted');
+        }
+      });
+
+      const validIndices = getValidIndices();
+
+      // Update Desktop tabs visibility
+      desktopTabs.forEach((btn, i) => {
+        if (validIndices.includes(i)) {
+          btn.classList.remove('hidden');
+        } else {
+          btn.classList.add('hidden');
+        }
+      });
+
+      // Update Mobile keypad buttons state
+      mobileKeys.forEach((btn, i) => {
+        if (validIndices.includes(i)) {
+          btn.classList.remove('opacity-25', 'pointer-events-none');
+        } else {
+          btn.classList.add('opacity-25', 'pointer-events-none');
+        }
+      });
+
+      // Activate first available project in category
+      if (validIndices.length > 0) {
+        if (!validIndices.includes(currentIdx)) {
+          activateProject(validIndices[0], true);
+        } else {
+          activateProject(currentIdx, true);
+        }
+      }
+    }
+
+    // Event Listeners for Category Buttons
+    catButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const cat = btn.getAttribute('data-cat-filter') || 'all';
+        filterCategory(cat);
+      });
+    });
+
+    // Event Listeners for Desktop Tab Buttons
+    desktopTabs.forEach((btn, i) => {
+      btn.addEventListener('click', () => {
+        activateProject(i, false);
+      });
+    });
+
+    // Event Listeners for Mobile Keypad Buttons
+    mobileKeys.forEach((btn, i) => {
+      btn.addEventListener('click', () => {
+        activateProject(i, false);
+      });
+    });
+
+    // Prev Navigation
+    prevButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const validIndices = getValidIndices();
+        if (validIndices.length === 0) return;
+        let pos = validIndices.indexOf(currentIdx);
+        pos = pos <= 0 ? validIndices.length - 1 : pos - 1;
+        activateProject(validIndices[pos], true);
+      });
+    });
+
+    // Next Navigation
+    nextButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const validIndices = getValidIndices();
+        if (validIndices.length === 0) return;
+        let pos = validIndices.indexOf(currentIdx);
+        pos = pos >= validIndices.length - 1 ? 0 : pos + 1;
+        activateProject(validIndices[pos], true);
+      });
+    });
+
+    // Handle deep link hash e.g. #project-kkm-grouping-genetic-algorithm
+    function checkHash() {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#project-')) {
+        const slug = hash.replace('#project-', '');
+        const targetBtn = section?.querySelector<HTMLButtonElement>(`.project-selector-tab[data-slug="${slug}"]`);
+        if (targetBtn) {
+          const idx = parseInt(targetBtn.getAttribute('data-project-idx') || '0', 10);
+          filterCategory('all');
+          activateProject(idx, true);
+        }
+      }
+    }
+
+    checkHash();
+    window.addEventListener('hashchange', checkHash);
+  }
+
+  // Initialize on DOM load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProjectShowcase);
+  } else {
+    initProjectShowcase();
+  }
+</script>
