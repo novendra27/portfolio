@@ -3,7 +3,6 @@ interface Props {
   index: string;
   title: string;
   subtitle?: string;
-  align?: 'left' | 'center';
   class?: string;
 }
 
@@ -11,32 +10,35 @@ const {
   index,
   title,
   subtitle,
-  align = 'left',
   class: className = '',
 } = Astro.props;
 ---
 
-<div
-  class:list={[
-    'mb-8 md:mb-12',
-    align === 'center' ? 'text-center mx-auto max-w-2xl' : 'text-left',
-    className,
-  ]}
->
-  <div class="flex items-center gap-3 mb-2">
-    <span class="font-mono text-xs font-semibold tracking-wider text-accent-primary shrink-0">
-      {index}
-    </span>
-    <span class="grow border-t border-dashed border-white/15"></span>
+<div class:list={['mb-8 md:mb-12', className]}>
+  <!-- Top Blueprint Metadata Row -->
+  <div class="flex items-center justify-between px-2 sm:px-4 py-2 text-[10px] font-mono text-text-dim border-b border-border-architectural select-none">
+    <div class="flex items-center gap-2">
+      <span class="text-accent-primary font-bold">{index}</span>
+      <span class="text-border-architectural">|</span>
+      <span class="uppercase tracking-wider">SECTION SPECIFICATION</span>
+    </div>
+    <span class="grow border-t border-dashed border-white/20 hidden sm:block mx-4"></span>
+    <span class="text-[9px] uppercase tracking-widest text-text-dim">COORD: AS-BLPRNT</span>
   </div>
 
-  <h2 class="text-2xl md:text-3xl font-semibold tracking-tight text-text-contrast">
-    {title}
-  </h2>
+  <!-- Sliced Section Title -->
+  <div class="arch-slice">
+    <h2 class="px-2 sm:px-4 py-5 sm:py-7 text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-text-contrast">
+      {title}
+    </h2>
+  </div>
 
+  <!-- Sliced Subtitle -->
   {subtitle && (
-    <p class="mt-2 text-sm md:text-base text-text-muted leading-relaxed">
-      {subtitle}
-    </p>
+    <div class="arch-slice-bottom">
+      <p class="max-w-4xl px-2 sm:px-4 py-4 sm:py-5 text-sm sm:text-base text-text-muted leading-relaxed font-normal">
+        {subtitle}
+      </p>
+    </div>
   )}
 </div>

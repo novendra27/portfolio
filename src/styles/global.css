@@ -15,52 +15,76 @@ body {
   overflow-x: hidden;
 }
 
-/* Subtle architectural blueprint grid */
+/* Architectural blueprint drafting grid */
 .bg-grid {
-  background-size: 40px 40px;
+  background-size: 32px 32px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }
 
 /* 45-degree diagonal hatching accent (inspired by Zed & Tailwind gutter) */
 .bg-hatch-45 {
   background-image: repeating-linear-gradient(
     315deg,
-    rgba(255, 255, 255, 0.04) 0,
-    rgba(255, 255, 255, 0.04) 1px,
+    rgba(255, 255, 255, 0.10) 0,
+    rgba(255, 255, 255, 0.10) 1px,
     transparent 0,
     transparent 50%
   );
   background-size: 8px 8px;
 }
 
-/* Infinite horizontal architectural bleed lines (inspired by Tailwind) */
-.arch-bleed-line {
+/* Infinite horizontal architectural slicing lines (inspired by Tailwind v4) */
+.arch-slice {
   position: relative;
 }
-.arch-bleed-line::before {
+.arch-slice::before {
   content: '';
   position: absolute;
   top: 0;
   left: -100vw;
   width: 200vw;
   height: 1px;
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.14);
   pointer-events: none;
 }
-
-.arch-bleed-line-bottom {
-  position: relative;
-}
-.arch-bleed-line-bottom::after {
+.arch-slice::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: -100vw;
   width: 200vw;
   height: 1px;
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.14);
+  pointer-events: none;
+}
+
+.arch-slice-bottom {
+  position: relative;
+}
+.arch-slice-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -100vw;
+  width: 200vw;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.14);
+  pointer-events: none;
+}
+
+.arch-slice-top {
+  position: relative;
+}
+.arch-slice-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100vw;
+  width: 200vw;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.14);
   pointer-events: none;
 }
 

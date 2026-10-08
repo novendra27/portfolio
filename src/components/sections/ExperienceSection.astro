@@ -6,7 +6,6 @@ import {
 } from '@/lib/repositories';
 import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
 import SectionHeading from '../SectionHeading.astro';
-import ArchitecturalCard from '../ArchitecturalCard.astro';
 import Badge from '../Badge.astro';
 
 interface Props {
@@ -39,103 +38,115 @@ const typeLabels = {
         : 'Professional track record spanning software engineering roles, internships, Google Developer Groups community leadership, and academic milestones.'}
     />
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-      <!-- Left Column: Work Experience Timeline (7 cols) -->
-      <div class="lg:col-span-7 space-y-6">
-        <h3 class="font-mono text-xs font-semibold uppercase tracking-wider text-accent-primary flex items-center gap-2">
-          <span>// PENGALAMAN KERJA & ORGANISASI</span>
-          <span class="h-px flex-1 bg-border-architectural"></span>
-        </h3>
+    <!-- Continuous Blueprint Experience Matrix -->
+    <div class="arch-slice">
+      <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural border-x border-border-architectural items-stretch bg-canvas">
+        <!-- Left Column: Work Experience Timeline Matrix (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col justify-between divide-y divide-border-architectural">
+          <!-- Column Header Bar -->
+          <div class="px-4 sm:px-6 py-2.5 bg-surface-card/60 flex items-center justify-between font-mono text-[10px] text-text-dim select-none">
+            <div class="flex items-center gap-2">
+              <span class="text-accent-primary font-bold">// SPEC_04A: WORK HISTORY</span>
+              <span class="text-border-architectural">|</span>
+              <span>{experiences.length} ROLES RECORDED</span>
+            </div>
+            <span class="text-accent-primary font-medium">// STATUS: ACTIVE</span>
+          </div>
 
-        <div class="relative border-l border-border-architectural pl-6 ml-3 space-y-8">
-          {experiences.map((exp) => (
-            <div class="relative group">
-              <!-- Timeline Indicator Pin -->
-              <div
-                class:list={[
-                  'absolute -left-[31px] top-1.5 w-3 h-3 rounded-full border bg-canvas transition-colors',
-                  exp.is_current
-                    ? 'border-accent-primary bg-accent-primary animate-pulse'
-                    : 'border-border-architectural group-hover:border-accent-primary',
-                ]}
-              ></div>
-
-              <div class="space-y-2">
-                <!-- Role & Period -->
-                <div class="flex flex-wrap items-center justify-between gap-2">
-                  <h4 class="text-base font-semibold text-text-contrast">
-                    {exp.role}
-                  </h4>
-                  <span class="font-mono text-xs text-text-dim">
-                    {exp.period_start} — {exp.period_end ?? (lang === 'id' ? 'Sekarang' : 'Present')}
-                  </span>
+          <!-- Experiences List with Shared Dividers -->
+          <div class="divide-y divide-border-architectural">
+            {experiences.map((exp, idx) => (
+              <div class="p-5 sm:p-6 space-y-4 hover:bg-surface-elevated/20 transition-colors">
+                <!-- Job Header -->
+                <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
+                  <div class="flex items-center gap-2">
+                    <span class="text-accent-primary font-bold">[EXP_0{idx + 1}]</span>
+                    <span class="font-semibold text-text-contrast text-sm">{exp.role}</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-[10px]">
+                    <Badge variant="outline" text={typeLabels[exp.type]} class="text-[9px]" />
+                    <span class="text-border-architectural">|</span>
+                    <span class="text-accent-primary">
+                      {exp.period_start} — {exp.period_end ?? (lang === 'id' ? 'Sekarang' : 'Present')}
+                    </span>
+                  </div>
                 </div>
 
-                <!-- Organization & Location -->
-                <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
-                  <span class="text-accent-primary font-medium">
-                    {exp.organization?.name}
-                  </span>
-                  <span class="text-text-dim">•</span>
-                  <span class="text-text-dim">{exp.location}</span>
-                  <Badge variant="outline" text={typeLabels[exp.type]} class="ml-1 text-[10px]" />
+                <!-- Org & Location Row -->
+                <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-text-dim border-b border-border-architectural/60 pb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="text-accent-primary font-medium">{exp.organization?.name}</span>
+                    <span>•</span>
+                    <span class="text-text-muted">{exp.location}</span>
+                  </div>
+                  <span class="text-[10px]">// COORD: {exp.location.split(',')[0].toUpperCase()}</span>
                 </div>
 
                 <!-- Highlights List -->
-                <ul class="space-y-1.5 pt-2 text-xs text-text-muted leading-relaxed list-disc list-outside pl-4">
-                  {exp.highlights[lang].map((highlight) => (
-                    <li>{highlight}</li>
+                <ul class="space-y-2 text-xs text-text-muted leading-relaxed">
+                  {exp.highlights[lang].map((highlight, hIdx) => (
+                    <li class="flex items-start gap-2.5">
+                      <span class="font-mono text-[10px] text-accent-primary font-bold pt-0.5 select-none shrink-0">
+                        {String(hIdx + 1).padStart(2, '0')}.
+                      </span>
+                      <span>{highlight}</span>
+                    </li>
                   ))}
                 </ul>
 
-                <!-- Technologies Used -->
+                <!-- Tech Badges -->
                 {exp.technologies.length > 0 && (
-                  <div class="flex flex-wrap gap-1.5 pt-2">
+                  <div class="flex flex-wrap items-center gap-1.5 pt-2">
+                    <span class="font-mono text-[10px] text-text-dim uppercase tracking-wider mr-1 select-none">
+                      STACK:
+                    </span>
                     {exp.technologies.map((tech) => (
                       <Badge variant="default" text={tech.name} class="text-[10px]" />
                     ))}
                   </div>
                 )}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
 
-      <!-- Right Column: Education & Industry Certifications (5 cols) -->
-      <div class="lg:col-span-5 space-y-8">
-        <!-- Formal Education -->
-        <div class="space-y-4">
-          <h3 class="font-mono text-xs font-semibold uppercase tracking-wider text-accent-primary flex items-center gap-2">
-            <span>// PENDIDIKAN FORMAL</span>
-            <span class="h-px flex-1 bg-border-architectural"></span>
-          </h3>
+        <!-- Right Column: Education & Industry Certifications (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col justify-between divide-y divide-border-architectural">
+          <!-- Education Sub-Chamber -->
+          <div class="divide-y divide-border-architectural">
+            <!-- Header Bar -->
+            <div class="px-4 sm:px-6 py-2.5 bg-surface-card/60 flex items-center justify-between font-mono text-[10px] text-text-dim select-none">
+              <span class="text-accent-primary font-bold">// SPEC_04B: FORMAL EDUCATION</span>
+              <span>FAST-TRACK S.KOM.</span>
+            </div>
 
-          <div class="space-y-4">
             {educations.map((edu) => (
-              <ArchitecturalCard class="p-5 space-y-2">
-                <div class="flex items-center justify-between">
-                  <h4 class="text-sm font-semibold text-text-contrast">
-                    {edu.degree}
-                  </h4>
-                  <span class="font-mono text-xs text-text-dim">{edu.period}</span>
+              <div class="p-5 sm:p-6 space-y-3 bg-surface-card/20">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <h4 class="text-sm font-semibold text-text-contrast">
+                      {edu.degree}
+                    </h4>
+                    <p class="font-mono text-xs text-accent-primary mt-0.5">
+                      {edu.organization?.name}
+                    </p>
+                  </div>
+                  <span class="font-mono text-xs text-text-dim shrink-0">{edu.period}</span>
                 </div>
 
-                <p class="font-mono text-xs text-accent-primary">
-                  {edu.organization?.name}
-                </p>
-
                 {edu.gpa && (
-                  <p class="text-xs text-text-dim">
-                    {edu.gpa}
-                  </p>
+                  <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-accent-primary/40 bg-accent-primary/10 font-mono text-xs text-accent-primary font-semibold">
+                    <span>PREDICATE:</span>
+                    <span>{edu.gpa}</span>
+                  </div>
                 )}
 
                 {edu.thesis_title && (
-                  <div class="pt-2 border-t border-border-architectural/60 space-y-1">
-                    <span class="font-mono text-[10px] text-text-dim uppercase tracking-wider">
-                      {lang === 'id' ? 'Judul Riset Skripsi:' : 'Bachelor Thesis Topic:'}
-                    </span>
+                  <div class="p-3 rounded border border-border-architectural bg-canvas/60 space-y-1.5">
+                    <div class="flex items-center justify-between font-mono text-[10px] text-text-dim select-none">
+                      <span>// THESIS_RESEARCH_SPEC</span>
+                      <span class="text-accent-primary">ALGORITHMIC</span>
+                    </div>
                     <p class="text-xs text-text-muted italic leading-relaxed">
                       "{edu.thesis_title}"
                     </p>
@@ -144,27 +155,26 @@ const typeLabels = {
                         href={`#project-${edu.thesis_project.slug}`}
                         class="inline-flex items-center gap-1 font-mono text-[11px] text-accent-primary hover:underline pt-1"
                       >
-                        <span>{lang === 'id' ? 'Lihat Studi Kasus Skripsi' : 'View Thesis Project Case Study'}</span>
+                        <span>{lang === 'id' ? 'Lihat Studi Kasus Skripsi' : 'View Thesis Case Study'}</span>
                         <span>→</span>
                       </a>
                     )}
                   </div>
                 )}
-              </ArchitecturalCard>
+              </div>
             ))}
           </div>
-        </div>
 
-        <!-- Certifications -->
-        <div class="space-y-4">
-          <h3 class="font-mono text-xs font-semibold uppercase tracking-wider text-accent-primary flex items-center gap-2">
-            <span>// SERTIFIKASI & PELATIHAN INTENSIF</span>
-            <span class="h-px flex-1 bg-border-architectural"></span>
-          </h3>
+          <!-- Certifications Sub-Chamber -->
+          <div class="divide-y divide-border-architectural">
+            <!-- Header Bar -->
+            <div class="px-4 sm:px-6 py-2.5 bg-surface-card/60 flex items-center justify-between font-mono text-[10px] text-text-dim select-none">
+              <span class="text-accent-primary font-bold">// SPEC_04C: CERTIFICATIONS</span>
+              <span>{certificates.length} RECORDS</span>
+            </div>
 
-          <div class="space-y-3">
             {certificates.map((cert) => (
-              <ArchitecturalCard class="p-4 space-y-2">
+              <div class="p-4 sm:p-5 space-y-2 bg-surface-card/10 hover:bg-surface-elevated/20 transition-colors">
                 <div class="flex items-start justify-between gap-2">
                   <h4 class="text-xs font-semibold text-text-contrast leading-snug">
                     {cert.title}
@@ -184,7 +194,7 @@ const typeLabels = {
                     <Badge variant="default" text={tech.name} class="text-[10px]" />
                   ))}
                 </div>
-              </ArchitecturalCard>
+              </div>
             ))}
           </div>
         </div>

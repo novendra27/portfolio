@@ -2,7 +2,6 @@
 import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
 import StatusPill from '../StatusPill.astro';
 import Badge from '../Badge.astro';
-import ArchitecturalCard from '../ArchitecturalCard.astro';
 
 interface Props {
   lang: SupportedLanguage;
@@ -35,89 +34,183 @@ const stats = [
 ];
 ---
 
-<section id="hero" class="relative pt-8 pb-16 md:pt-16 md:pb-24 border-b border-border-architectural arch-bleed-line-bottom">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-      <!-- Left Column: Narrative & Identification (7 cols) -->
-      <div class="lg:col-span-7 space-y-6 text-left">
-        <div class="flex flex-wrap items-center gap-3">
-          <StatusPill text={t('hero.badge')} />
-          <Badge variant="outline" text="MALANG, ID // UTC+7" />
-        </div>
+<section id="hero" class="relative pt-4 sm:pt-6 pb-16 md:pb-24">
+  <!-- 1. Top Blueprint Coordination Bar -->
+  <div class="flex items-center justify-between px-2 sm:px-4 py-2 text-[10px] font-mono text-text-dim border-b border-border-architectural select-none">
+    <div class="flex items-center gap-2.5">
+      <StatusPill text={t('hero.badge')} />
+      <span class="text-border-architectural">|</span>
+      <Badge variant="outline" text="VERIFIED S.KOM." class="text-[9px]" />
+    </div>
+    <div class="flex items-center gap-2">
+      <span>MALANG, ID (UTC+7)</span>
+      <span class="text-border-architectural">|</span>
+      <span class="text-accent-primary font-medium">SCALE 1:1</span>
+    </div>
+  </div>
 
-        <div class="space-y-2">
-          <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-text-contrast">
-            Adi Novendra Putra, <span class="text-accent-primary">S.Kom.</span>
-          </h1>
-          <p class="font-mono text-sm sm:text-base text-accent-primary font-medium tracking-wide">
-            FULLSTACK DEVELOPER // SOFTWARE ENGINEER
-          </p>
-        </div>
+  <!-- 2. Typography Specification Annotation -->
+  <div aria-hidden="true" class="flex h-10 sm:h-14 items-end px-2 sm:px-4 font-mono text-xs text-text-dim/60 select-none">
+    <span>text-4xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-tighter // IDENTITY SPEC</span>
+  </div>
 
-        <p class="text-base sm:text-lg text-text-muted leading-relaxed max-w-2xl">
-          {lang === 'id'
-            ? 'Lulusan S1 Teknik Informatika UIN Maulana Malik Ibrahim Malang dengan keahlian rekayasa sistem terdistribusi, event-driven streaming Apache Kafka, algoritma optimasi genetika, dan pengembangan aplikasi web skala produksi berbasis Java Spring Boot, Go, Laravel, React, dan Astro.'
-            : 'Computer Science graduate from UIN Maliki Malang specializing in distributed system architectures, Apache Kafka event-driven streaming, genetic optimization algorithms, and enterprise web engineering using Java Spring Boot, Go, Laravel, React, and Astro.'}
-        </p>
+  <!-- 3. Headline Slicing Row (Full-width infinite horizontal lines) -->
+  <div class="arch-slice">
+    <h1 class="px-2 sm:px-4 py-5 sm:py-8 text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-text-contrast">
+      Adi Novendra Putra, <span class="text-accent-primary">S.Kom.</span>
+    </h1>
+  </div>
 
-        <!-- CTAs -->
-        <div class="flex flex-wrap items-center gap-4 pt-2 font-mono text-xs">
-          <a
-            href="#projects"
-            class="px-5 py-2.5 rounded-control bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light transition-all shadow-tactile-primary active:translate-y-px"
-          >
-            {t('hero.cta.projects')} →
-          </a>
-          <a
-            href="#architecture"
-            class="px-5 py-2.5 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast transition-all shadow-tactile-surface active:translate-y-px"
-          >
-            {t('nav.architecture')}
-          </a>
-          <a
-            href="#contact"
-            class="px-5 py-2.5 rounded-control border border-border-architectural bg-surface-card hover:border-accent-primary/40 text-text-muted hover:text-text-contrast transition-all shadow-tactile-surface active:translate-y-px"
-          >
-            {t('hero.cta.contact')}
-          </a>
-        </div>
-      </div>
+  <!-- 4. Role Specification Annotation -->
+  <div aria-hidden="true" class="flex h-8 sm:h-10 items-end px-2 sm:px-4 font-mono text-xs text-text-dim/60 select-none">
+    <span>text-lg font-medium // FULLSTACK DEVELOPER & SOFTWARE ENGINEER</span>
+  </div>
 
-      <!-- Right Column: Avatar Frame & Metrics Card (5 cols) -->
-      <div class="lg:col-span-5 flex flex-col items-center lg:items-end space-y-6">
-        <!-- Framed Avatar with Crosshairs -->
-        <ArchitecturalCard class="p-3 w-64 sm:w-72 max-w-full">
-          <div class="relative aspect-square overflow-hidden rounded border border-border-architectural bg-canvas">
-            <img
-              src="/images/avatar.webp"
-              alt="Adi Novendra Putra"
-              width="288"
-              height="288"
-              class="w-full h-full object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-300"
-              loading="eager"
-            />
-            <div class="absolute bottom-2 left-2 right-2 px-2 py-1 bg-canvas/85 backdrop-blur-sm border border-border-architectural rounded font-mono text-[10px] text-text-muted flex justify-between">
-              <span>@novendra27</span>
-              <span class="text-accent-primary font-semibold">VERIFIED</span>
-            </div>
+  <!-- 5. Bio Narrative Slicing Row -->
+  <div class="arch-slice">
+    <p class="max-w-4xl px-2 sm:px-4 py-5 sm:py-7 text-base sm:text-lg leading-relaxed text-text-muted font-normal">
+      {lang === 'id'
+        ? 'Lulusan S1 Teknik Informatika UIN Maulana Malik Ibrahim Malang dengan keahlian rekayasa sistem terdistribusi, event-driven streaming Apache Kafka, algoritma optimasi genetika, dan pengembangan aplikasi web skala produksi berbasis Java Spring Boot, Go, Laravel, React, dan Astro.'
+        : 'Computer Science graduate from UIN Maliki Malang specializing in distributed system architectures, Apache Kafka event-driven streaming, genetic optimization algorithms, and enterprise web engineering using Java Spring Boot, Go, Laravel, React, and Astro.'}
+    </p>
+  </div>
+
+  <!-- 6. Action CTAs Slicing Row -->
+  <div class="arch-slice">
+    <div class="px-2 sm:px-4 py-5 sm:py-6 flex flex-wrap items-center gap-4">
+      <a
+        href="#projects"
+        class="px-5 py-2.5 rounded-control bg-accent-primary text-canvas font-semibold font-mono text-xs hover:bg-accent-primary-light transition-all shadow-tactile-primary active:translate-y-px"
+      >
+        {t('hero.cta.projects')} →
+      </a>
+      <a
+        href="#architecture"
+        class="px-5 py-2.5 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast font-mono text-xs transition-all shadow-tactile-surface active:translate-y-px"
+      >
+        {t('nav.architecture')}
+      </a>
+      <a
+        href="#contact"
+        class="px-5 py-2.5 rounded-control border border-border-architectural bg-surface-card hover:border-accent-primary/40 text-text-muted hover:text-text-contrast font-mono text-xs transition-all shadow-tactile-surface active:translate-y-px"
+      >
+        {t('hero.cta.contact')}
+      </a>
+      <span class="font-mono text-[10px] text-text-dim ml-auto hidden sm:inline">// DISPATCH: 3 COMMANDS</span>
+    </div>
+  </div>
+
+  <!-- 7. Architectural Showcase Block (Inspired by Tailwind Code Editor + Hatching Card) -->
+  <div class="mt-10 sm:mt-14 arch-slice">
+    <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural border-x border-border-architectural items-stretch bg-canvas">
+      <!-- Left: Interactive Code Snippet / Terminal & 4-Cell Metrics Matrix (7 cols) -->
+      <div class="lg:col-span-7 flex flex-col justify-between divide-y divide-border-architectural">
+        <!-- Terminal Header -->
+        <div class="px-4 py-3 bg-surface-card/80 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
+            <span class="font-mono text-xs text-text-dim ml-2">// core_event_stream_spec.go</span>
           </div>
-        </ArchitecturalCard>
+          <span class="font-mono text-[10px] text-accent-primary font-medium">RUNTIME: PRODUCTION</span>
+        </div>
 
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-2 gap-3 w-full max-w-sm">
-          {stats.map((stat) => (
-            <div class="p-3 rounded-control border border-border-architectural bg-surface-card/60">
-              <div class="font-mono text-xl sm:text-2xl font-bold text-text-contrast">
-                {stat.value}
+        <!-- Terminal Body -->
+        <div class="p-4 sm:p-5 bg-canvas/90 font-mono text-xs text-text-muted leading-relaxed overflow-x-auto">
+          <pre><code><span class="text-accent-primary">// Distributed Event Streaming & High-Throughput Ingestion</span>
+<span class="text-blue-400">type</span> <span class="text-yellow-300">TransactionProducer</span> <span class="text-blue-400">struct</span> &#123;
+    topic     <span class="text-blue-400">string</span>
+    producer  *kafka.<span class="text-yellow-300">SyncProducer</span>
+    telemetry *metrics.<span class="text-yellow-300">Collector</span>
+&#125;
+
+<span class="text-blue-400">func</span> (p *<span class="text-yellow-300">TransactionProducer</span>) <span class="text-green-400">EmitInventoryDelta</span>(ctx context.Context, tx <span class="text-yellow-300">Event</span>) <span class="text-blue-400">error</span> &#123;
+    <span class="text-text-dim">// Zero packet loss: Partition key guarantees linear strict order</span>
+    <span class="text-blue-400">return</span> p.producer.<span class="text-green-400">Send</span>(&kafka.ProducerMessage&#123;
+        Topic: p.topic,
+        Key:   kafka.<span class="text-green-400">StringEncoder</span>(tx.StockID),
+        Value: kafka.<span class="text-green-400">ByteEncoder</span>(tx.Payload),
+    &#125;)
+&#125;</code></pre>
+        </div>
+
+        <!-- 4-Cell Metrics Matrix (divide-x) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-border-architectural bg-surface-card/60">
+          {stats.map((s) => (
+            <div class="p-3.5 sm:p-4 hover:bg-surface-elevated/40 transition-colors">
+              <div class="font-mono text-lg sm:text-xl font-bold text-accent-primary tabular-nums">
+                {s.value}
               </div>
-              <div class="text-[11px] font-medium text-text-muted">
-                {stat.label}
+              <div class="text-[11px] font-medium text-text-contrast mt-0.5">
+                {s.label}
               </div>
               <div class="font-mono text-[10px] text-text-dim">
-                {stat.sub}
+                {s.sub}
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      <!-- Right: Technical Avatar Floating on Diagonal Hatching Canvas (5 cols) -->
+      <div class="lg:col-span-5 bg-hatch-45 p-6 sm:p-8 flex flex-col items-center justify-center relative min-h-[300px]">
+        <div class="relative w-48 sm:w-56 aspect-square rounded border border-border-architectural p-1.5 bg-canvas/90 shadow-tactile-surface">
+          <!-- Corner Crosshairs (+) -->
+          <svg
+            aria-hidden="true"
+            width="7"
+            height="7"
+            viewBox="0 0 5 5"
+            class="absolute -top-[3.5px] -left-[3.5px] fill-accent-primary/80 select-none z-10"
+          >
+            <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+          </svg>
+          <svg
+            aria-hidden="true"
+            width="7"
+            height="7"
+            viewBox="0 0 5 5"
+            class="absolute -top-[3.5px] -right-[3.5px] fill-accent-primary/80 select-none z-10"
+          >
+            <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+          </svg>
+          <svg
+            aria-hidden="true"
+            width="7"
+            height="7"
+            viewBox="0 0 5 5"
+            class="absolute -bottom-[3.5px] -left-[3.5px] fill-accent-primary/80 select-none z-10"
+          >
+            <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+          </svg>
+          <svg
+            aria-hidden="true"
+            width="7"
+            height="7"
+            viewBox="0 0 5 5"
+            class="absolute -bottom-[3.5px] -right-[3.5px] fill-accent-primary/80 select-none z-10"
+          >
+            <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+          </svg>
+
+          <div class="relative w-full h-full overflow-hidden rounded bg-canvas">
+            <img
+              src="/images/avatar.webp"
+              alt="Adi Novendra Putra"
+              width="224"
+              height="224"
+              class="w-full h-full object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-300"
+              loading="eager"
+            />
+            <div class="absolute bottom-1.5 left-1.5 right-1.5 px-2 py-0.5 bg-canvas/90 backdrop-blur-sm border border-border-architectural rounded font-mono text-[9px] text-text-muted flex justify-between">
+              <span>@novendra27</span>
+              <span class="text-accent-primary font-bold">VERIFIED S1</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 font-mono text-[10px] text-text-dim text-center">
+          // PROFILE_MODULE: ADI_NOVENDRA_PUTRA
         </div>
       </div>
     </div>

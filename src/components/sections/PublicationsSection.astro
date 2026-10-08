@@ -2,7 +2,6 @@
 import { publicationRepository } from '@/lib/repositories';
 import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
 import SectionHeading from '../SectionHeading.astro';
-import ArchitecturalCard from '../ArchitecturalCard.astro';
 import Badge from '../Badge.astro';
 
 interface Props {
@@ -31,60 +30,83 @@ const categoryLabels = {
         : 'Technical reflections, Google Developer Groups speaking materials, optimization research notes, and behind-the-scenes engineering logs.'}
     />
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {publications.map((pub) => (
-        <ArchitecturalCard interactive class="flex flex-col justify-between p-6 h-full">
-          <div class="space-y-4">
-            <!-- Meta Header -->
-            <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-3 text-[11px] font-mono text-text-dim">
-              <Badge variant="outline" text={categoryLabels[pub.category]} class="text-[10px]" />
-              <span>{pub.reading_time}</span>
-            </div>
+    <!-- Continuous 3-Bay Blueprint Matrix -->
+    <div class="arch-slice">
+      <div class="border-x border-border-architectural">
+        <!-- Blueprint Specification Bar -->
+        <div class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
+        <div class="flex items-center gap-2">
+          <span class="text-accent-primary font-bold">// SPEC_06:PUBLICATIONS</span>
+          <span class="text-border-architectural">|</span>
+          <span class="text-text-contrast uppercase font-semibold">ENGINEERING DISPATCH & GDG TALKS</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span>MALANG // ONLINE</span>
+          <span class="text-border-architectural">|</span>
+          <span class="text-accent-primary font-medium">{publications.length} ARTIFACTS</span>
+        </div>
+      </div>
 
-            <!-- Title -->
-            <h3 class="text-base font-semibold text-text-contrast leading-snug">
-              {pub.title}
-            </h3>
-
-            <!-- Published Date -->
-            <div class="font-mono text-xs text-text-dim">
-              {pub.published_date}
-            </div>
-
-            <!-- Excerpt -->
-            <p class="text-xs text-text-muted leading-relaxed">
-              {pub.excerpt[lang]}
-            </p>
-          </div>
-
-          <!-- Bottom Footer: Link & Technologies -->
-          <div class="pt-6 border-t border-border-architectural space-y-3 mt-4">
-            {pub.technologies.length > 0 && (
-              <div class="flex flex-wrap gap-1.5">
-                {pub.technologies.map((tech) => (
-                  <Badge variant="default" text={tech.name} class="text-[10px]" />
-                ))}
+      <div class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural items-stretch">
+        {publications.map((pub, idx) => (
+          <div class="flex flex-col justify-between p-6 sm:p-7 h-full group hover:bg-surface-elevated/20 transition-colors">
+            <div class="space-y-4">
+              <!-- Meta Header Chamber -->
+              <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-3 text-[11px] font-mono text-text-dim">
+                <div class="flex items-center gap-2">
+                  <span class="text-accent-primary font-bold">[PUB_0{idx + 1}]</span>
+                  <Badge variant="outline" text={categoryLabels[pub.category]} class="text-[10px]" />
+                </div>
+                <span>{pub.reading_time}</span>
               </div>
-            )}
 
-            {pub.external_url ? (
-              <a
-                href={pub.external_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-1.5 text-xs font-mono text-accent-primary hover:text-accent-primary-light transition-colors font-medium"
-              >
-                <span>{lang === 'id' ? 'Buka Publikasi Asli' : 'Read Full Post'}</span>
-                <span>↗</span>
-              </a>
-            ) : (
-              <span class="font-mono text-[11px] text-text-dim">
-                {lang === 'id' ? 'Publikasi Internal' : 'Internal Case Study'}
-              </span>
-            )}
+              <!-- Title -->
+              <h3 class="text-base font-semibold text-text-contrast leading-snug group-hover:text-accent-primary transition-colors">
+                {pub.title}
+              </h3>
+
+              <!-- Published Date with line -->
+              <div class="font-mono text-xs text-text-dim flex items-center gap-2">
+                <span>{pub.published_date}</span>
+                <span class="grow border-t border-dashed border-white/20"></span>
+              </div>
+
+              <!-- Excerpt -->
+              <p class="text-xs text-text-muted leading-relaxed">
+                {pub.excerpt[lang]}
+              </p>
+            </div>
+
+            <!-- Bottom Chamber: Technologies & Action Link -->
+            <div class="pt-6 border-t border-border-architectural space-y-3 mt-6">
+              {pub.technologies.length > 0 && (
+                <div class="flex flex-wrap gap-1.5">
+                  {pub.technologies.map((tech) => (
+                    <Badge variant="default" text={tech.name} class="text-[10px]" />
+                  ))}
+                </div>
+              )}
+
+              {pub.external_url ? (
+                <a
+                  href={pub.external_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center justify-between w-full px-3 py-2 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-xs font-mono text-accent-primary hover:text-accent-primary-light transition-colors font-medium shadow-tactile-surface active:translate-y-px"
+                >
+                  <span>{lang === 'id' ? 'Buka Publikasi Asli' : 'Read Full Post'}</span>
+                  <span>↗</span>
+                </a>
+              ) : (
+                <div class="text-[11px] font-mono text-text-dim py-1">
+                  {lang === 'id' ? 'Publikasi Dokumen Internal' : 'Internal Case Study Document'}
+                </div>
+              )}
+            </div>
           </div>
-        </ArchitecturalCard>
-      ))}
+        ))}
+      </div>
     </div>
   </div>
+</div>
 </section>

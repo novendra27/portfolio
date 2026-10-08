@@ -1,7 +1,6 @@
 ---
 import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
 import SectionHeading from '../SectionHeading.astro';
-import ArchitecturalCard from '../ArchitecturalCard.astro';
 import StatusPill from '../StatusPill.astro';
 
 interface Props {
@@ -22,50 +21,92 @@ const t = useTranslations(lang);
         : 'Open for Software Engineering roles, enterprise contract architecture, custom system implementation, or performance audits.'}
     />
 
-    <ArchitecturalCard class="p-8 md:p-12">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-        <!-- Left: Status & Pitch -->
-        <div class="md:col-span-7 space-y-4">
-          <StatusPill text={t('hero.badge')} />
-          <h3 class="text-2xl sm:text-3xl font-bold text-text-contrast tracking-tight">
-            {lang === 'id'
-              ? 'Siap Mewujudkan Arsitektur Sistem yang Tangguh & Skalabel'
-              : 'Ready to Engineer Resilient, High-Performance Systems'}
-          </h3>
-          <p class="text-sm text-text-muted leading-relaxed max-w-xl">
-            {lang === 'id'
-              ? 'Silakan hubungi saya melalui WhatsApp untuk respon cepat, atau jadwalkan diskusi teknis melalui email untuk kebutuhan enterprise dan NDA.'
-              : 'Reach out directly via WhatsApp for fast responses, or email for detailed enterprise inquiries, RFPs, and NDAs.'}
-          </p>
+    <!-- Architectural Communications Dispatch Terminal -->
+    <div class="arch-slice">
+      <div class="border-x border-border-architectural">
+        <!-- Blueprint Specification Header Bar -->
+        <div class="px-5 py-2.5 border-b border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
+        <div class="flex items-center gap-2">
+          <span class="text-accent-primary font-bold">// DISPATCH_CONSOLE: COMMUNICATIONS</span>
+          <span class="text-border-architectural">|</span>
+          <span>NODE_STATUS: ONLINE</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span>SLA: &lt; 2 HOURS VIA WHATSAPP</span>
+          <span class="text-border-architectural">|</span>
+          <span class="text-accent-primary font-medium">DISPATCH: ACTIVE</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural items-stretch">
+        <!-- Left Chamber: Status, Pitch & Diagnostic SLA (7 cols) -->
+        <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-canvas/30">
+          <div class="space-y-4">
+            <div class="flex items-center gap-2.5">
+              <StatusPill text={t('hero.badge')} />
+              <span class="font-mono text-[10px] text-text-dim">// ROUTE: DIRECT_INQUIRY</span>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-bold text-text-contrast tracking-tight">
+              {lang === 'id'
+                ? 'Siap Mewujudkan Arsitektur Sistem yang Tangguh & Skalabel'
+                : 'Ready to Engineer Resilient, High-Performance Systems'}
+            </h3>
+            <p class="text-sm text-text-muted leading-relaxed">
+              {lang === 'id'
+                ? 'Terbuka untuk posisi Software Engineer, proyek freelance arsitektur enterprise, implementasi sistem kustom, atau audit performa. Hubungi melalui WhatsApp untuk respons instan, atau kirim email teknis untuk diskusi formal dan NDA.'
+                : 'Open for Software Engineering roles, enterprise contract architecture, custom system implementation, or performance audits. Reach out directly via WhatsApp for fast responses, or email for detailed inquiries and NDAs.'}
+            </p>
+          </div>
+
+          <!-- Technical SLA Strip -->
+          <div class="pt-4 border-t border-border-architectural flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] text-text-dim">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-accent-primary animate-pulse"></span>
+              <span>LOCATION: MALANG, ID (UTC+7)</span>
+            </div>
+            <span class="text-accent-primary font-medium">ACCEPTING NEW PROJECTS</span>
+          </div>
         </div>
 
-        <!-- Right: Direct Channels Grid -->
-        <div class="md:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
+        <!-- Right Chamber: 2x2 Continuous Instrument Grid (5 cols) -->
+        <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 divide-x divide-y divide-border-architectural bg-surface-card/60">
           <!-- WhatsApp -->
           <a
             href="https://wa.me/628993580311"
             target="_blank"
             rel="noopener noreferrer"
-            class="p-4 rounded-control border border-accent-primary/40 bg-accent-primary/10 hover:bg-accent-primary/20 shadow-tactile-surface transition-all text-text-contrast block active:translate-y-px"
+            class="p-5 flex flex-col justify-between group hover:bg-accent-primary/10 transition-colors"
           >
-            <div class="text-[10px] text-accent-primary font-semibold uppercase tracking-wider mb-1">
-              WhatsApp // Fast Response
+            <div>
+              <div class="flex items-center justify-between text-[10px] font-mono text-accent-primary font-semibold uppercase tracking-wider mb-2">
+                <span>CH_01 // WHATSAPP</span>
+                <span>FAST ↗</span>
+              </div>
+              <div class="font-mono font-bold text-sm text-text-contrast group-hover:text-accent-primary transition-colors">
+                +62 899-3580-311
+              </div>
             </div>
-            <div class="font-bold text-text-contrast truncate">
-              +62 899-3580-311
+            <div class="pt-3 border-t border-border-architectural/60 mt-4 text-[10px] font-mono text-text-dim">
+              Direct chat & instant response
             </div>
           </a>
 
           <!-- Email -->
           <a
             href="mailto:adi.novendra.p@gmail.com"
-            class="p-4 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated hover:border-border-architectural-hover shadow-tactile-surface transition-all text-text-contrast block active:translate-y-px"
+            class="p-5 flex flex-col justify-between group hover:bg-surface-elevated/50 transition-colors"
           >
-            <div class="text-[10px] text-text-dim uppercase tracking-wider mb-1">
-              Direct Email
+            <div>
+              <div class="flex items-center justify-between text-[10px] font-mono text-text-dim font-semibold uppercase tracking-wider mb-2">
+                <span>CH_02 // EMAIL</span>
+                <span>INBOX ↗</span>
+              </div>
+              <div class="font-mono font-bold text-xs sm:text-sm text-text-contrast group-hover:text-accent-primary transition-colors break-all">
+                adi.novendra.p@gmail.com
+              </div>
             </div>
-            <div class="font-bold text-text-contrast truncate">
-              adi.novendra.p@gmail.com
+            <div class="pt-3 border-t border-border-architectural/60 mt-4 text-[10px] font-mono text-text-dim">
+              Formal RFPs, NDAs & proposals
             </div>
           </a>
 
@@ -74,13 +115,19 @@ const t = useTranslations(lang);
             href="https://linkedin.com/in/adi-novendra"
             target="_blank"
             rel="noopener noreferrer"
-            class="p-4 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated hover:border-border-architectural-hover shadow-tactile-surface transition-all text-text-contrast block active:translate-y-px"
+            class="p-5 flex flex-col justify-between group hover:bg-surface-elevated/50 transition-colors"
           >
-            <div class="text-[10px] text-text-dim uppercase tracking-wider mb-1">
-              LinkedIn Profile
+            <div>
+              <div class="flex items-center justify-between text-[10px] font-mono text-text-dim font-semibold uppercase tracking-wider mb-2">
+                <span>CH_03 // LINKEDIN</span>
+                <span>CONNECT ↗</span>
+              </div>
+              <div class="font-mono font-bold text-sm text-text-contrast group-hover:text-accent-primary transition-colors">
+                in/adi-novendra
+              </div>
             </div>
-            <div class="font-bold text-text-contrast truncate">
-              in/adi-novendra
+            <div class="pt-3 border-t border-border-architectural/60 mt-4 text-[10px] font-mono text-text-dim">
+              Professional network & profile
             </div>
           </a>
 
@@ -89,17 +136,24 @@ const t = useTranslations(lang);
             href="https://github.com/novendra27"
             target="_blank"
             rel="noopener noreferrer"
-            class="p-4 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated hover:border-border-architectural-hover shadow-tactile-surface transition-all text-text-contrast block active:translate-y-px"
+            class="p-5 flex flex-col justify-between group hover:bg-surface-elevated/50 transition-colors"
           >
-            <div class="text-[10px] text-text-dim uppercase tracking-wider mb-1">
-              GitHub Repositories
+            <div>
+              <div class="flex items-center justify-between text-[10px] font-mono text-text-dim font-semibold uppercase tracking-wider mb-2">
+                <span>CH_04 // GITHUB</span>
+                <span>REPOS ↗</span>
+              </div>
+              <div class="font-mono font-bold text-sm text-text-contrast group-hover:text-accent-primary transition-colors">
+                @novendra27
+              </div>
             </div>
-            <div class="font-bold text-text-contrast truncate">
-              @novendra27
+            <div class="pt-3 border-t border-border-architectural/60 mt-4 text-[10px] font-mono text-text-dim">
+              Public repos & code contributions
             </div>
           </a>
         </div>
       </div>
-    </ArchitecturalCard>
+    </div>
   </div>
+</div>
 </section>

@@ -7,12 +7,14 @@ export default {
       colors: {
         canvas: '#090d16',
         surface: {
-          card: '#0f172a',
-          elevated: '#1e293b',
+          card: '#0c1220',
+          elevated: '#162035',
         },
         border: {
-          architectural: 'rgba(255, 255, 255, 0.08)',
-          'architectural-hover': 'rgba(255, 255, 255, 0.16)',
+          architectural: 'rgba(255, 255, 255, 0.22)',
+          'architectural-hover': 'rgba(255, 255, 255, 0.45)',
+          subtle: 'rgba(255, 255, 255, 0.14)',
+          accent: 'rgba(16, 185, 129, 0.50)',
         },
         accent: {
           primary: '#10b981',

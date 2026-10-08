@@ -2,7 +2,6 @@
 import { projectRepository } from '@/lib/repositories';
 import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
 import SectionHeading from '../SectionHeading.astro';
-import ArchitecturalCard from '../ArchitecturalCard.astro';
 import ArchitecturalTabs from '../ArchitecturalTabs.astro';
 import Badge from '../Badge.astro';
 
@@ -27,159 +26,184 @@ const projects = await projectRepository.getAllWithRelations();
 
     <div class="space-y-12">
       {projects.map((proj, idx) => (
-        <ArchitecturalCard id={`project-${proj.slug}`} class="p-6 md:p-8">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <!-- Left: Interactive Preview Tabs (7 cols) -->
-            <div class="lg:col-span-7 w-full">
-              <ArchitecturalTabs
-                cardId={`tabs-${proj.id}`}
-                labels={{
-                  ui: t('tab.uiPreview'),
-                  arch: t('tab.architecture'),
-                  code: t('tab.codeSnippet'),
-                }}
-                hasArch={Boolean(proj.problem_statement || proj.architecture_system)}
-                hasCode={Boolean(proj.core_code_snippet)}
-              >
-                <!-- Tab Panel 1: UI Preview / Thumbnail -->
-                <div slot="ui" class="relative aspect-video w-full overflow-hidden bg-canvas flex items-center justify-center">
-                  <img
-                    src={proj.thumbnail}
-                    alt={proj.title}
-                    class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                  <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-canvas/80 backdrop-blur-sm border border-border-architectural text-[10px] font-mono text-text-dim">
-                    FORMAT: {proj.media_type.toUpperCase()}
+        <>
+          {idx > 0 && (
+            <div class="arch-slice" aria-hidden="true">
+              <div class="px-4 py-2 border-x border-border-architectural flex items-center justify-between font-mono text-[10px] text-text-dim bg-surface-card/40 select-none">
+                <span class="text-accent-primary font-bold">// SYSTEM ARCH // CASE_STUDY [0{idx + 1}]</span>
+                <span class="text-border-architectural hidden sm:inline">├── ARTIFACT DELTA ──┤</span>
+                <span>PRODUCTION STAGE</span>
+              </div>
+            </div>
+          )}
+
+          <div id={`project-${proj.slug}`} class="arch-slice">
+            <div class="border-x border-border-architectural">
+              <!-- Full-Width Blueprint Header Bar -->
+              <div class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
+                <div class="flex items-center gap-2">
+                  <span class="text-accent-primary font-bold">[0{idx + 1} // CASE_STUDY]</span>
+                  <span class="text-border-architectural">|</span>
+                  <span class="text-text-contrast font-semibold uppercase">{proj.title}</span>
+                </div>
+              <div class="flex items-center gap-2">
+                {proj.organization && (
+                  <>
+                    <span>CLIENT: {proj.organization.name}</span>
+                    <span class="text-border-architectural">|</span>
+                  </>
+                )}
+                {proj.confidentiality === 'confidential_nda' ? (
+                  <Badge variant="outline" text="CONFIDENTIAL (NDA)" class="text-[9px]" />
+                ) : (
+                  <Badge variant="accent" text="PUBLIC / OPEN" class="text-[9px]" />
+                )}
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural items-stretch">
+              <!-- Left: Interactive Preview Tabs (7 cols) -->
+              <div class="lg:col-span-7 w-full p-4 sm:p-6 bg-canvas/40 flex flex-col justify-between">
+                <ArchitecturalTabs
+                  cardId={`tabs-${proj.id}`}
+                  labels={{
+                    ui: t('tab.uiPreview'),
+                    arch: t('tab.architecture'),
+                    code: t('tab.codeSnippet'),
+                  }}
+                  hasArch={Boolean(proj.problem_statement || proj.architecture_system)}
+                  hasCode={Boolean(proj.core_code_snippet)}
+                >
+                  <!-- Tab Panel 1: UI Preview / Thumbnail -->
+                  <div slot="ui" class="relative aspect-video w-full overflow-hidden bg-canvas flex items-center justify-center">
+                    <img
+                      src={proj.thumbnail}
+                      alt={proj.title}
+                      class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                    <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-canvas/80 backdrop-blur-sm border border-border-architectural text-[10px] font-mono text-text-dim">
+                      FORMAT: {proj.media_type.toUpperCase()}
+                    </div>
+                  </div>
+
+                  <!-- Tab Panel 2: Architecture Flow Details -->
+                  <div slot="arch" class="p-4 sm:p-5 space-y-3 font-mono text-xs bg-canvas/90 text-text-muted min-h-[220px]">
+                    {proj.organization && (
+                      <div class="flex items-center justify-between border-b border-border-architectural/60 pb-2">
+                        <span class="text-text-dim">// ORGANIZATION</span>
+                        <span class="text-text-contrast font-medium">{proj.organization.name}</span>
+                      </div>
+                    )}
+
+                    {proj.architecture_system && (
+                      <div class="flex items-center justify-between border-b border-border-architectural/60 pb-2">
+                        <span class="text-text-dim">// SYSTEM PATTERN</span>
+                        <span class="text-accent-primary">{proj.architecture_system.title}</span>
+                      </div>
+                    )}
+
+                    {proj.problem_statement && (
+                      <div class="space-y-1 pt-1">
+                        <span class="text-accent-primary">// PROBLEM STATEMENT</span>
+                        <p class="font-sans text-xs text-text-muted leading-relaxed">
+                          {proj.problem_statement[lang]}
+                        </p>
+                      </div>
+                    )}
+
+                    {proj.solution_statement && (
+                      <div class="space-y-1 pt-1">
+                        <span class="text-text-contrast">// SOLUTION HIGHLIGHT</span>
+                        <p class="font-sans text-xs text-text-muted leading-relaxed">
+                          {proj.solution_statement[lang]}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <!-- Tab Panel 3: Core Code Snippet -->
+                  <div slot="code" class="p-4 overflow-x-auto bg-canvas/95 font-mono text-[11px] text-text-contrast min-h-[220px] max-h-[340px]">
+                    <pre class="leading-relaxed"><code>{proj.core_code_snippet}</code></pre>
+                  </div>
+                </ArchitecturalTabs>
+              </div>
+
+              <!-- Right: Metadata, BLUF Narrative & Links (5 cols) -->
+              <div class="lg:col-span-5 flex flex-col justify-between divide-y divide-border-architectural bg-surface-card/30">
+                <div class="p-5 sm:p-6 space-y-4">
+                  <!-- Title & Organization -->
+                  <div>
+                    <h3 class="text-lg sm:text-xl font-bold text-text-contrast tracking-tight mb-1">
+                      {proj.title}
+                    </h3>
+                    {proj.organization && (
+                      <p class="font-mono text-xs text-text-dim">
+                        Client/Institution: {proj.organization.name}
+                      </p>
+                    )}
+                  </div>
+
+                  <!-- BLUF Summary -->
+                  <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
+                    {proj.summary_bluf[lang]}
+                  </p>
+
+                  <!-- Key Metrics (if available) -->
+                  {proj.key_metrics && proj.key_metrics.length > 0 && (
+                    <div class="grid grid-cols-3 divide-x divide-border-architectural border border-border-architectural rounded bg-canvas/40 py-2">
+                      {proj.key_metrics.map((metric) => (
+                        <div class="text-center font-mono px-2">
+                          <div class="text-sm font-bold text-accent-primary tabular-nums">
+                            {metric.value}
+                          </div>
+                          <div class="text-[10px] text-text-dim truncate">
+                            {metric.label[lang]}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <!-- Technologies Badges -->
+                  <div class="space-y-1.5 pt-1">
+                    <div class="font-mono text-[11px] text-text-dim uppercase tracking-wider">
+                      Technologies Utilized
+                    </div>
+                    <div class="flex flex-wrap gap-1.5">
+                      {proj.technologies.map((tech) => (
+                        <Badge variant="default" text={tech.name} />
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                <!-- Tab Panel 2: Architecture Flow Details -->
-                <div slot="arch" class="p-4 sm:p-5 space-y-3 font-mono text-xs bg-canvas/90 text-text-muted min-h-[220px]">
-                  {proj.organization && (
-                    <div class="flex items-center justify-between border-b border-border-architectural/60 pb-2">
-                      <span class="text-text-dim">// ORGANIZATION</span>
-                      <span class="text-text-contrast font-medium">{proj.organization.name}</span>
-                    </div>
-                  )}
-
-                  {proj.architecture_system && (
-                    <div class="flex items-center justify-between border-b border-border-architectural/60 pb-2">
-                      <span class="text-text-dim">// SYSTEM PATTERN</span>
-                      <span class="text-accent-primary">{proj.architecture_system.title}</span>
-                    </div>
-                  )}
-
-                  {proj.problem_statement && (
-                    <div class="space-y-1 pt-1">
-                      <span class="text-accent-primary">// PROBLEM STATEMENT</span>
-                      <p class="font-sans text-xs text-text-muted leading-relaxed">
-                        {proj.problem_statement[lang]}
-                      </p>
-                    </div>
-                  )}
-
-                  {proj.solution_statement && (
-                    <div class="space-y-1 pt-1">
-                      <span class="text-text-contrast">// SOLUTION HIGHLIGHT</span>
-                      <p class="font-sans text-xs text-text-muted leading-relaxed">
-                        {proj.solution_statement[lang]}
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                <!-- Tab Panel 3: Core Code Snippet -->
-                <div slot="code" class="p-4 overflow-x-auto bg-canvas/95 font-mono text-[11px] text-text-contrast min-h-[220px] max-h-[340px]">
-                  <pre class="leading-relaxed"><code>{proj.core_code_snippet}</code></pre>
-                </div>
-              </ArchitecturalTabs>
-            </div>
-
-            <!-- Right: Metadata, BLUF Narrative & Links (5 cols) -->
-            <div class="lg:col-span-5 space-y-5">
-              <!-- Top Header & Confidentiality Indicator -->
-              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-border-architectural pb-3">
-                <span class="font-mono text-xs font-semibold text-accent-primary">
-                  [0{idx + 1} // CASE STUDY]
-                </span>
-
-                {proj.confidentiality === 'confidential_nda' ? (
-                  <Badge variant="outline" text="CONFIDENTIAL (NDA)" class="text-[10px]" />
-                ) : (
-                  <Badge variant="accent" text="PUBLIC / OPEN" class="text-[10px]" />
+                <!-- Dynamic Multi-Link Buttons Bottom Strip -->
+                {proj.links.length > 0 && (
+                  <div class="p-4 sm:px-6 bg-surface-card/70 flex flex-wrap gap-2">
+                    {proj.links.map((link) => (
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class:list={[
+                          'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-control text-xs font-mono transition-all active:translate-y-px',
+                          link.is_primary
+                            ? 'bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light shadow-tactile-primary'
+                            : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast shadow-tactile-surface',
+                        ]}
+                      >
+                        <span>{link.title}</span>
+                        <span class="text-[11px]">↗</span>
+                      </a>
+                    ))}
+                  </div>
                 )}
               </div>
-
-              <!-- Title & Organization -->
-              <div>
-                <h3 class="text-lg sm:text-xl font-bold text-text-contrast tracking-tight mb-1">
-                  {proj.title}
-                </h3>
-                {proj.organization && (
-                  <p class="font-mono text-xs text-text-dim">
-                    Client/Institution: {proj.organization.name}
-                  </p>
-                )}
-              </div>
-
-              <!-- BLUF Summary -->
-              <p class="text-xs sm:text-sm text-text-muted leading-relaxed">
-                {proj.summary_bluf[lang]}
-              </p>
-
-              <!-- Key Metrics (if available) -->
-              {proj.key_metrics && proj.key_metrics.length > 0 && (
-                <div class="grid grid-cols-3 gap-2 py-2 border-y border-border-architectural/60">
-                  {proj.key_metrics.map((metric) => (
-                    <div class="text-center font-mono">
-                      <div class="text-sm font-bold text-accent-primary">
-                        {metric.value}
-                      </div>
-                      <div class="text-[10px] text-text-dim truncate">
-                        {metric.label[lang]}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              <!-- Technologies Badges -->
-              <div class="space-y-1.5">
-                <div class="font-mono text-[11px] text-text-dim uppercase tracking-wider">
-                  Technologies Utilized
-                </div>
-                <div class="flex flex-wrap gap-1.5">
-                  {proj.technologies.map((tech) => (
-                    <Badge variant="default" text={tech.name} />
-                  ))}
-                </div>
-              </div>
-
-              <!-- Dynamic Multi-Link Buttons -->
-              {proj.links.length > 0 && (
-                <div class="pt-3 border-t border-border-architectural flex flex-wrap gap-2">
-                  {proj.links.map((link) => (
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class:list={[
-                        'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-control text-xs font-mono transition-all active:translate-y-px',
-                        link.is_primary
-                          ? 'bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light shadow-tactile-primary'
-                          : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast shadow-tactile-surface',
-                      ]}
-                    >
-                      <span>{link.title}</span>
-                      <span class="text-[11px]">↗</span>
-                    </a>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
-        </ArchitecturalCard>
+        </div>
+      </>
       ))}
     </div>
   </div>
