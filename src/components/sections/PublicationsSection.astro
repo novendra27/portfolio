@@ -53,11 +53,11 @@ const categoryLabels = {
             <div class="space-y-4">
               <!-- Meta Header Chamber -->
               <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-3 text-[11px] font-mono text-text-dim">
-                <div class="flex items-center gap-2">
-                  <span class="text-accent-primary font-bold">[PUB_0{idx + 1}]</span>
-                  <Badge variant="outline" text={categoryLabels[pub.category]} class="text-[10px]" />
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="text-accent-primary font-bold shrink-0">[PUB_0{idx + 1}]</span>
+                  <Badge variant="outline" text={categoryLabels[pub.category]} class="text-[10px] shrink-0 whitespace-nowrap" />
                 </div>
-                <span>{pub.reading_time}</span>
+                <span class="shrink-0 whitespace-nowrap">{pub.reading_time}</span>
               </div>
 
               <!-- Title -->
@@ -92,7 +92,7 @@ const categoryLabels = {
                   href={pub.external_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center justify-between w-full px-3 py-2 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-xs font-mono text-accent-primary hover:text-accent-primary-light transition-colors font-medium shadow-tactile-surface active:translate-y-px"
+                  class="inline-flex items-center justify-between w-full px-3.5 py-2.5 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-xs font-mono text-accent-primary hover:text-accent-primary-light transition-colors font-medium shadow-tactile-surface active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[40px]"
                 >
                   <span>{lang === 'id' ? 'Buka Publikasi Asli' : 'Read Full Post'}</span>
                   <span>↗</span>

@@ -56,18 +56,21 @@ const allTechnologies = await technologyRepository.getAll();
               ]}
             >
               <!-- Tier Header -->
-              <div class="flex items-center justify-between border-b border-border-architectural pb-3">
-                <div>
-                  <h3 class="font-semibold text-text-contrast text-base">
-                    {cat.name}
-                  </h3>
-                  <p class="text-xs text-text-muted mt-0.5">
-                    {cat.description[lang]}
-                  </p>
+              <div class="border-b border-border-architectural pb-3.5 space-y-2">
+                <div class="flex items-center justify-between gap-3">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="font-mono text-[10px] text-accent-primary font-bold shrink-0">[TIER_0{idx + 1}]</span>
+                    <h3 class="font-semibold text-text-contrast text-base tracking-tight truncate">
+                      {cat.name}
+                    </h3>
+                  </div>
+                  <span class="font-mono text-xs text-accent-primary font-semibold shrink-0 whitespace-nowrap tabular-nums">
+                    {catTechs.length} {catTechs.length === 1 ? 'TECH' : 'TECHS'}
+                  </span>
                 </div>
-                <span class="font-mono text-xs text-accent-primary font-semibold">
-                  {catTechs.length} Tools
-                </span>
+                <p class="text-xs text-text-muted leading-relaxed">
+                  {cat.description[lang]}
+                </p>
               </div>
 
               <!-- Tech Badges Grid -->
@@ -78,24 +81,30 @@ const allTechnologies = await technologyRepository.getAll();
                     target="_blank"
                     rel="noopener noreferrer"
                     class:list={[
-                      'p-2.5 rounded-control border text-left font-mono transition-all duration-150 group block shadow-tactile-surface active:translate-y-px',
+                      'p-2.5 rounded-control border text-left font-mono transition-all duration-150 group block shadow-tactile-surface active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary',
                       tech.proficiency === 'core_specialty'
                         ? 'border-accent-primary/40 bg-surface-elevated/60 hover:border-accent-primary hover:bg-surface-elevated'
                         : 'border-border-architectural bg-canvas/60 hover:border-border-architectural-hover hover:bg-surface-card',
                     ]}
                   >
-                    <div class="flex items-center justify-between">
-                      <span class="text-xs font-semibold text-text-contrast group-hover:text-accent-primary transition-colors">
+                    <div class="flex items-center justify-between gap-1.5">
+                      <span class="text-xs font-semibold text-text-contrast group-hover:text-accent-primary transition-colors truncate">
                         {tech.name}
                       </span>
-                      <span class="text-[10px] text-text-dim group-hover:text-text-muted">↗</span>
+                      <span class="text-[10px] text-text-dim group-hover:text-text-muted shrink-0">↗</span>
                     </div>
 
-                    <div class="text-[10px] text-text-dim mt-1 flex items-center gap-1">
+                    <div class="text-[10px] font-mono mt-1.5 flex items-center gap-1.5">
                       {tech.proficiency === 'core_specialty' ? (
-                        <span class="text-accent-primary font-medium">★ CORE</span>
+                        <span class="inline-flex items-center gap-1 text-accent-primary font-semibold tracking-wider">
+                          <span class="w-1.5 h-1.5 rounded-full bg-accent-primary inline-block"></span>
+                          CORE
+                        </span>
                       ) : (
-                        <span>SECONDARY</span>
+                        <span class="inline-flex items-center gap-1 text-text-dim tracking-wider">
+                          <span class="w-1.5 h-1.5 rounded-full bg-text-dim/60 inline-block"></span>
+                          SECONDARY
+                        </span>
                       )}
                     </div>
                   </a>

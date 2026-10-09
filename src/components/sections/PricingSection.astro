@@ -63,11 +63,11 @@ const waNumber = '628993580311';
               <div class="space-y-6">
                 <!-- Header & Popular Badge -->
                 <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-4">
-                  <span class="font-mono text-xs text-text-dim">
+                  <span class="font-mono text-xs text-text-dim shrink-0 whitespace-nowrap">
                     TIER_0{srv.order} // SPEC
                   </span>
                   {srv.is_popular && (
-                    <Badge variant="accent" text={lang === 'id' ? 'PALING POPULER' : 'MOST POPULAR'} />
+                    <Badge variant="accent" text={lang === 'id' ? 'PALING POPULER' : 'MOST POPULAR'} class="shrink-0 whitespace-nowrap" />
                   )}
                 </div>
 
@@ -137,7 +137,7 @@ const waNumber = '628993580311';
                   target="_blank"
                   rel="noopener noreferrer"
                   class:list={[
-                    'w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-control text-xs font-mono font-semibold transition-all active:translate-y-px',
+                    'w-full inline-flex items-center justify-center gap-2 px-4 py-3 sm:py-2.5 rounded-control text-xs font-mono font-semibold transition-all active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[44px]',
                     srv.is_popular
                       ? 'bg-accent-primary text-canvas hover:bg-accent-primary-light shadow-tactile-primary'
                       : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast hover:border-accent-primary/40 shadow-tactile-surface',

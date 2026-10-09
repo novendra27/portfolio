@@ -53,8 +53,8 @@ const patternLabels = {
             <div class="space-y-4">
               <!-- Header Pattern Type -->
               <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-3">
-                <Badge variant="accent" text={patternLabels[arch.pattern_type]} />
-                <span class="font-mono text-[10px] text-text-dim">SPEC_0{arch.order}</span>
+                <Badge variant="accent" text={patternLabels[arch.pattern_type]} class="shrink-0 whitespace-nowrap" />
+                <span class="font-mono text-[10px] text-text-dim shrink-0 whitespace-nowrap">SPEC_0{arch.order}</span>
               </div>
 
               <!-- Title -->
@@ -106,16 +106,16 @@ const patternLabels = {
                   <span class="text-text-dim">
                     {lang === 'id' ? 'Diimplementasikan pada:' : 'Implemented in:'}
                   </span>
-                  <div class="flex items-center gap-2">
-                    {arch.projects.map((proj) => (
-                      <a
-                        href={`#project-${proj.slug}`}
-                        class="text-accent-primary hover:text-accent-primary-light underline transition-colors"
-                      >
-                        {proj.title.split(' ')[0]}
-                      </a>
-                    ))}
-                  </div>
+                    <div class="flex items-center gap-2">
+                      {arch.projects.map((proj) => (
+                        <a
+                          href={`#project-${proj.slug}`}
+                          class="text-accent-primary hover:text-accent-primary-light underline transition-colors px-1 py-0.5 rounded touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
+                        >
+                          {proj.title.split(' ')[0]}
+                        </a>
+                      ))}
+                    </div>
                 </div>
               )}
             </div>
