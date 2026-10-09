@@ -20,7 +20,7 @@ const navItems = [
 ---
 
 <header
-  class="sticky top-0 z-50 w-full border-b border-border-architectural bg-canvas/80 backdrop-blur-md transition-all arch-bleed-line-bottom"
+  class="sticky top-0 z-50 w-full border-b border-border-architectural bg-canvas/90 backdrop-blur-md transition-all"
 >
   <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
     <!-- Brand / Architectural Monogram -->
@@ -41,7 +41,7 @@ const navItems = [
       {navItems.map((item) => (
         <a
           href={item.href}
-          class="text-text-muted hover:text-text-contrast transition-colors py-1 hover:underline underline-offset-4 decoration-accent-primary/50"
+          class="text-text-muted hover:text-text-contrast transition-colors py-1.5 px-1 hover:underline underline-offset-4 decoration-accent-primary/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs"
         >
           {item.label}
         </a>
@@ -49,12 +49,12 @@ const navItems = [
     </nav>
 
     <!-- Right Controls: Language Switcher & Contact Button -->
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2.5 sm:gap-3">
       <LanguageSwitcher lang={lang} />
 
       <a
         href="#contact"
-        class="hidden sm:inline-flex items-center px-3 py-1.5 rounded-control text-xs font-mono font-medium border border-border-architectural bg-surface-card hover:bg-surface-elevated hover:border-border-architectural-hover text-text-contrast shadow-tactile-surface transition-all active:translate-y-px"
+        class="hidden sm:inline-flex items-center px-3 py-1.5 rounded-control text-xs font-mono font-medium border border-border-architectural bg-surface-card hover:bg-surface-elevated hover:border-border-architectural-hover text-text-contrast shadow-tactile-surface transition-all active:translate-y-px focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
       >
         {t('nav.contact')}
       </a>
@@ -63,7 +63,7 @@ const navItems = [
       <button
         id="mobile-menu-btn"
         type="button"
-        class="md:hidden p-1.5 rounded border border-border-architectural text-text-muted hover:text-text-contrast"
+        class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded border border-border-architectural bg-surface-card/70 text-text-muted hover:text-text-contrast hover:border-border-architectural-hover active:translate-y-px transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
         aria-label="Toggle navigation menu"
         aria-expanded="false"
       >
@@ -77,21 +77,21 @@ const navItems = [
   <!-- Mobile Dropdown Navigation -->
   <div
     id="mobile-menu"
-    class="hidden md:hidden border-b border-border-architectural bg-surface-card/95 backdrop-blur-md px-4 py-4 space-y-3"
+    class="hidden md:hidden border-b border-border-architectural bg-surface-card/95 backdrop-blur-md px-4 py-3 space-y-1 max-h-[calc(100dvh-3.5rem)] overflow-y-auto arch-scrollbar"
   >
     {navItems.map((item) => (
       <a
         href={item.href}
-        class="block font-mono text-xs text-text-muted hover:text-text-contrast py-1 mobile-link"
+        class="flex items-center font-mono text-xs text-text-muted hover:text-text-contrast hover:bg-surface-elevated/40 px-3 py-2.5 rounded transition-colors mobile-link touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
       >
         {item.label}
       </a>
     ))}
     <a
       href="#contact"
-      class="block font-mono text-xs text-accent-primary py-1 mobile-link"
+      class="flex items-center font-mono text-xs text-accent-primary hover:text-accent-primary-light hover:bg-accent-primary/10 px-3 py-2.5 rounded font-semibold transition-colors mobile-link touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
     >
-      {t('nav.contact')}
+      {t('nav.contact')} →
     </a>
   </div>
 </header>

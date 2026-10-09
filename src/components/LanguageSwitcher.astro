@@ -36,7 +36,7 @@ enPath = enPath.replace(/\/{2,}/g, '/');
   <a
     href={idPath}
     class:list={[
-      'px-2.5 py-0.5 rounded transition-all duration-150',
+      'px-3 sm:px-2.5 py-1.5 sm:py-0.5 rounded transition-all duration-150 touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary',
       currentLang === 'id'
         ? 'bg-surface-elevated text-text-contrast font-semibold border border-border-architectural shadow-tactile-surface'
         : 'text-text-muted hover:text-text-contrast hover:bg-white/5 border border-transparent',
@@ -49,7 +49,7 @@ enPath = enPath.replace(/\/{2,}/g, '/');
   <a
     href={enPath}
     class:list={[
-      'px-2.5 py-0.5 rounded transition-all duration-150',
+      'px-3 sm:px-2.5 py-1.5 sm:py-0.5 rounded transition-all duration-150 touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary',
       currentLang === 'en'
         ? 'bg-surface-elevated text-text-contrast font-semibold border border-border-architectural shadow-tactile-surface'
         : 'text-text-muted hover:text-text-contrast hover:bg-white/5 border border-transparent',

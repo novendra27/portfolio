@@ -24,11 +24,11 @@ const {
 
 <div class="arch-tabs-container w-full" data-card-id={cardId}>
   <!-- Segmented Control Tab Header -->
-  <div class="flex items-center gap-1.5 p-1 rounded-control bg-surface-card/80 border border-border-architectural mb-4 text-xs font-mono">
+  <div class="flex items-center gap-1.5 p-1 rounded-control bg-surface-card/80 border border-border-architectural mb-4 text-xs font-mono overflow-x-auto no-scrollbar">
     <button
       type="button"
       data-tab="ui"
-      class="tab-btn px-3 py-1 rounded transition-all active-tab bg-surface-elevated text-text-contrast font-medium border border-border-architectural shadow-tactile-surface"
+      class="tab-btn px-3 py-1.5 sm:py-1 rounded transition-all active-tab bg-surface-elevated text-text-contrast font-medium border border-border-architectural shadow-tactile-surface shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
     >
       [{labels.ui}]
     </button>
@@ -37,7 +37,7 @@ const {
       <button
         type="button"
         data-tab="arch"
-        class="tab-btn px-3 py-1 rounded transition-all text-text-muted hover:text-text-contrast hover:bg-white/5 border border-transparent"
+        class="tab-btn px-3 py-1.5 sm:py-1 rounded transition-all text-text-muted hover:text-text-contrast hover:bg-white/5 border border-transparent shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
       >
         [{labels.arch}]
       </button>
@@ -47,7 +47,7 @@ const {
       <button
         type="button"
         data-tab="code"
-        class="tab-btn px-3 py-1 rounded transition-all text-text-muted hover:text-text-contrast hover:bg-white/5 border border-transparent"
+        class="tab-btn px-3 py-1.5 sm:py-1 rounded transition-all text-text-muted hover:text-text-contrast hover:bg-white/5 border border-transparent shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
       >
         [{labels.code}]
       </button>

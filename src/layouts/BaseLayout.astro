@@ -26,7 +26,7 @@ const ogLocale = lang === 'id' ? 'id_ID' : 'en_US';
 ---
 
 <!doctype html>
-<html lang={lang} class="dark scroll-smooth">
+<html lang={lang} class="dark scroll-smooth overflow-x-clip">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -66,7 +66,7 @@ const ogLocale = lang === 'id' ? 'id_ID' : 'en_US';
     <!-- Schema.org JSON-LD (GEO, AEO, Traditional SEO) -->
     <JsonLd lang={lang} canonicalUrl={canonicalUrl} />
   </head>
-  <body class="min-h-screen bg-canvas text-text-contrast antialiased selection:bg-accent-primary/20 selection:text-accent-primary-light flex flex-col relative overflow-x-hidden">
+  <body class="min-h-screen bg-canvas text-text-contrast antialiased selection:bg-accent-primary/20 selection:text-accent-primary-light flex flex-col relative overflow-x-clip">
     <!-- Subtle Blueprint Grid Layer -->
     <div class="fixed inset-0 bg-grid pointer-events-none z-0 opacity-80" aria-hidden="true"></div>
 
