@@ -108,7 +108,19 @@ export const projects: Project[] = [
     category_ids: ['cat-backend'],
     technology_ids: ['tech-spring-boot', 'tech-kafka', 'tech-postgresql'],
     confidentiality: 'public',
-    thumbnail: '/images/projects/kkm-grouping-genetic-algorithm.webp',
+    thumbnail: null,
+    placeholder_info: {
+      tag: '[ PURE BACKEND // HEADLESS ]',
+      icon: '⚙️ // 0xBACKEND',
+      title: {
+        id: 'Layanan Backend Murni (Tanpa GUI)',
+        en: 'Pure Backend Service (Headless Engine)',
+      },
+      description: {
+        id: 'Sistem ini beroperasi pada level pemrosesan antrian pesan Apache Kafka dan microservices Spring Boot tanpa antarmuka grafis (headless).',
+        en: 'This system operates strictly at the asynchronous Apache Kafka message broker and Spring Boot microservice tier without a visual frontend.',
+      },
+    },
     media_type: 'image',
     core_code_snippet: `@Service
 public class OrderEventProducer {
@@ -161,7 +173,19 @@ public class OrderEventProducer {
       'tech-mysql',
     ],
     confidentiality: 'public',
-    thumbnail: '/images/projects/watchtube.webp',
+    thumbnail: null,
+    placeholder_info: {
+      tag: '[ RESTRICTED // COMMERCIAL ASSET ]',
+      icon: '🔒 // 0xRESTRICTED',
+      title: {
+        id: 'Aset Komersial Terbatas',
+        en: 'Restricted Commercial Asset',
+      },
+      description: {
+        id: 'Tangkapan layar antarmuka privat tidak dipublikasikan secara terbuka untuk melindungi privasi produk komersial.',
+        en: 'Private commercial user interface previews are restricted from public release to safeguard digital product assets.',
+      },
+    },
     media_type: 'image',
     core_code_snippet: `public function handleXenditWebhook(Request $request): JsonResponse {
     $callbackToken = $request->header('x-callback-token');
@@ -187,7 +211,19 @@ public class OrderEventProducer {
     category_ids: ['cat-saas-tools', 'cat-backend'],
     technology_ids: ['tech-laravel', 'tech-mysql', 'tech-bootstrap'],
     confidentiality: 'confidential_nda',
-    thumbnail: '/images/projects/tagihan-pdam-pandanrejo.webp',
+    thumbnail: null,
+    placeholder_info: {
+      tag: '[ CONFIDENTIAL // CLIENT NDA ]',
+      icon: '🛡️ // 0xNDA_PROTECTED',
+      title: {
+        id: 'Dilindungi Kerahasiaan Klien (NDA)',
+        en: 'Protected by Client NDA',
+      },
+      description: {
+        id: 'Tangkapan layar antarmuka internal dirahasiakan untuk mematuhi Non-Disclosure Agreement (NDA) dengan klien.',
+        en: 'Internal interface screenshots and client visual assets are kept confidential under a strict Non-Disclosure Agreement (NDA).',
+      },
+    },
     media_type: 'image',
     core_code_snippet: `// Confidential Client Code - Architecture Logic Sanitized
 public function provisionVpsInstance(Subscription $sub): string {
@@ -236,7 +272,19 @@ public function runMonthlyBillingGeneration(): void {
     category_ids: ['cat-saas-tools', 'cat-backend'],
     technology_ids: ['tech-laravel', 'tech-mysql', 'tech-bootstrap'],
     confidentiality: 'confidential_nda',
-    thumbnail: '/images/projects/pendataan-tagihan-wifi.webp',
+    thumbnail: null,
+    placeholder_info: {
+      tag: '[ INTERNAL CREDENTIALS REQUIRED ]',
+      icon: '🔑 // 0xCREDENTIAL',
+      title: {
+        id: 'Kredensial Asesor Internal Diperlukan',
+        en: 'Internal Auditor Credentials Required',
+      },
+      description: {
+        id: 'Sistem evaluasi kepatuhan tata kelola universitas BLU; akses visual dibatasi khusus untuk asesor borang resmi.',
+        en: 'University public service compliance evaluation system; visual access is strictly restricted to authorized institutional auditors.',
+      },
+    },
     media_type: 'image',
     core_code_snippet: `// Multi-dimensional scoring formula for university governance
 public function computeMaturityScore(array $scores, array $weights): float {

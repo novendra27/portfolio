@@ -26,6 +26,13 @@ export interface ProjectMetric {
   value: string;
 }
 
+export interface ProjectPlaceholderInfo {
+  tag: string;
+  icon?: string;
+  title: LocalizedString;
+  description: LocalizedString;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -36,7 +43,8 @@ export interface Project {
   category_ids: string[];
   technology_ids: string[];
   confidentiality: ProjectConfidentiality;
-  thumbnail: string;
+  thumbnail: string | null;
+  placeholder_info?: ProjectPlaceholderInfo;
   media_type: ProjectMediaType;
   core_code_snippet: string;
   is_featured: boolean;

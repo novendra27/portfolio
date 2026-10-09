@@ -10,7 +10,7 @@ export const pricingServices: PricingService[] = [
       en: 'Rapid digital product MVP delivery, high-converting interfaces, and quick market validation for startups.',
     },
     category: 'mvp_launch',
-    price_starting: 'Rp 3.500.000',
+    price_starting: 'Rp 1.000.000',
     estimated_timeline: {
       id: '7 – 14 Hari Kerja',
       en: '7 – 14 Working Days',

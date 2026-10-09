@@ -257,17 +257,72 @@ const activeCategories = allCategories
                     hasCode={Boolean(proj.core_code_snippet)}
                   >
                     <!-- Tab Panel 1: UI Preview / Thumbnail -->
-                    <div slot="ui" class="relative aspect-video w-full overflow-hidden bg-canvas flex items-center justify-center">
-                      <img
-                        src={proj.thumbnail}
-                        alt={proj.title}
-                        class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
-                        loading={idx === 0 ? 'eager' : 'lazy'}
-                      />
-                      <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-canvas/80 backdrop-blur-sm border border-border-architectural text-[10px] font-mono text-text-dim">
-                        FORMAT: {proj.media_type.toUpperCase()}
+                    {proj.thumbnail ? (
+                      <div slot="ui" class="relative aspect-video w-full overflow-hidden bg-canvas flex items-center justify-center">
+                        <img
+                          src={proj.thumbnail}
+                          alt={proj.title}
+                          class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
+                          loading={idx === 0 ? 'eager' : 'lazy'}
+                        />
+                        <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-canvas/80 backdrop-blur-sm border border-border-architectural text-[10px] font-mono text-text-dim">
+                          FORMAT: {proj.media_type.toUpperCase()}
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div slot="ui" class="relative aspect-video w-full overflow-hidden bg-canvas border border-border-architectural flex flex-col items-center justify-center p-4 sm:p-6 text-center select-none bg-hatch-45">
+                        <!-- Corner Crosshairs (+) -->
+                        <svg aria-hidden="true" width="7" height="7" viewBox="0 0 5 5" class="absolute top-2 left-2 fill-accent-primary/60">
+                          <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+                        </svg>
+                        <svg aria-hidden="true" width="7" height="7" viewBox="0 0 5 5" class="absolute top-2 right-2 fill-accent-primary/60">
+                          <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+                        </svg>
+                        <svg aria-hidden="true" width="7" height="7" viewBox="0 0 5 5" class="absolute bottom-2 left-2 fill-accent-primary/60">
+                          <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+                        </svg>
+                        <svg aria-hidden="true" width="7" height="7" viewBox="0 0 5 5" class="absolute bottom-2 right-2 fill-accent-primary/60">
+                          <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+                        </svg>
+
+                        <!-- Blueprint Technical Card -->
+                        <div class="max-w-md w-full p-4 sm:p-5 rounded border border-border-architectural bg-canvas/95 backdrop-blur-sm shadow-tactile-surface flex flex-col items-center gap-2 sm:gap-2.5">
+                          <!-- Status Badge -->
+                          <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full animate-pulse bg-amber-400"></span>
+                            <span class="font-mono text-[10px] sm:text-[11px] font-bold tracking-wider uppercase text-amber-400">
+                              {proj.placeholder_info?.tag ?? '// CREDENTIAL / PHOTO NOT FOUND'}
+                            </span>
+                          </div>
+
+                          <!-- Icon / Monospace Tag -->
+                          <div class="font-mono text-xs sm:text-sm text-text-dim px-2 py-0.5 rounded bg-surface-card border border-border-architectural">
+                            {proj.placeholder_info?.icon ?? '// RESTRICTED_ASSET'}
+                          </div>
+
+                          <!-- Title -->
+                          <div class="font-bold text-xs sm:text-sm text-text-contrast tracking-tight">
+                            {proj.placeholder_info ? proj.placeholder_info.title[lang] : (lang === 'id' ? 'Visual Antarmuka Dibatasi' : 'Visual Preview Restricted')}
+                          </div>
+
+                          <!-- Note / Description -->
+                          <p class="font-mono text-[11px] sm:text-xs text-text-muted leading-relaxed max-w-sm">
+                            {proj.placeholder_info ? proj.placeholder_info.description[lang] : (lang === 'id' ? 'Aplikasi ini tidak memiliki foto pratinjau publik atau beroperasi tanpa antarmuka grafis (headless).' : 'This application has no public visual preview or operates as a headless backend system.')}
+                          </p>
+
+                          <!-- Bottom System Diagnostic Strip -->
+                          <div class="pt-2 border-t border-border-architectural/60 w-full flex items-center justify-between text-[9px] sm:text-[10px] font-mono text-text-dim">
+                            <span>SECURITY: RESTRICTED</span>
+                            <span class="text-accent-primary">ACTIVE_RUNTIME</span>
+                          </div>
+                        </div>
+
+                        <!-- Bottom Left Tag -->
+                        <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-canvas/90 border border-border-architectural text-[9px] sm:text-[10px] font-mono text-text-dim">
+                          PREVIEW: NOT_AVAILABLE
+                        </div>
+                      </div>
+                    )}
 
                     <!-- Tab Panel 2: Architecture Flow Details -->
                     <div slot="arch" class="p-4 sm:p-5 space-y-3 font-mono text-xs bg-canvas/90 text-text-muted min-h-[220px]">

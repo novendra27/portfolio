@@ -13,6 +13,7 @@ import type {
   Project,
   ProjectLink,
   ProjectMetric,
+  ProjectPlaceholderInfo,
   Publication,
   Technology,
 } from '../types';
@@ -127,6 +128,13 @@ export const ProjectMetricSchema: z.ZodType<ProjectMetric> = z.object({
   value: z.string().min(1),
 });
 
+export const ProjectPlaceholderInfoSchema: z.ZodType<ProjectPlaceholderInfo> = z.object({
+  tag: z.string(),
+  icon: z.string().optional(),
+  title: LocalizedStringSchema,
+  description: LocalizedStringSchema,
+});
+
 export const ProjectSchema: z.ZodType<Project> = z.object({
   id: z.string().min(1, 'Project ID is required'),
   title: z.string().min(1, 'Project title is required'),
@@ -137,7 +145,8 @@ export const ProjectSchema: z.ZodType<Project> = z.object({
   category_ids: z.array(z.string()),
   technology_ids: z.array(z.string()),
   confidentiality: z.enum(['public', 'confidential_nda']),
-  thumbnail: z.string(),
+  thumbnail: z.string().nullable(),
+  placeholder_info: ProjectPlaceholderInfoSchema.optional(),
   media_type: z.enum(['image', 'gif']),
   core_code_snippet: z.string(),
   is_featured: z.boolean(),
