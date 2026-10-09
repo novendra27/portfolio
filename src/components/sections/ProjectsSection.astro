@@ -40,16 +40,17 @@ const activeCategories = allCategories
         <!-- ==================================================================== -->
         <!-- DESKTOP TIER 1: Blueprint Spec, Category Filter Bar & Navigation (md+) -->
         <!-- ==================================================================== -->
-        <div class="hidden md:flex px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/70 items-center justify-between gap-3 font-mono text-[10px] select-none">
-          <div class="flex items-center gap-2">
-            <span class="text-accent-primary font-bold">// SPEC_02:PROJECT_SHOWCASE</span>
-            <span class="text-border-architectural">|</span>
-            <span class="text-text-dim">// FILTER:</span>
-            <div class="flex items-center gap-1.5" id="desktop-category-filters">
+        <div class="hidden md:flex px-4 sm:px-6 py-2 border-b border-border-architectural bg-surface-card/70 items-center justify-between gap-4 font-mono text-[10px] select-none">
+          <!-- Left: Bounded Filter Control Chamber -->
+          <div class="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
+            <span class="text-accent-primary font-bold hidden xl:inline shrink-0">// SPEC_02:SHOWCASE</span>
+            <span class="text-border-architectural hidden xl:inline shrink-0">|</span>
+            <span class="text-accent-primary font-bold shrink-0">// FILTER:</span>
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 min-w-0 flex-1" id="desktop-category-filters">
               <button
                 type="button"
                 data-cat-filter="all"
-                class="cat-filter-btn px-2.5 py-0.5 rounded border border-accent-primary bg-surface-elevated text-accent-primary font-semibold transition-all shrink-0 cursor-pointer shadow-tactile-primary"
+                class="cat-filter-btn px-2.5 py-1 rounded border border-accent-primary bg-surface-elevated text-accent-primary font-semibold transition-all shrink-0 cursor-pointer shadow-tactile-primary touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary active:scale-[0.98]"
               >
                 ALL ({projects.length})
               </button>
@@ -57,7 +58,7 @@ const activeCategories = allCategories
                 <button
                   type="button"
                   data-cat-filter={cat.id}
-                  class="cat-filter-btn px-2.5 py-0.5 rounded border border-border-architectural bg-surface-card text-text-muted hover:text-text-contrast hover:border-accent-primary/40 transition-all shrink-0 cursor-pointer"
+                  class="cat-filter-btn px-2.5 py-1 rounded border border-border-architectural bg-surface-card text-text-muted hover:text-text-contrast hover:border-accent-primary/40 transition-all shrink-0 cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary active:scale-[0.98]"
                 >
                   {cat.name.split('&')[0].trim().toUpperCase()} ({cat.count})
                 </button>
@@ -65,7 +66,8 @@ const activeCategories = allCategories
             </div>
           </div>
 
-          <div class="flex items-center gap-3 shrink-0 ml-auto">
+          <!-- Right: Protected Index Counter & Sequential Controls Chamber -->
+          <div class="flex items-center gap-3 shrink-0 ml-auto pl-3.5 border-l border-border-architectural">
             <div class="flex items-center gap-1.5">
               <span class="text-text-dim">INDEX:</span>
               <span class="text-accent-primary font-bold tabular-nums desktop-index-counter">
@@ -77,14 +79,14 @@ const activeCategories = allCategories
               <button
                 type="button"
                 aria-label="Previous project"
-                class="btn-prev-proj px-2 py-1 rounded border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-muted hover:text-text-contrast transition-colors active:translate-y-px text-[10px] cursor-pointer"
+                class="btn-prev-proj px-2.5 py-1 rounded border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-muted hover:text-text-contrast transition-colors active:translate-y-px text-[10px] cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
               >
                 &lt; PREV
               </button>
               <button
                 type="button"
                 aria-label="Next project"
-                class="btn-next-proj px-2 py-1 rounded border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-muted hover:text-text-contrast transition-colors active:translate-y-px text-[10px] cursor-pointer"
+                class="btn-next-proj px-2.5 py-1 rounded border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-muted hover:text-text-contrast transition-colors active:translate-y-px text-[10px] cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
               >
                 NEXT &gt;
               </button>
@@ -109,7 +111,7 @@ const activeCategories = allCategories
                 data-slug={proj.slug}
                 data-categories={proj.category_ids.join(' ')}
                 class:list={[
-                  'project-selector-tab flex items-center gap-2.5 px-4 sm:px-5 py-3 text-left transition-all shrink-0 cursor-pointer select-none',
+                  'project-selector-tab flex items-center gap-2.5 px-4 sm:px-5 py-3 text-left transition-all shrink-0 cursor-pointer select-none touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary',
                   idx === 0
                     ? 'active-tab bg-surface-elevated text-text-contrast font-semibold border-b-2 border-accent-primary shadow-tactile-primary'
                     : 'bg-surface-card/40 text-text-muted hover:text-text-contrast hover:bg-surface-card/70 border-b-2 border-transparent',
@@ -127,13 +129,13 @@ const activeCategories = allCategories
         <!-- ==================================================================== -->
         <!-- MOBILE TIER 1: Category Filter Bar (Smooth touch swipe, no scrollbar) -->
         <!-- ==================================================================== -->
-        <div class="md:hidden border-b border-border-architectural bg-surface-card/80 px-3 py-2 select-none">
+        <div class="md:hidden border-b border-border-architectural bg-surface-card/80 px-3 py-2.5 select-none">
           <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar font-mono text-[10px]">
             <span class="text-accent-primary font-bold shrink-0 mr-1">// FILTER:</span>
             <button
               type="button"
               data-cat-filter="all"
-              class="cat-filter-btn px-2.5 py-1 rounded border border-accent-primary bg-surface-elevated text-accent-primary font-semibold transition-all shrink-0 cursor-pointer shadow-tactile-primary"
+              class="cat-filter-btn px-3 py-1.5 rounded border border-accent-primary bg-surface-elevated text-accent-primary font-semibold transition-all shrink-0 cursor-pointer shadow-tactile-primary touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary active:scale-[0.98]"
             >
               ALL ({projects.length})
             </button>
@@ -141,7 +143,7 @@ const activeCategories = allCategories
               <button
                 type="button"
                 data-cat-filter={cat.id}
-                class="cat-filter-btn px-2 py-1 rounded border border-border-architectural bg-surface-card text-text-muted hover:text-text-contrast transition-all shrink-0 cursor-pointer"
+                class="cat-filter-btn px-2.5 py-1.5 rounded border border-border-architectural bg-surface-card text-text-muted hover:text-text-contrast transition-all shrink-0 cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary active:scale-[0.98]"
               >
                 {cat.name.split('&')[0].trim().toUpperCase()} ({cat.count})
               </button>
@@ -160,18 +162,18 @@ const activeCategories = allCategories
               01 / {String(projects.length).padStart(2, '0')}
             </span>
           </div>
-          <div class="flex items-center gap-1.5">
+          <div class="flex items-center gap-2">
             <button
               type="button"
               aria-label="Previous project"
-              class="btn-prev-proj px-3 py-1.5 rounded border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-muted hover:text-text-contrast transition-colors active:translate-y-px text-xs font-mono font-medium cursor-pointer shadow-tactile-surface"
+              class="btn-prev-proj px-3.5 py-2 rounded border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-muted hover:text-text-contrast transition-colors active:translate-y-px text-xs font-mono font-medium cursor-pointer shadow-tactile-surface touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[38px] inline-flex items-center justify-center"
             >
               &lt; PREV
             </button>
             <button
               type="button"
               aria-label="Next project"
-              class="btn-next-proj px-3 py-1.5 rounded border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-muted hover:text-text-contrast transition-colors active:translate-y-px text-xs font-mono font-medium cursor-pointer shadow-tactile-surface"
+              class="btn-next-proj px-3.5 py-2 rounded border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-muted hover:text-text-contrast transition-colors active:translate-y-px text-xs font-mono font-medium cursor-pointer shadow-tactile-surface touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[38px] inline-flex items-center justify-center"
             >
               NEXT &gt;
             </button>
@@ -191,7 +193,7 @@ const activeCategories = allCategories
                 data-categories={proj.category_ids.join(' ')}
                 aria-label={`Project 0${idx + 1}: ${proj.title}`}
                 class:list={[
-                  'mobile-keypad-btn py-2.5 transition-all cursor-pointer font-bold',
+                  'mobile-keypad-btn py-3 transition-all cursor-pointer font-bold touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary',
                   idx === 0
                     ? 'active-tab bg-surface-elevated text-accent-primary border-b-2 border-accent-primary shadow-tactile-primary'
                     : 'bg-surface-card/40 text-text-dim hover:text-text-contrast hover:bg-surface-card border-b-2 border-transparent',
@@ -222,22 +224,22 @@ const activeCategories = allCategories
             >
               <!-- Full-Width Blueprint Header Bar -->
               <div id={`project-${proj.slug}`} class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/50 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
-                <div class="flex items-center gap-2">
-                  <span class="text-accent-primary font-bold">[0{idx + 1} // CASE_STUDY]</span>
-                  <span class="text-border-architectural">|</span>
-                  <span class="text-text-contrast font-semibold uppercase">{proj.title}</span>
+                <div class="flex items-center gap-2 min-w-0 flex-1">
+                  <span class="text-accent-primary font-bold shrink-0">[0{idx + 1} // CASE_STUDY]</span>
+                  <span class="text-border-architectural shrink-0">|</span>
+                  <span class="text-text-contrast font-semibold uppercase truncate">{proj.title}</span>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 shrink-0">
                   {proj.organization && (
                     <>
-                      <span>CLIENT: {proj.organization.name}</span>
+                      <span class="whitespace-nowrap">CLIENT: {proj.organization.name}</span>
                       <span class="text-border-architectural">|</span>
                     </>
                   )}
                   {proj.confidentiality === 'confidential_nda' ? (
-                    <Badge variant="outline" text="CONFIDENTIAL (NDA)" class="text-[9px]" />
+                    <Badge variant="outline" text="CONFIDENTIAL (NDA)" class="text-[9px] shrink-0 whitespace-nowrap" />
                   ) : (
-                    <Badge variant="accent" text="PUBLIC / OPEN" class="text-[9px]" />
+                    <Badge variant="accent" text="PUBLIC / OPEN" class="text-[9px] shrink-0 whitespace-nowrap" />
                   )}
                 </div>
               </div>
@@ -270,7 +272,7 @@ const activeCategories = allCategories
                         </div>
                       </div>
                     ) : (
-                      <div slot="ui" class="relative aspect-video w-full overflow-hidden bg-canvas border border-border-architectural flex flex-col items-center justify-center p-4 sm:p-6 text-center select-none bg-hatch-45">
+                      <div slot="ui" class="relative min-h-[280px] sm:min-h-0 sm:aspect-video w-full overflow-hidden bg-canvas border border-border-architectural flex flex-col items-center justify-center p-3 sm:p-6 text-center select-none bg-hatch-45">
                         <!-- Corner Crosshairs (+) -->
                         <svg aria-hidden="true" width="7" height="7" viewBox="0 0 5 5" class="absolute top-2 left-2 fill-accent-primary/60">
                           <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
@@ -360,7 +362,7 @@ const activeCategories = allCategories
                     </div>
 
                     <!-- Tab Panel 3: Core Code Snippet -->
-                    <div slot="code" class="p-4 overflow-x-auto bg-canvas/95 font-mono text-[11px] text-text-contrast min-h-[220px] max-h-[340px]">
+                    <div slot="code" class="p-4 overflow-x-auto arch-scrollbar bg-canvas/95 font-mono text-[11px] text-text-contrast min-h-[220px] max-h-[340px]">
                       <pre class="leading-relaxed"><code>{proj.core_code_snippet}</code></pre>
                     </div>
                   </ArchitecturalTabs>
@@ -424,7 +426,7 @@ const activeCategories = allCategories
                           target="_blank"
                           rel="noopener noreferrer"
                           class:list={[
-                            'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-control text-xs font-mono transition-all active:translate-y-px',
+                            'inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-3 sm:py-1.5 rounded-control text-xs font-mono transition-all active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[38px] sm:min-h-0',
                             link.is_primary
                               ? 'bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light shadow-tactile-primary'
                               : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast shadow-tactile-surface',
