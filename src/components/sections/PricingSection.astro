@@ -25,133 +25,186 @@ const waNumber = '628993580311';
         : 'Transparent, structured engineering engagement packages designed for founders, businesses, and enterprise teams.'}
     />
 
-    <!-- Unified 3-Bay Commercial Specification Table -->
+    <!-- Unified 3-Bay Commercial Specification Matrix -->
     <div class="arch-slice">
       <div class="border-x border-border-architectural">
         <!-- Blueprint Specification Bar -->
         <div class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
-        <div class="flex items-center gap-2">
-          <span class="text-accent-primary font-bold">// SPEC_05:COMMERCIAL_SERVICES</span>
-          <span class="text-border-architectural">|</span>
-          <span class="text-text-contrast uppercase font-semibold">ENGINEERING ENGAGEMENT TIERS</span>
+          <div class="flex items-center gap-2">
+            <span class="text-accent-primary font-bold">// SPEC_05:COMMERCIAL_SERVICES</span>
+            <span class="text-border-architectural">|</span>
+            <span class="text-text-contrast uppercase font-semibold">ENGINEERING ENGAGEMENT TIERS</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span>CURRENCY: IDR</span>
+            <span class="text-border-architectural">|</span>
+            <span class="text-accent-primary font-medium">{pricingServices.length} PACKAGES AVAILABLE</span>
+          </div>
         </div>
-        <div class="flex items-center gap-2">
-          <span>CURRENCY: IDR</span>
-          <span class="text-border-architectural">|</span>
-          <span class="text-accent-primary font-medium">{pricingServices.length} PACKAGES AVAILABLE</span>
-        </div>
-      </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border-architectural items-stretch">
-        {pricingServices.map((srv) => {
-          const waMessage = encodeURIComponent(
-            lang === 'id'
-              ? `Halo Adi Novendra, saya tertarik untuk berkonsultasi mengenai paket jasa: ${srv.tier_name}.`
-              : `Hello Adi Novendra, I would like to consult about the engagement tier: ${srv.tier_name}.`
-          );
-          const waUrl = `https://wa.me/${waNumber}?text=${waMessage}`;
+        <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border-architectural items-stretch">
+          {pricingServices.map((srv) => {
+            const isHero = srv.is_popular;
+            const waMessage = encodeURIComponent(
+              lang === 'id'
+                ? `Halo Adi Novendra, saya tertarik untuk berkonsultasi mengenai paket jasa: ${srv.tier_name}.`
+                : `Hello Adi Novendra, I would like to consult about the engagement tier: ${srv.tier_name}.`
+            );
+            const waUrl = `https://wa.me/${waNumber}?text=${waMessage}`;
 
-          return (
-            <div
-              class:list={[
-                'flex flex-col justify-between p-6 md:p-8 h-full transition-colors',
-                srv.is_popular
-                  ? 'bg-surface-elevated/40'
-                  : 'bg-surface-card hover:bg-surface-elevated/20',
-              ]}
-            >
-              <div class="space-y-6">
-                <!-- Header & Popular Badge -->
-                <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-4">
-                  <span class="font-mono text-xs text-text-dim shrink-0 whitespace-nowrap">
-                    TIER_0{srv.order} // SPEC
-                  </span>
-                  {srv.is_popular && (
-                    <Badge variant="accent" text={lang === 'id' ? 'PALING POPULER' : 'MOST POPULAR'} class="shrink-0 whitespace-nowrap" />
-                  )}
-                </div>
-
-                <!-- Title & Tagline -->
-                <div class="space-y-2">
-                  <h3 class="text-xl font-bold text-text-contrast">
-                    {srv.tier_name}
-                  </h3>
-                  <p class="text-xs text-text-muted leading-relaxed min-h-[48px]">
-                    {srv.tagline[lang]}
-                  </p>
-                </div>
-
-                <!-- Price & Timeline -->
-                <div class="p-4 rounded-control bg-canvas/70 border border-border-architectural space-y-2 shadow-xs">
-                  <div class="text-[11px] font-mono text-text-dim uppercase tracking-wider">
-                    {lang === 'id' ? 'Estimasi Investasi Mulai' : 'Starting Investment'}
-                  </div>
-                  <div class="font-mono text-2xl font-bold text-accent-primary tabular-nums">
-                    {srv.price_starting}
-                  </div>
-                  <div class="flex items-center gap-2 pt-1 font-mono text-xs text-text-muted border-t border-border-architectural/60">
-                    <span class="text-text-dim">⏱</span>
-                    <span>{srv.estimated_timeline[lang]}</span>
-                  </div>
-                </div>
-
-                <!-- Deliverables Checklist -->
-                <div class="space-y-3 pt-2">
-                  <div class="font-mono text-xs font-semibold text-text-contrast uppercase tracking-wider">
-                    {t('pricing.deliverables')}
-                  </div>
-                  <ul class="space-y-2 text-xs text-text-muted">
-                    {srv.deliverables[lang].map((item) => (
-                      <li class="flex items-start gap-2">
-                        <span class="text-accent-primary font-bold shrink-0">✓</span>
-                        <span class="leading-relaxed">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <!-- FAQ Section for the Tier -->
-                {srv.faq_items.length > 0 && (
-                  <div class="pt-4 border-t border-border-architectural/60 space-y-2">
-                    <div class="font-mono text-[11px] text-text-dim uppercase tracking-wider">
-                      FAQ
-                    </div>
-                    {srv.faq_items.map((faq) => (
-                      <div class="text-xs space-y-1">
-                        <div class="text-text-contrast font-medium">
-                          Q: {faq.question[lang]}
-                        </div>
-                        <div class="text-text-muted/80 text-[11px] pl-3 border-l border-border-architectural">
-                          {faq.answer[lang]}
-                        </div>
-                      </div>
-                    ))}
+            return (
+              <div
+                class:list={[
+                  'flex flex-col justify-between p-6 md:p-8 h-full transition-colors relative',
+                  isHero
+                    ? 'bg-surface-elevated/70 z-10 md:ring-1 md:ring-inset md:ring-accent-primary/40'
+                    : 'bg-surface-card hover:bg-surface-elevated/20',
+                ]}
+              >
+                {/* Integrated Architectural Top Ribbon for Flagship Tier */}
+                {isHero && (
+                  <div class="px-4 py-1.5 -mx-6 md:-mx-8 -mt-6 md:-mt-8 mb-6 bg-accent-primary/10 border-b border-accent-primary/40 text-accent-primary font-mono text-[10px] font-semibold tracking-wider uppercase flex items-center justify-between select-none">
+                    <span>// FLAGSHIP ENGAGEMENT</span>
+                    <span>[ RECOMMENDED ]</span>
                   </div>
                 )}
-              </div>
 
-              <!-- WhatsApp Action Button -->
-              <div class="pt-8">
-                <a
-                  href={waUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class:list={[
-                    'w-full inline-flex items-center justify-center gap-2 px-4 py-3 sm:py-2.5 rounded-control text-xs font-mono font-semibold transition-all active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[44px]',
-                    srv.is_popular
-                      ? 'bg-accent-primary text-canvas hover:bg-accent-primary-light shadow-tactile-primary'
-                      : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast hover:border-accent-primary/40 shadow-tactile-surface',
-                  ]}
-                >
-                  <span>{t('pricing.cta')}</span>
-                  <span>↗</span>
-                </a>
+                <div class="space-y-6">
+                  <!-- Header & Popular Badge -->
+                  <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-4">
+                    <span class="font-mono text-xs text-text-dim shrink-0 whitespace-nowrap">
+                      TIER_0{srv.order} // SPEC
+                    </span>
+                    {isHero && (
+                      <Badge
+                        variant="accent"
+                        text={lang === 'id' ? 'PALING POPULER' : 'MOST POPULAR'}
+                        class="shrink-0 whitespace-nowrap"
+                      />
+                    )}
+                  </div>
+
+                  <!-- Title & Tagline -->
+                  <div class="space-y-2">
+                    <h3 class="text-xl font-bold text-text-contrast">
+                      {srv.tier_name}
+                    </h3>
+                    <p class="text-xs text-text-muted leading-relaxed min-h-[48px]">
+                      {srv.tagline[lang]}
+                    </p>
+                  </div>
+
+                  <!-- Price & Timeline -->
+                  <div
+                    class:list={[
+                      'p-4 rounded-control space-y-2 shadow-xs border',
+                      isHero
+                        ? 'bg-canvas border-accent-primary/40'
+                        : 'bg-canvas/70 border-border-architectural',
+                    ]}
+                  >
+                    <div class="text-[11px] font-mono text-text-dim uppercase tracking-wider">
+                      {lang === 'id' ? 'Estimasi Investasi Mulai' : 'Starting Investment'}
+                    </div>
+                    <div
+                      class:list={[
+                        'font-mono font-bold tabular-nums',
+                        isHero
+                          ? 'text-3xl text-accent-primary'
+                          : 'text-2xl text-text-contrast',
+                      ]}
+                    >
+                      {srv.price_starting}
+                    </div>
+                    <div class="flex items-center gap-2 pt-1 font-mono text-xs text-text-muted border-t border-border-architectural/60">
+                      <span class="text-text-dim font-mono text-[10px] uppercase">[TIMELINE]</span>
+                      <span>{srv.estimated_timeline[lang]}</span>
+                    </div>
+                  </div>
+
+                  <!-- Deliverables Checklist -->
+                  <div class="space-y-3 pt-2">
+                    <div class="font-mono text-xs font-semibold text-text-contrast uppercase tracking-wider">
+                      {t('pricing.deliverables')}
+                    </div>
+                    <ul class="space-y-2 text-xs text-text-muted">
+                      {srv.deliverables[lang].map((item) => (
+                        <li class="flex items-start gap-2.5">
+                          <span class="font-mono text-accent-primary font-bold shrink-0 select-none text-[11px] leading-relaxed">+</span>
+                          <span class="leading-relaxed">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- WhatsApp Action Button -->
+                <div class="pt-8">
+                  <a
+                    href={waUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class:list={[
+                      'w-full inline-flex items-center justify-center gap-2 px-4 py-3 sm:py-2.5 rounded-control text-xs font-mono font-semibold transition-all active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[44px]',
+                      isHero
+                        ? 'bg-accent-primary text-canvas hover:bg-accent-primary-light shadow-tactile-primary'
+                        : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast hover:border-accent-primary/40 shadow-tactile-surface',
+                    ]}
+                  >
+                    <span>{t('pricing.cta')}</span>
+                    <span>↗</span>
+                  </a>
+                </div>
               </div>
+            );
+          })}
+        </div>
+
+        <!-- Commercial FAQ Directly Below The 3-Bay Matrix -->
+        <div class="border-t border-border-architectural bg-surface-card/30">
+          <!-- Header Bar -->
+          <div class="px-4 sm:px-6 py-3 border-b border-border-architectural flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
+            <div class="flex items-center gap-2">
+              <span class="text-accent-primary font-bold">// FREQUENTLY_ASKED_QUESTIONS</span>
+              <span class="text-border-architectural">|</span>
+              <span class="text-text-contrast uppercase font-semibold">
+                {lang === 'id' ? 'PROTOKOL KERJASAMA & KONTRAK TEKNIS' : 'TECHNICAL ENGAGEMENT & CONTRACT POLICIES'}
+              </span>
             </div>
-          );
-        })}
+            <div class="flex items-center gap-2">
+              <span class="text-accent-primary font-medium">12 TOPICS DOCUMENTED</span>
+            </div>
+          </div>
+
+          <!-- 3-Column FAQ Grid Aligned to Tiers -->
+          <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border-architectural">
+            {pricingServices.map((srv) => (
+              <div class="p-6 md:p-8 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-border-architectural">
+                  <span class="font-mono text-xs font-bold text-text-contrast uppercase tracking-wider">
+                    {srv.tier_name}
+                  </span>
+                  <span class="font-mono text-[10px] text-text-dim">TIER_0{srv.order}</span>
+                </div>
+
+                <div class="space-y-2.5">
+                  {srv.faq_items.map((faq) => (
+                    <details class="group text-xs border border-border-architectural/70 rounded-control bg-canvas/40 p-3 transition-colors hover:border-accent-primary/40 open:border-accent-primary/50 open:bg-canvas/80">
+                      <summary class="font-medium text-text-contrast hover:text-accent-primary cursor-pointer flex items-start justify-between gap-2 list-none select-none">
+                        <span class="leading-snug">{faq.question[lang]}</span>
+                        <span class="font-mono text-accent-primary text-xs shrink-0 group-open:rotate-45 transition-transform duration-150 select-none">+</span>
+                      </summary>
+                      <div class="pt-2 mt-2 text-text-muted text-[11px] leading-relaxed border-t border-border-architectural/50">
+                        {faq.answer[lang]}
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </section>
