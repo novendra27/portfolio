@@ -22,7 +22,7 @@ const t = useTranslations(lang);
     />
 
     <!-- Architectural Communications Dispatch Terminal -->
-    <div class="arch-slice">
+    <div class="arch-slice arch-reveal">
       <div class="border-x border-border-architectural">
         <!-- Blueprint Specification Header Bar -->
         <div class="px-5 py-2.5 border-b border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
@@ -40,7 +40,7 @@ const t = useTranslations(lang);
 
       <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural items-stretch">
         <!-- Left Chamber: Status, Pitch & Diagnostic SLA (7 cols) -->
-        <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-canvas/30">
+        <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-canvas/30 arch-reveal arch-stagger-1">
           <div class="space-y-4">
             <div class="flex items-center gap-2.5">
               <StatusPill text={t('hero.badge')} />
@@ -69,7 +69,7 @@ const t = useTranslations(lang);
         </div>
 
         <!-- Right Chamber: 2x2 Continuous Instrument Grid (5 cols) -->
-        <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 bg-surface-card/60">
+        <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 bg-surface-card/60 arch-reveal arch-stagger-2">
           <!-- WhatsApp -->
           <a
             href="https://wa.me/628993580311"

@@ -37,7 +37,7 @@ const stats = [
 <section id="hero" class="relative pt-4 sm:pt-6 pb-16 md:pb-24">
   <div class="max-w-6xl mx-auto px-4 sm:px-6">
     <!-- 1. Top Blueprint Coordination Bar -->
-    <div class="flex items-center justify-between px-2 sm:px-4 py-2 text-[10px] font-mono text-text-dim border-b border-border-architectural select-none gap-2">
+    <div class="flex items-center justify-between px-2 sm:px-4 py-2 text-[10px] font-mono text-text-dim border-b border-border-architectural select-none gap-2 arch-reveal">
       <div class="flex items-center gap-2 min-w-0 flex-1">
         <StatusPill text={t('hero.badge')} class="truncate max-w-full" />
         <span class="text-border-architectural hidden sm:inline">|</span>
@@ -58,7 +58,7 @@ const stats = [
     </div>
 
     <!-- 3. Headline Slicing Row (Full-width infinite horizontal lines) -->
-    <div class="arch-slice">
+    <div class="arch-slice arch-reveal arch-stagger-1">
       <h1 class="px-2 sm:px-4 py-4 sm:py-7 text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-text-contrast leading-[1.08] break-words">
         Adi Novendra Putra, <span class="text-accent-primary">S.Kom.</span>
       </h1>
@@ -71,7 +71,7 @@ const stats = [
     </div>
 
   <!-- 5. Bio Narrative Slicing Row -->
-  <div class="arch-slice">
+  <div class="arch-slice arch-reveal arch-stagger-2">
     <p class="max-w-4xl px-2 sm:px-4 py-4 sm:py-6 text-base sm:text-lg leading-relaxed text-text-muted font-normal">
       {lang === 'id'
         ? 'Lulusan Teknik Informatika Universitas Islam Negeri Maulana Malik Ibrahim Malang dengan pengalaman dalam pengembangan aplikasi web dan sistem internal. Terbiasa menangani proses pengembangan perangkat lunak mulai dari analisis kebutuhan, implementasi, deployment, hingga maintenance. Memiliki minat di bidang Software Engineering serta antusias untuk terus belajar terkait teknologi.'
@@ -80,7 +80,7 @@ const stats = [
   </div>
 
   <!-- 6. Action CTAs Slicing Row -->
-  <div class="arch-slice">
+  <div class="arch-slice arch-reveal arch-stagger-3">
     <div class="px-2 sm:px-4 py-5 sm:py-6 flex flex-wrap items-center gap-3 sm:gap-4">
       <a
         href="#projects"
@@ -105,7 +105,7 @@ const stats = [
   </div>
 
   <!-- 7. Architectural Showcase Block (Inspired by Tailwind Code Editor + Hatching Card) -->
-  <div class="mt-8 sm:mt-14 arch-slice">
+  <div class="mt-8 sm:mt-14 arch-slice arch-reveal arch-stagger-4">
     <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural border border-border-architectural items-stretch bg-canvas">
       <!-- Left: Interactive Code Snippet / Terminal & 4-Cell Metrics Matrix (7 cols) -->
       <div class="lg:col-span-7 flex flex-col justify-between divide-y divide-border-architectural">

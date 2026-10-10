@@ -26,7 +26,7 @@ const waNumber = '628993580311';
     />
 
     <!-- Unified 3-Bay Commercial Specification Matrix -->
-    <div class="arch-slice">
+    <div class="arch-slice arch-reveal">
       <div class="border-x border-border-architectural">
         <!-- Blueprint Specification Bar -->
         <div class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
@@ -43,7 +43,7 @@ const waNumber = '628993580311';
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border-architectural items-stretch">
-          {pricingServices.map((srv) => {
+          {pricingServices.map((srv, idx) => {
             const isHero = srv.is_popular;
             const waMessage = encodeURIComponent(
               lang === 'id'
@@ -55,7 +55,10 @@ const waNumber = '628993580311';
             return (
               <div
                 class:list={[
-                  'flex flex-col justify-between p-6 md:p-8 h-full transition-colors relative',
+                  'flex flex-col justify-between p-6 md:p-8 h-full transition-colors relative arch-reveal',
+                  idx === 0 && 'arch-stagger-1',
+                  idx === 1 && 'arch-stagger-2',
+                  idx === 2 && 'arch-stagger-3',
                   isHero
                     ? 'bg-surface-elevated/70 z-10 md:ring-1 md:ring-inset md:ring-accent-primary/40'
                     : 'bg-surface-card hover:bg-surface-elevated/20',
@@ -161,7 +164,7 @@ const waNumber = '628993580311';
         </div>
 
         <!-- Commercial FAQ Directly Below The 3-Bay Matrix -->
-        <div class="border-t border-border-architectural bg-surface-card/30">
+        <div class="border-t border-border-architectural bg-surface-card/30 arch-reveal arch-stagger-2">
           <!-- Header Bar -->
           <div class="px-4 sm:px-6 py-3 border-b border-border-architectural flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
             <div class="flex items-center gap-2">
@@ -178,8 +181,15 @@ const waNumber = '628993580311';
 
           <!-- 3-Column FAQ Grid Aligned to Tiers -->
           <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border-architectural">
-            {pricingServices.map((srv) => (
-              <div class="p-6 md:p-8 space-y-4">
+            {pricingServices.map((srv, srvIdx) => (
+              <div
+                class:list={[
+                  'p-6 md:p-8 space-y-4 arch-reveal',
+                  srvIdx === 0 && 'arch-stagger-1',
+                  srvIdx === 1 && 'arch-stagger-2',
+                  srvIdx === 2 && 'arch-stagger-3',
+                ]}
+              >
                 <div class="flex items-center justify-between pb-3 border-b border-border-architectural">
                   <span class="font-mono text-xs font-bold text-text-contrast uppercase tracking-wider">
                     {srv.tier_name}

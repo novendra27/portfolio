@@ -31,7 +31,7 @@ const patternLabels = {
     />
 
     <!-- Continuous 3-Bay Architectural Matrix -->
-    <div class="arch-slice">
+    <div class="arch-slice arch-reveal">
       <div class="border-x border-border-architectural">
         <!-- Blueprint Specification Bar -->
         <div class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
@@ -48,8 +48,15 @@ const patternLabels = {
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural bg-canvas">
-        {architectures.map((arch) => (
-          <div class="flex flex-col p-6 sm:p-7 h-full justify-between hover:bg-surface-elevated/30 transition-colors group">
+        {architectures.map((arch, idx) => (
+          <div
+            class:list={[
+              'flex flex-col p-6 sm:p-7 h-full justify-between hover:bg-surface-elevated/30 transition-colors group arch-reveal',
+              idx === 0 && 'arch-stagger-1',
+              idx === 1 && 'arch-stagger-2',
+              idx === 2 && 'arch-stagger-3',
+            ]}
+          >
             <div class="space-y-4">
               <!-- Header Pattern Type -->
               <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-3">

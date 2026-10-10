@@ -102,5 +102,39 @@ const ogLocale = lang === 'id' ? 'id_ID' : 'en_US';
       </div>
       <Footer lang={lang} />
     </div>
+
+    <!-- Architectural Motion & Scroll Reveal Engine (Native & Zero-Dependency) -->
+    <script is:inline>
+      (() => {
+        const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const revealElements = document.querySelectorAll('.arch-reveal');
+
+        if (isReducedMotion) {
+          revealElements.forEach((el) => el.classList.add('is-revealed'));
+          return;
+        }
+
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-revealed');
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            {
+              rootMargin: '0px 0px -60px 0px',
+              threshold: 0.08,
+            }
+          );
+
+          revealElements.forEach((el) => observer.observe(el));
+        } else {
+          revealElements.forEach((el) => el.classList.add('is-revealed'));
+        }
+      })();
+    </script>
   </body>
 </html>
