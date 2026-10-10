@@ -31,17 +31,16 @@ const navItems = [
       <span class="inline-flex items-center justify-center w-6 h-6 rounded border border-border-architectural bg-surface-card text-accent-primary font-bold group-hover:border-accent-primary/40 shadow-tactile-surface transition-colors">
         A
       </span>
-      <span class="font-semibold hidden sm:inline">ADI NOVENDRA</span>
-      <span class="text-text-dim text-[11px] hidden md:inline">// SOFTWARE ENGINEER</span>
-      <span class="hidden lg:inline text-[9px] px-1.5 py-0.5 rounded border border-border-architectural text-accent-primary font-mono bg-canvas/60">SCALE 1:1</span>
+      <span class="font-semibold hidden sm:inline md:hidden lg:inline">ADI NOVENDRA</span>
     </a>
 
     <!-- Desktop Navigation Links -->
-    <nav class="hidden md:flex items-center gap-6 text-xs font-mono" aria-label="Main Navigation">
+    <nav class="hidden md:flex items-center gap-3.5 lg:gap-6 text-xs font-mono" aria-label="Main Navigation">
       {navItems.map((item) => (
         <a
           href={item.href}
-          class="text-text-muted hover:text-text-contrast transition-colors py-1.5 px-1 hover:underline underline-offset-4 decoration-accent-primary/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs"
+          data-nav-href={item.href}
+          class="desktop-nav-link text-text-muted hover:text-text-contrast transition-colors py-1.5 px-1 hover:underline underline-offset-4 decoration-accent-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs"
         >
           {item.label}
         </a>
@@ -54,7 +53,8 @@ const navItems = [
 
       <a
         href="#contact"
-        class="hidden sm:inline-flex items-center px-3 py-1.5 rounded-control text-xs font-mono font-medium border border-border-architectural bg-surface-card hover:bg-surface-elevated hover:border-border-architectural-hover text-text-contrast shadow-tactile-surface transition-all active:translate-y-px focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
+        data-nav-href="#contact"
+        class="desktop-nav-contact hidden sm:inline-flex items-center px-3 py-1.5 rounded-control text-xs font-mono font-medium border border-border-architectural bg-surface-card hover:bg-surface-elevated hover:border-border-architectural-hover text-text-contrast shadow-tactile-surface transition-all active:translate-y-px focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
       >
         {t('nav.contact')}
       </a>
@@ -82,14 +82,16 @@ const navItems = [
     {navItems.map((item) => (
       <a
         href={item.href}
-        class="flex items-center font-mono text-xs text-text-muted hover:text-text-contrast hover:bg-surface-elevated/40 px-3 py-2.5 rounded transition-colors mobile-link touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
+        data-nav-href={item.href}
+        class="mobile-link mobile-nav-item flex items-center font-mono text-xs text-text-muted hover:text-text-contrast hover:bg-surface-elevated/40 px-3 py-2.5 rounded transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
       >
         {item.label}
       </a>
     ))}
     <a
       href="#contact"
-      class="flex items-center font-mono text-xs text-accent-primary hover:text-accent-primary-light hover:bg-accent-primary/10 px-3 py-2.5 rounded font-semibold transition-colors mobile-link touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
+      data-nav-href="#contact"
+      class="mobile-link mobile-nav-contact flex items-center font-mono text-xs text-accent-primary hover:text-accent-primary-light hover:bg-accent-primary/10 px-3 py-2.5 rounded font-semibold transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
     >
       {t('nav.contact')} →
     </a>
@@ -97,9 +99,10 @@ const navItems = [
 </header>
 
 <script>
+  // Mobile menu toggle controller
   const btn = document.getElementById('mobile-menu-btn');
   const menu = document.getElementById('mobile-menu');
-  const links = document.querySelectorAll('.mobile-link');
+  const mobileLinks = document.querySelectorAll<HTMLAnchorElement>('.mobile-link');
 
   if (btn && menu) {
     btn.addEventListener('click', () => {
@@ -108,11 +111,128 @@ const navItems = [
       btn.setAttribute('aria-expanded', String(!isOpen));
     });
 
-    links.forEach((link) => {
+    mobileLinks.forEach((link) => {
       link.addEventListener('click', () => {
         menu.classList.add('hidden');
         btn.setAttribute('aria-expanded', 'false');
       });
     });
+  }
+
+  // Architectural Scrollspy: Active Section Highlighting
+  function initScrollspy() {
+    const desktopLinks = document.querySelectorAll<HTMLAnchorElement>('.desktop-nav-link');
+    const desktopContactBtn = document.querySelector<HTMLAnchorElement>('.desktop-nav-contact');
+    const mobileNavLinks = document.querySelectorAll<HTMLAnchorElement>('.mobile-nav-item');
+    const mobileContactBtn = document.querySelector<HTMLAnchorElement>('.mobile-nav-contact');
+
+    const SECTION_IDS = [
+      'architecture',
+      'projects',
+      'tech-stack',
+      'experience',
+      'pricing',
+      'publications',
+      'contact',
+    ];
+
+    let currentActiveId: string | null = null;
+    let ticking = false;
+
+    function updateActiveState() {
+      const scrollY = window.scrollY;
+      const scrollBottom = window.innerHeight + scrollY;
+      const docHeight = document.documentElement.scrollHeight;
+
+      let newActiveId: string | null = null;
+
+      // 1. If at bottom of document, activate contact
+      if (scrollBottom >= docHeight - 70) {
+        newActiveId = 'contact';
+      } else if (scrollY > 150) {
+        // 2. Scan sections based on 140px activation line (just below header)
+        const ACTIVATION_OFFSET = 140;
+        for (const id of SECTION_IDS) {
+          const el = document.getElementById(id);
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            if (rect.top <= ACTIVATION_OFFSET && rect.bottom > ACTIVATION_OFFSET) {
+              newActiveId = id;
+              break;
+            }
+          }
+        }
+      }
+
+      if (newActiveId === currentActiveId) return;
+      currentActiveId = newActiveId;
+
+      // Update Desktop Nav Links
+      desktopLinks.forEach((link) => {
+        const target = link.getAttribute('data-nav-href');
+        const isActive = target === `#${currentActiveId}`;
+        if (isActive) {
+          link.classList.add('text-text-contrast', 'underline', 'font-semibold');
+          link.classList.remove('text-text-muted');
+        } else {
+          link.classList.remove('text-text-contrast', 'underline', 'font-semibold');
+          link.classList.add('text-text-muted');
+        }
+      });
+
+      // Update Desktop Contact Button
+      if (desktopContactBtn) {
+        if (currentActiveId === 'contact') {
+          desktopContactBtn.classList.add('border-accent-primary/60', 'bg-surface-elevated', 'text-accent-primary');
+          desktopContactBtn.classList.remove('border-border-architectural', 'bg-surface-card', 'text-text-contrast');
+        } else {
+          desktopContactBtn.classList.remove('border-accent-primary/60', 'bg-surface-elevated', 'text-accent-primary');
+          desktopContactBtn.classList.add('border-border-architectural', 'bg-surface-card', 'text-text-contrast');
+        }
+      }
+
+      // Update Mobile Nav Links
+      mobileNavLinks.forEach((link) => {
+        const target = link.getAttribute('data-nav-href');
+        const isActive = target === `#${currentActiveId}`;
+        if (isActive) {
+          link.classList.add('text-text-contrast', 'bg-surface-elevated/70', 'border-l-2', 'border-accent-primary', 'font-semibold');
+          link.classList.remove('text-text-muted');
+        } else {
+          link.classList.remove('text-text-contrast', 'bg-surface-elevated/70', 'border-l-2', 'border-accent-primary', 'font-semibold');
+          link.classList.add('text-text-muted');
+        }
+      });
+
+      // Update Mobile Contact Link
+      if (mobileContactBtn) {
+        if (currentActiveId === 'contact') {
+          mobileContactBtn.classList.add('bg-accent-primary/20', 'border-l-2', 'border-accent-primary');
+        } else {
+          mobileContactBtn.classList.remove('bg-accent-primary/20', 'border-l-2', 'border-accent-primary');
+        }
+      }
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateActiveState();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    // Initial run on load
+    updateActiveState();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollspy);
+  } else {
+    initScrollspy();
   }
 </script>
