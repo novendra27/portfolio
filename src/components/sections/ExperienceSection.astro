@@ -1,0 +1,204 @@
+---
+import {
+  experienceRepository,
+  educationRepository,
+  certificateRepository,
+} from '@/lib/repositories';
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+import SectionHeading from '../SectionHeading.astro';
+import Badge from '../Badge.astro';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const experiences = await experienceRepository.getAllWithRelations();
+const educations = await educationRepository.getAllWithRelations();
+const certificates = await certificateRepository.getAllWithRelations();
+
+const typeLabels = {
+  fulltime: 'FULL-TIME',
+  contract: 'CONTRACT',
+  freelance: 'FREELANCE',
+  internship: 'INTERNSHIP',
+  community: 'COMMUNITY',
+};
+---
+
+<section id="experience" class="py-16 md:py-24 border-b border-border-architectural arch-bleed-line-bottom">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <SectionHeading
+      index={t('section.experience.index')}
+      title={t('section.experience.title')}
+      subtitle={lang === 'id'
+        ? 'Rekam jejak kontribusi industri profesional, magang rekayasa perangkat lunak, kepemimpinan komunitas Google Developer Groups, dan almamater akademis.'
+        : 'Professional track record spanning software engineering roles, internships, Google Developer Groups community leadership, and academic milestones.'}
+    />
+
+    <!-- Continuous Blueprint Experience Matrix -->
+    <div class="arch-slice arch-reveal">
+      <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural border-x border-border-architectural items-stretch bg-canvas">
+        <!-- Left Column: Work Experience Timeline Matrix (7 cols) -->
+        <div class="lg:col-span-7 flex flex-col justify-between divide-y divide-border-architectural arch-reveal arch-stagger-1">
+          <!-- Column Header Bar -->
+          <div class="px-4 sm:px-6 py-2.5 bg-surface-card/60 flex items-center justify-between font-mono text-[10px] text-text-dim select-none">
+            <div class="flex items-center gap-2">
+              <span class="text-accent-primary font-bold">// SPEC_04A: WORK HISTORY</span>
+              <span class="text-border-architectural">|</span>
+              <span>{experiences.length} ROLES RECORDED</span>
+            </div>
+            <span class="text-accent-primary font-medium">// STATUS: ACTIVE</span>
+          </div>
+
+          <!-- Experiences List with Shared Dividers -->
+          <div class="divide-y divide-border-architectural">
+            {experiences.map((exp, idx) => (
+              <div class="p-5 sm:p-6 space-y-4 hover:bg-surface-elevated/20 transition-colors">
+                <!-- Job Header -->
+                <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="text-accent-primary font-bold shrink-0">[EXP_0{idx + 1}]</span>
+                    <span class="font-semibold text-text-contrast text-sm">{exp.role}</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-[10px] shrink-0">
+                    <Badge variant="outline" text={typeLabels[exp.type]} class="text-[9px] shrink-0 whitespace-nowrap" />
+                    <span class="text-border-architectural">|</span>
+                    <span class="text-accent-primary whitespace-nowrap">
+                      {exp.period_start} — {exp.period_end ?? (lang === 'id' ? 'Sekarang' : 'Present')}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Org & Location Row -->
+                <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-text-dim border-b border-border-architectural/60 pb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="text-accent-primary font-medium">{exp.organization?.name}</span>
+                    <span>•</span>
+                    <span class="text-text-muted">{exp.location}</span>
+                  </div>
+                  <span class="text-[10px]">// COORD: {exp.location.split(',')[0].toUpperCase()}</span>
+                </div>
+
+                <!-- Highlights List -->
+                <ul class="space-y-2 text-xs text-text-muted leading-relaxed">
+                  {exp.highlights[lang].map((highlight, hIdx) => (
+                    <li class="flex items-start gap-2.5">
+                      <span class="font-mono text-[10px] text-accent-primary font-bold pt-0.5 select-none shrink-0">
+                        {String(hIdx + 1).padStart(2, '0')}.
+                      </span>
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <!-- Tech Badges -->
+                {exp.technologies.length > 0 && (
+                  <div class="flex flex-wrap items-center gap-1.5 pt-2">
+                    <span class="font-mono text-[10px] text-text-dim uppercase tracking-wider mr-1 select-none">
+                      STACK:
+                    </span>
+                    {exp.technologies.map((tech) => (
+                      <Badge variant="default" text={tech.name} class="text-[10px]" />
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Right Column: Education & Industry Certifications (5 cols) -->
+        <div class="lg:col-span-5 flex flex-col justify-between divide-y divide-border-architectural arch-reveal arch-stagger-2">
+          <!-- Education Sub-Chamber -->
+          <div class="divide-y divide-border-architectural">
+            <!-- Header Bar -->
+            <div class="px-4 sm:px-6 py-2.5 bg-surface-card/60 flex items-center justify-between font-mono text-[10px] text-text-dim select-none">
+              <span class="text-accent-primary font-bold">// SPEC_04B: FORMAL EDUCATION</span>
+              <span>FAST-TRACK S.KOM.</span>
+            </div>
+
+            {educations.map((edu) => (
+              <div class="p-5 sm:p-6 space-y-3 bg-surface-card/20">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="min-w-0 flex-1">
+                    <h4 class="text-sm font-semibold text-text-contrast">
+                      {edu.degree}
+                    </h4>
+                    <p class="font-mono text-xs text-accent-primary mt-0.5">
+                      {edu.organization?.name}
+                    </p>
+                  </div>
+                  <span class="font-mono text-xs text-text-dim shrink-0 whitespace-nowrap">{edu.period}</span>
+                </div>
+
+                {edu.gpa && (
+                  <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded border border-accent-primary/40 bg-accent-primary/10 font-mono text-xs text-accent-primary font-semibold">
+                    <span>PREDICATE:</span>
+                    <span>{edu.gpa}</span>
+                  </div>
+                )}
+
+                {edu.thesis_title && (
+                  <div class="p-3 rounded border border-border-architectural bg-canvas/60 space-y-1.5">
+                    <div class="flex items-center justify-between font-mono text-[10px] text-text-dim select-none">
+                      <span>// THESIS_RESEARCH_SPEC</span>
+                      <span class="text-accent-primary">ALGORITHMIC</span>
+                    </div>
+                    <p class="text-xs text-text-muted italic leading-relaxed">
+                      "{edu.thesis_title}"
+                    </p>
+                    {edu.thesis_project && (
+                      <a
+                        href={`#project-${edu.thesis_project.slug}`}
+                        class="inline-flex items-center gap-1 font-mono text-[11px] text-accent-primary hover:underline pt-1.5 pb-0.5 touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs"
+                      >
+                        <span>{lang === 'id' ? 'Lihat Studi Kasus Skripsi' : 'View Thesis Case Study'}</span>
+                        <span>→</span>
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <!-- Certifications Sub-Chamber -->
+          <div class="divide-y divide-border-architectural">
+            <!-- Header Bar -->
+            <div class="px-4 sm:px-6 py-2.5 bg-surface-card/60 flex items-center justify-between font-mono text-[10px] text-text-dim select-none">
+              <span class="text-accent-primary font-bold">// SPEC_04C: CERTIFICATIONS</span>
+              <span>{certificates.length} RECORDS</span>
+            </div>
+
+            {certificates.map((cert) => (
+              <div class="p-4 sm:p-5 space-y-2 bg-surface-card/10 hover:bg-surface-elevated/20 transition-colors">
+                <div class="flex items-start justify-between gap-2">
+                  <h4 class="text-xs font-semibold text-text-contrast leading-snug min-w-0 flex-1">
+                    {cert.title}
+                  </h4>
+                  <span class="font-mono text-[11px] text-text-dim shrink-0 whitespace-nowrap">
+                    {cert.issue_date}
+                  </span>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] font-mono">
+                  <span class="text-text-muted">{cert.issuer?.name}</span>
+                  <span class="text-text-dim">{cert.credential_id}</span>
+                </div>
+
+                <div class="flex flex-wrap gap-1 pt-1">
+                  {cert.technologies.map((tech) => (
+                    <Badge variant="default" text={tech.name} class="text-[10px]" />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,117 @@
+---
+interface Props {
+  cardId: string;
+  labels?: {
+    ui?: string;
+    arch?: string;
+    code?: string;
+  };
+  hasArch?: boolean;
+  hasCode?: boolean;
+}
+
+const {
+  cardId,
+  labels = {
+    ui: 'UI Preview',
+    arch: 'Architecture Flow',
+    code: 'Core Snippet',
+  },
+  hasArch = true,
+  hasCode = true,
+} = Astro.props;
+---
+
+<div class="arch-tabs-container w-full" data-card-id={cardId}>
+  <!-- Segmented Control Tab Header -->
+  <div class="flex items-center gap-1.5 p-1 rounded-control bg-surface-card/80 border border-border-architectural mb-4 text-xs font-mono overflow-x-auto no-scrollbar">
+    <button
+      type="button"
+      data-tab="ui"
+      class="tab-btn px-3 py-1.5 sm:py-1 rounded transition-all active-tab bg-surface-elevated text-text-contrast font-medium border border-border-architectural shadow-tactile-surface shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
+    >
+      [{labels.ui}]
+    </button>
+
+    {hasArch && (
+      <button
+        type="button"
+        data-tab="arch"
+        class="tab-btn px-3 py-1.5 sm:py-1 rounded transition-all text-text-muted hover:text-text-contrast hover:bg-white/5 border border-transparent shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
+      >
+        [{labels.arch}]
+      </button>
+    )}
+
+    {hasCode && (
+      <button
+        type="button"
+        data-tab="code"
+        class="tab-btn px-3 py-1.5 sm:py-1 rounded transition-all text-text-muted hover:text-text-contrast hover:bg-white/5 border border-transparent shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
+      >
+        [{labels.code}]
+      </button>
+    )}
+  </div>
+
+  <!-- Tab Panels with Developer Viewport Bar -->
+  <div class="tab-panels relative overflow-hidden rounded-md border border-border-architectural bg-canvas">
+    <div class="flex items-center justify-between px-3 py-1.5 border-b border-border-architectural bg-surface-card/90 text-[10px] font-mono text-text-dim select-none">
+      <div class="flex items-center gap-1.5">
+        <span class="size-2 rounded-full bg-white/20"></span>
+        <span class="size-2 rounded-full bg-white/20"></span>
+        <span class="size-2 rounded-full bg-white/20"></span>
+      </div>
+      <span class="tracking-widest uppercase text-text-dim">// ARCHITECTURAL_VIEWPORT</span>
+    </div>
+
+    <div data-panel="ui" class="tab-panel block transition-opacity duration-200">
+      <slot name="ui" />
+    </div>
+
+    {hasArch && (
+      <div data-panel="arch" class="tab-panel hidden transition-opacity duration-200">
+        <slot name="arch" />
+      </div>
+    )}
+
+    {hasCode && (
+      <div data-panel="code" class="tab-panel hidden transition-opacity duration-200">
+        <slot name="code" />
+      </div>
+    )}
+  </div>
+</div>
+
+<script>
+  // Scoped vanilla tab switching for all architectural tab instances
+  document.querySelectorAll('.arch-tabs-container').forEach((container) => {
+    const buttons = container.querySelectorAll<HTMLButtonElement>('.tab-btn');
+    const panels = container.querySelectorAll<HTMLElement>('.tab-panel');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetTab = btn.getAttribute('data-tab');
+
+        // Update button active styling
+        buttons.forEach((b) => {
+          b.classList.remove('bg-surface-elevated', 'text-text-contrast', 'font-medium', 'active-tab', 'border-border-architectural', 'shadow-tactile-surface');
+          b.classList.add('text-text-muted', 'border-transparent');
+        });
+        btn.classList.add('bg-surface-elevated', 'text-text-contrast', 'font-medium', 'active-tab', 'border-border-architectural', 'shadow-tactile-surface');
+        btn.classList.remove('text-text-muted', 'border-transparent');
+
+        // Switch panel visibility
+        panels.forEach((p) => {
+          if (p.getAttribute('data-panel') === targetTab) {
+            p.classList.remove('hidden');
+            p.classList.add('block');
+          } else {
+            p.classList.remove('block');
+            p.classList.add('hidden');
+          }
+        });
+      });
+    });
+  });
+</script>

@@ -1,0 +1,124 @@
+---
+import { categoryRepository, technologyRepository } from '@/lib/repositories';
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+import SectionHeading from '../SectionHeading.astro';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const techCategories = await categoryRepository.getByScope('technology');
+const allTechnologies = await technologyRepository.getAll();
+---
+
+<section id="tech-stack" class="py-16 md:py-24 border-b border-border-architectural arch-bleed-line-bottom">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <SectionHeading
+      index={t('section.tech.index')}
+      title={t('section.tech.title')}
+      subtitle={lang === 'id'
+        ? 'Taksonomi keahlian rekayasa terstruktur berdasarkan lapisan sistem, membedakan spesialisasi inti (Core Specialty) dan kompetensi sekunder.'
+        : 'Structured engineering taxonomy grouped by architectural system tiers, highlighting core production specialties and secondary tools.'}
+    />
+
+    <!-- Unified 4-Quadrant Architectural Matrix -->
+    <div class="arch-slice arch-reveal">
+      <div class="border-x border-border-architectural">
+        <!-- Blueprint Specification Bar -->
+        <div class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
+        <div class="flex items-center gap-2">
+          <span class="text-accent-primary font-bold">// SPEC_03:TECH_STACK_TAXONOMY</span>
+          <span class="text-border-architectural">|</span>
+          <span class="text-text-contrast uppercase font-semibold">TIERED ENGINEERING CAPABILITIES</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span>TAXONOMY: 4 TIERS</span>
+          <span class="text-border-architectural">|</span>
+          <span class="text-accent-primary font-medium">{allTechnologies.length} TECHNOLOGIES INDEXED</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 divide-border-architectural">
+        {techCategories.map((cat, idx) => {
+          const catTechs = allTechnologies.filter((t) => t.category_id === cat.id);
+          const isRightCol = idx % 2 === 1;
+          const isBottomRow = idx >= 2;
+
+          return (
+            <div
+              class:list={[
+                'p-6 sm:p-7 space-y-4 bg-surface-card hover:bg-surface-elevated/20 transition-colors arch-reveal',
+                idx === 0 && 'arch-stagger-1',
+                idx === 1 && 'arch-stagger-2',
+                idx === 2 && 'arch-stagger-3',
+                idx === 3 && 'arch-stagger-4',
+                isRightCol && 'md:border-l md:border-border-architectural',
+                isBottomRow && 'md:border-t md:border-border-architectural',
+              ]}
+            >
+              <!-- Tier Header -->
+              <div class="border-b border-border-architectural pb-3.5 space-y-2">
+                <div class="flex items-center justify-between gap-3">
+                  <div class="flex items-center gap-2 min-w-0">
+                    <span class="font-mono text-[10px] text-accent-primary font-bold shrink-0">[TIER_0{idx + 1}]</span>
+                    <h3 class="font-semibold text-text-contrast text-base tracking-tight truncate">
+                      {cat.name}
+                    </h3>
+                  </div>
+                  <span class="font-mono text-xs text-accent-primary font-semibold shrink-0 whitespace-nowrap tabular-nums">
+                    {catTechs.length} {catTechs.length === 1 ? 'TECH' : 'TECHS'}
+                  </span>
+                </div>
+                <p class="text-xs text-text-muted leading-relaxed">
+                  {cat.description[lang]}
+                </p>
+              </div>
+
+              <!-- Tech Badges Grid -->
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2">
+                {catTechs.map((tech) => (
+                  <a
+                    href={tech.official_docs_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class:list={[
+                      'p-2.5 rounded-control border text-left font-mono transition-all duration-150 group block shadow-tactile-surface active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary',
+                      tech.proficiency === 'core_specialty'
+                        ? 'border-accent-primary/40 bg-surface-elevated/60 hover:border-accent-primary hover:bg-surface-elevated'
+                        : 'border-border-architectural bg-canvas/60 hover:border-border-architectural-hover hover:bg-surface-card',
+                    ]}
+                  >
+                    <div class="flex items-center justify-between gap-1.5">
+                      <span class="text-xs font-semibold text-text-contrast group-hover:text-accent-primary transition-colors truncate">
+                        {tech.name}
+                      </span>
+                      <span class="text-[10px] text-text-dim group-hover:text-text-muted shrink-0">↗</span>
+                    </div>
+
+                    <div class="text-[10px] font-mono mt-1.5 flex items-center gap-1.5">
+                      {tech.proficiency === 'core_specialty' ? (
+                        <span class="inline-flex items-center gap-1 text-accent-primary font-semibold tracking-wider">
+                          <span class="w-1.5 h-1.5 rounded-full bg-accent-primary inline-block"></span>
+                          CORE
+                        </span>
+                      ) : (
+                        <span class="inline-flex items-center gap-1 text-text-dim tracking-wider">
+                          <span class="w-1.5 h-1.5 rounded-full bg-text-dim/60 inline-block"></span>
+                          SECONDARY
+                        </span>
+                      )}
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</div>
+</section>

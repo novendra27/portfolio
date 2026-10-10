@@ -1,0 +1,119 @@
+---
+import { publicationRepository } from '@/lib/repositories';
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+import SectionHeading from '../SectionHeading.astro';
+import Badge from '../Badge.astro';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const publications = await publicationRepository.getAllWithRelations();
+
+const categoryLabels = {
+  architecture: 'SYSTEM ARCHITECTURE',
+  ai_optimization: 'AI & OPTIMIZATION',
+  career: 'CAREER & GROWTH',
+  engineering: 'ENGINEERING CRAFT',
+};
+---
+
+<section id="publications" class="py-16 md:py-24 border-b border-border-architectural arch-bleed-line-bottom">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <SectionHeading
+      index={t('section.publications.index')}
+      title={t('section.publications.title')}
+      subtitle={lang === 'id'
+        ? 'Refleksi teknis, materi sesi pembicara Google Developer Groups, artikel riset optimasi, dan catatan di balik layar proyek rekayasa.'
+        : 'Technical reflections, Google Developer Groups speaking materials, optimization research notes, and behind-the-scenes engineering logs.'}
+    />
+
+    <!-- Continuous 3-Bay Blueprint Matrix -->
+    <div class="arch-slice arch-reveal">
+      <div class="border-x border-border-architectural">
+        <!-- Blueprint Specification Bar -->
+        <div class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
+        <div class="flex items-center gap-2">
+          <span class="text-accent-primary font-bold">// SPEC_06:PUBLICATIONS</span>
+          <span class="text-border-architectural">|</span>
+          <span class="text-text-contrast uppercase font-semibold">ENGINEERING DISPATCH & GDG TALKS</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span>MALANG // ONLINE</span>
+          <span class="text-border-architectural">|</span>
+          <span class="text-accent-primary font-medium">{publications.length} ARTIFACTS</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural items-stretch">
+        {publications.map((pub, idx) => (
+          <div
+            class:list={[
+              'flex flex-col justify-between p-6 sm:p-7 h-full group hover:bg-surface-elevated/20 transition-colors arch-reveal',
+              idx === 0 && 'arch-stagger-1',
+              idx === 1 && 'arch-stagger-2',
+              idx === 2 && 'arch-stagger-3',
+            ]}
+          >
+            <div class="space-y-4">
+              <!-- Meta Header Chamber -->
+              <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-3 text-[11px] font-mono text-text-dim">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="text-accent-primary font-bold shrink-0">[PUB_0{idx + 1}]</span>
+                  <Badge variant="outline" text={categoryLabels[pub.category]} class="text-[10px] shrink-0 whitespace-nowrap" />
+                </div>
+                <span class="shrink-0 whitespace-nowrap">{pub.reading_time}</span>
+              </div>
+
+              <!-- Title -->
+              <h3 class="text-base font-semibold text-text-contrast leading-snug group-hover:text-accent-primary transition-colors">
+                {pub.title}
+              </h3>
+
+              <!-- Published Date with line -->
+              <div class="font-mono text-xs text-text-dim flex items-center gap-2">
+                <span>{pub.published_date}</span>
+                <span class="grow border-t border-dashed border-white/20"></span>
+              </div>
+
+              <!-- Excerpt -->
+              <p class="text-xs text-text-muted leading-relaxed">
+                {pub.excerpt[lang]}
+              </p>
+            </div>
+
+            <!-- Bottom Chamber: Technologies & Action Link -->
+            <div class="pt-6 border-t border-border-architectural space-y-3 mt-6">
+              {pub.technologies.length > 0 && (
+                <div class="flex flex-wrap gap-1.5">
+                  {pub.technologies.map((tech) => (
+                    <Badge variant="default" text={tech.name} class="text-[10px]" />
+                  ))}
+                </div>
+              )}
+
+              {pub.external_url ? (
+                <a
+                  href={pub.external_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center justify-between w-full px-3.5 py-2.5 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-xs font-mono text-accent-primary hover:text-accent-primary-light transition-colors font-medium shadow-tactile-surface active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[40px]"
+                >
+                  <span>{lang === 'id' ? 'Buka Publikasi Asli' : 'Read Full Post'}</span>
+                  <span>↗</span>
+                </a>
+              ) : (
+                <div class="text-[11px] font-mono text-text-dim py-1">
+                  {lang === 'id' ? 'Publikasi Dokumen Internal' : 'Internal Case Study Document'}
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+</section>

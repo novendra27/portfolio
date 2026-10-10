@@ -1,0 +1,236 @@
+---
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+import StatusPill from '../StatusPill.astro';
+import Badge from '../Badge.astro';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const stats = [
+  {
+    value: '3.5 Yrs',
+    label: lang === 'id' ? 'Lulusan S1 Teknik Informatika' : 'Informatics Engineering Graduate',
+    sub: 'UIN Maliki Malang',
+  },
+  {
+    value: '30+',
+    label: lang === 'id' ? 'Proyek Ditangani' : 'Projects Handled',
+    sub: lang === 'id' ? 'Klien & Internal' : 'Clients & Internal',
+  },
+  {
+    value: '9',
+    label: lang === 'id' ? 'Teknologi Diimplementasikan' : 'Technologies Applied',
+    sub: lang === 'id' ? 'Web, Mobile & Sistem' : 'Web, Mobile & Systems',
+  },
+  {
+    value: '5+',
+    label: lang === 'id' ? 'Klien & Perusahaan' : 'Clients & Companies',
+    sub: lang === 'id' ? 'Instansi & Bisnis' : 'Institutions & Businesses',
+  },
+];
+---
+
+<section id="hero" class="relative pt-4 sm:pt-6 pb-16 md:pb-24">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <!-- 1. Top Blueprint Coordination Bar -->
+    <div class="flex items-center justify-between px-2 sm:px-4 py-2 text-[10px] font-mono text-text-dim border-b border-border-architectural select-none gap-2 arch-reveal">
+      <div class="flex items-center gap-2 min-w-0 flex-1">
+        <StatusPill text={t('hero.badge')} class="truncate max-w-full" />
+        <span class="text-border-architectural hidden sm:inline">|</span>
+        <Badge variant="outline" text="VERIFIED S.KOM." class="text-[9px] hidden sm:inline-flex shrink-0 whitespace-nowrap" />
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <Badge variant="outline" text="S.KOM." class="text-[9px] sm:hidden shrink-0 whitespace-nowrap" />
+        <span class="hidden md:inline">MALANG, ID (UTC+7)</span>
+        <span class="text-border-architectural hidden lg:inline">|</span>
+        <span class="text-accent-primary font-medium hidden lg:inline">SCALE 1:1</span>
+      </div>
+    </div>
+
+    <!-- 2. Typography Specification Annotation -->
+    <div aria-hidden="true" class="flex h-8 sm:h-14 items-end px-2 sm:px-4 font-mono text-[11px] sm:text-xs text-text-dim/60 select-none">
+      <span class="hidden sm:inline">text-4xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-tight // IDENTITY SPEC</span>
+      <span class="sm:hidden">// IDENTITY SPEC</span>
+    </div>
+
+    <!-- 3. Headline Slicing Row (Full-width infinite horizontal lines) -->
+    <div class="arch-slice arch-reveal arch-stagger-1">
+      <h1 class="px-2 sm:px-4 py-4 sm:py-7 text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-text-contrast leading-[1.08] break-words">
+        Adi Novendra Putra, <span class="text-accent-primary">S.Kom.</span>
+      </h1>
+    </div>
+
+    <!-- 4. Role Specification Annotation -->
+    <div aria-hidden="true" class="flex h-7 sm:h-10 items-end px-2 sm:px-4 font-mono text-[11px] sm:text-xs text-text-dim/60 select-none">
+      <span class="hidden sm:inline">text-lg font-medium // FULLSTACK DEVELOPER & SOFTWARE ENGINEER</span>
+      <span class="sm:hidden">// SOFTWARE ENGINEER SPEC</span>
+    </div>
+
+  <!-- 5. Bio Narrative Slicing Row -->
+  <div class="arch-slice arch-reveal arch-stagger-2">
+    <p class="max-w-4xl px-2 sm:px-4 py-4 sm:py-6 text-base sm:text-lg leading-relaxed text-text-muted font-normal">
+      {lang === 'id'
+        ? 'Lulusan Teknik Informatika Universitas Islam Negeri Maulana Malik Ibrahim Malang dengan pengalaman dalam pengembangan aplikasi web dan sistem internal. Terbiasa menangani proses pengembangan perangkat lunak mulai dari analisis kebutuhan, implementasi, deployment, hingga maintenance. Memiliki minat di bidang Software Engineering serta antusias untuk terus belajar terkait teknologi.'
+        : 'Informatics Engineering graduate from Universitas Islam Negeri Maulana Malik Ibrahim Malang with proven experience in web application and internal system development. Experienced in handling software development lifecycles from requirements analysis, implementation, deployment, to maintenance. Passionate about Software Engineering and enthusiastic about continuous learning in emerging technologies.'}
+    </p>
+  </div>
+
+  <!-- 6. Action CTAs Slicing Row -->
+  <div class="arch-slice arch-reveal arch-stagger-3">
+    <div class="px-2 sm:px-4 py-5 sm:py-6 flex flex-wrap items-center gap-3 sm:gap-4">
+      <a
+        href="#projects"
+        class="px-5 py-3 sm:py-2.5 rounded-control bg-accent-primary text-canvas font-semibold font-mono text-xs hover:bg-accent-primary-light transition-all shadow-tactile-primary active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[44px] sm:min-h-0 inline-flex items-center justify-center"
+      >
+        {t('hero.cta.projects')} →
+      </a>
+      <a
+        href="#architecture"
+        class="px-5 py-3 sm:py-2.5 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast font-mono text-xs transition-all shadow-tactile-surface active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[44px] sm:min-h-0 inline-flex items-center justify-center"
+      >
+        {t('nav.architecture')}
+      </a>
+      <a
+        href="#contact"
+        class="px-5 py-3 sm:py-2.5 rounded-control border border-border-architectural bg-surface-card hover:border-accent-primary/40 text-text-muted hover:text-text-contrast font-mono text-xs transition-all shadow-tactile-surface active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[44px] sm:min-h-0 inline-flex items-center justify-center"
+      >
+        {t('hero.cta.contact')}
+      </a>
+      <span class="font-mono text-[10px] text-text-dim ml-auto hidden sm:inline">// DISPATCH: 3 COMMANDS</span>
+    </div>
+  </div>
+
+  <!-- 7. Architectural Showcase Block (Inspired by Tailwind Code Editor + Hatching Card) -->
+  <div class="mt-8 sm:mt-14 arch-slice arch-reveal arch-stagger-4">
+    <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural border border-border-architectural items-stretch bg-canvas">
+      <!-- Left: Interactive Code Snippet / Terminal & 4-Cell Metrics Matrix (7 cols) -->
+      <div class="lg:col-span-7 flex flex-col justify-between divide-y divide-border-architectural">
+        <!-- Terminal Header -->
+        <div class="px-3.5 sm:px-4 py-2.5 bg-surface-card/80 flex items-center justify-between gap-2 min-w-0 select-none">
+          <div class="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
+            <div class="flex items-center gap-1.5 shrink-0" aria-hidden="true">
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500/80 inline-block"></span>
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+              <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500/80 inline-block"></span>
+            </div>
+            <span class="font-mono text-[11px] sm:text-xs text-text-dim truncate ml-1 sm:ml-2">
+              // core_event_stream_spec.go
+            </span>
+          </div>
+          <div class="shrink-0 font-mono text-[10px] text-accent-primary font-medium whitespace-nowrap">
+            <span class="hidden sm:inline">RUNTIME: </span>PRODUCTION
+          </div>
+        </div>
+
+        <!-- Terminal Body -->
+        <div class="p-4 sm:p-5 bg-canvas/90 font-mono text-xs text-text-muted leading-relaxed overflow-x-auto arch-scrollbar">
+          <pre><code><span class="text-accent-primary">// Distributed Event Streaming & High-Throughput Ingestion</span>
+<span class="text-blue-400">type</span> <span class="text-yellow-300">TransactionProducer</span> <span class="text-blue-400">struct</span> &#123;
+    topic     <span class="text-blue-400">string</span>
+    producer  *kafka.<span class="text-yellow-300">SyncProducer</span>
+    telemetry *metrics.<span class="text-yellow-300">Collector</span>
+&#125;
+
+<span class="text-blue-400">func</span> (p *<span class="text-yellow-300">TransactionProducer</span>) <span class="text-green-400">EmitInventoryDelta</span>(ctx context.Context, tx <span class="text-yellow-300">Event</span>) <span class="text-blue-400">error</span> &#123;
+    <span class="text-text-dim">// Zero packet loss: Partition key guarantees linear strict order</span>
+    <span class="text-blue-400">return</span> p.producer.<span class="text-green-400">Send</span>(&kafka.ProducerMessage&#123;
+        Topic: p.topic,
+        Key:   kafka.<span class="text-green-400">StringEncoder</span>(tx.StockID),
+        Value: kafka.<span class="text-green-400">ByteEncoder</span>(tx.Payload),
+    &#125;)
+&#125;</code></pre>
+        </div>
+
+        <!-- 4-Cell Metrics Matrix (Symmetrical Architectural Grid) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 bg-surface-card/60">
+          {stats.map((s, idx) => (
+            <div
+              class:list={[
+                'p-3.5 sm:p-4 hover:bg-surface-elevated/40 transition-colors',
+                idx % 2 === 1 && 'border-l border-border-architectural',
+                idx >= 2 && 'border-t sm:border-t-0 border-border-architectural',
+                idx > 0 && 'sm:border-l sm:border-border-architectural',
+              ]}
+            >
+              <div class="font-mono text-lg sm:text-xl font-bold text-accent-primary tabular-nums">
+                {s.value}
+              </div>
+              <div class="text-[11px] font-medium text-text-contrast mt-0.5">
+                {s.label}
+              </div>
+              <div class="font-mono text-[10px] text-text-dim">
+                {s.sub}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Right: Technical Avatar Floating on Diagonal Hatching Canvas (5 cols) -->
+      <div class="lg:col-span-5 bg-hatch-45 p-6 sm:p-8 flex flex-col items-center justify-center relative min-h-[300px]">
+        <div class="relative w-48 sm:w-56 aspect-square rounded border border-border-architectural p-1.5 bg-canvas/90 shadow-tactile-surface">
+          <!-- Corner Crosshairs (+) -->
+          <svg
+            aria-hidden="true"
+            width="7"
+            height="7"
+            viewBox="0 0 5 5"
+            class="absolute -top-[3.5px] -left-[3.5px] fill-accent-primary/80 select-none z-10"
+          >
+            <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+          </svg>
+          <svg
+            aria-hidden="true"
+            width="7"
+            height="7"
+            viewBox="0 0 5 5"
+            class="absolute -top-[3.5px] -right-[3.5px] fill-accent-primary/80 select-none z-10"
+          >
+            <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+          </svg>
+          <svg
+            aria-hidden="true"
+            width="7"
+            height="7"
+            viewBox="0 0 5 5"
+            class="absolute -bottom-[3.5px] -left-[3.5px] fill-accent-primary/80 select-none z-10"
+          >
+            <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+          </svg>
+          <svg
+            aria-hidden="true"
+            width="7"
+            height="7"
+            viewBox="0 0 5 5"
+            class="absolute -bottom-[3.5px] -right-[3.5px] fill-accent-primary/80 select-none z-10"
+          >
+            <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+          </svg>
+
+          <div class="relative w-full h-full overflow-hidden rounded bg-canvas">
+            <img
+              src="/images/avatar.webp"
+              alt="Adi Novendra Putra"
+              width="224"
+              height="224"
+              class="w-full h-full object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-300"
+              loading="eager"
+            />
+            <div class="absolute bottom-1.5 left-1.5 right-1.5 px-2 py-0.5 bg-canvas/90 backdrop-blur-sm border border-border-architectural rounded font-mono text-[9px] text-text-muted flex justify-between">
+              <span>@novendra27</span>
+              <span class="text-accent-primary font-bold">VERIFIED S1</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 font-mono text-[10px] text-text-dim text-center">
+          // PROFILE_MODULE: ADI_NOVENDRA_PUTRA
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>

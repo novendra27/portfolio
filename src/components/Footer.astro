@@ -1,0 +1,150 @@
+---
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+
+interface Props {
+  lang?: SupportedLanguage;
+}
+
+const { lang = 'id' } = Astro.props;
+const t = useTranslations(lang);
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="w-full border-t border-border-architectural bg-surface-card/60 mt-20 arch-bleed-line">
+  <!-- Blueprint Footer Specification Bar -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-2 border-b border-border-architectural flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none arch-reveal">
+    <div class="flex items-center gap-2">
+      <span class="text-accent-primary font-bold">// SPEC_SUMMARY: ARCHITECTURAL FOOTER</span>
+      <span class="text-border-architectural">|</span>
+      <span>SYSTEM: ASTRO_SSG_V5</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span>LOCATION: MALANG, ID (UTC+7)</span>
+      <span class="text-border-architectural">|</span>
+      <span class="text-accent-primary font-medium">STATUS: OPERATIONAL</span>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12 arch-reveal arch-stagger-1">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+      <!-- Col 1: Bio & Status -->
+      <div class="md:col-span-2 space-y-3">
+        <div class="flex items-center gap-2 font-mono text-xs font-semibold text-text-contrast">
+          <span class="w-2 h-2 rounded-full bg-accent-primary animate-pulse"></span>
+          <span>ADI NOVENDRA PUTRA, S.Kom.</span>
+        </div>
+        <p class="text-xs text-text-muted leading-relaxed max-w-sm">
+          {lang === 'id'
+            ? 'Fullstack Developer & Software Engineer berfokus pada arsitektur sistem berskala tinggi, microservices event-driven Kafka, dan rekayasa web performa tinggi.'
+            : 'Fullstack Developer & Software Engineer focused on scalable enterprise architecture, Kafka event-driven microservices, and high-performance web systems.'}
+        </p>
+        <div class="font-mono text-[11px] text-text-dim flex items-center gap-2 pt-1">
+          <span>MALANG, ID (UTC+7)</span>
+          <span>•</span>
+          <span class="text-accent-primary">SYSTEM OPERATIONAL</span>
+        </div>
+      </div>
+
+      <!-- Col 2: Navigation Shortcuts -->
+      <div class="space-y-2">
+        <h3 class="font-mono text-xs font-semibold uppercase tracking-wider text-text-contrast">
+          {lang === 'id' ? 'Navigasi' : 'Navigation'}
+        </h3>
+        <ul class="space-y-1.5 text-xs font-mono">
+          <li>
+            <a href="#architecture" class="text-text-muted hover:text-text-contrast transition-colors py-1 inline-block touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs">
+              {t('nav.architecture')}
+            </a>
+          </li>
+          <li>
+            <a href="#projects" class="text-text-muted hover:text-text-contrast transition-colors py-1 inline-block touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs">
+              {t('nav.projects')}
+            </a>
+          </li>
+          <li>
+            <a href="#tech-stack" class="text-text-muted hover:text-text-contrast transition-colors py-1 inline-block touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs">
+              {t('nav.techStack')}
+            </a>
+          </li>
+          <li>
+            <a href="#experience" class="text-text-muted hover:text-text-contrast transition-colors py-1 inline-block touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs">
+              {t('nav.experience')}
+            </a>
+          </li>
+          <li>
+            <a href="#pricing" class="text-text-muted hover:text-text-contrast transition-colors py-1 inline-block touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs">
+              {t('nav.pricing')}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Channels & AI Discovery -->
+      <div class="space-y-2">
+        <h3 class="font-mono text-xs font-semibold uppercase tracking-wider text-text-contrast">
+          {lang === 'id' ? 'Koneksi & AI' : 'Connect & AI'}
+        </h3>
+        <ul class="space-y-1.5 text-xs font-mono">
+          <li>
+            <a
+              href="https://github.com/novendra27"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-text-muted hover:text-text-contrast transition-colors py-1 inline-block touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs"
+            >
+              GitHub / @novendra27
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://linkedin.com/in/adi-novendra"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-text-muted hover:text-text-contrast transition-colors py-1 inline-block touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs"
+            >
+              LinkedIn / in/adi-novendra
+            </a>
+          </li>
+          <li>
+            <a
+              href="mailto:adi.novendra.p@gmail.com"
+              class="text-text-muted hover:text-text-contrast transition-colors py-1 inline-block touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs"
+            >
+              Email / adi.novendra.p@gmail.com
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://wa.me/628993580311"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-text-muted hover:text-text-contrast transition-colors py-1 inline-block touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs"
+            >
+              WhatsApp / +62 899-3580-311
+            </a>
+          </li>
+          <li class="pt-1">
+            <a
+              href="/llms.txt"
+              target="_blank"
+              class="inline-flex items-center gap-1.5 text-[11px] text-accent-primary hover:text-accent-primary-light transition-colors py-1 touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary rounded-xs"
+            >
+              <span>llms.txt (AI Bots)</span>
+              <span class="text-[10px]">↗</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Strip -->
+    <div class="pt-6 border-t border-border-architectural flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-text-dim">
+      <p>© {currentYear} Adi Novendra Putra. {t('footer.rights')}</p>
+      <div class="flex items-center gap-4">
+        <span>ASTRO SSG // ZERO-JS RUNTIME</span>
+        <span>•</span>
+        <span>VERCEL EDGE</span>
+      </div>
+    </div>
+  </div>
+</footer>

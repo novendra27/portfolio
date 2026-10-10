@@ -1,32 +1,28 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { useTranslations } from '@/i18n/ui';
-
-const t = useTranslations('id');
+import HeroSection from '@/components/sections/HeroSection.astro';
+import ArchitectureSection from '@/components/sections/ArchitectureSection.astro';
+import ProjectsSection from '@/components/sections/ProjectsSection.astro';
+import TechStackSection from '@/components/sections/TechStackSection.astro';
+import ExperienceSection from '@/components/sections/ExperienceSection.astro';
+import PricingSection from '@/components/sections/PricingSection.astro';
+import PublicationsSection from '@/components/sections/PublicationsSection.astro';
+import ContactSection from '@/components/sections/ContactSection.astro';
 ---
 
-<BaseLayout lang="id" title="Adi Novendra Putra | Fullstack Developer & Software Engineer">
-  <main class="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-4xl mx-auto">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border-architectural bg-surface-card text-xs text-accent-primary mb-6">
-      <span class="w-2 h-2 rounded-full bg-accent-primary animate-pulse"></span>
-      <span>{t('hero.badge')}</span>
-    </div>
-
-    <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-text-contrast mb-4">
-      Adi Novendra Putra
-    </h1>
-
-    <p class="text-lg md:text-xl text-text-muted mb-8 max-w-2xl">
-      Fullstack Developer & Software Engineer berfokus pada arsitektur sistem berskala tinggi, integrasi event-driven, dan performa web optimal.
-    </p>
-
-    <div class="flex items-center gap-4">
-      <a
-        href="/en/"
-        class="px-4 py-2 text-sm rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast transition-colors"
-      >
-        Switch to English (EN)
-      </a>
-    </div>
+<BaseLayout
+  lang="id"
+  title="Adi Novendra Putra, S.Kom. | Fullstack Developer & Software Engineer"
+  description="Portofolio resmi Adi Novendra Putra. Rekayasa sistem berskala tinggi, Apache Kafka event-driven, Algoritma Genetika, Spring Boot, Go, Laravel, React, dan Astro."
+>
+  <main class="w-full">
+    <HeroSection lang="id" />
+    <ArchitectureSection lang="id" />
+    <ProjectsSection lang="id" />
+    <TechStackSection lang="id" />
+    <ExperienceSection lang="id" />
+    <PricingSection lang="id" />
+    <PublicationsSection lang="id" />
+    <ContactSection lang="id" />
   </main>
 </BaseLayout>

@@ -20,27 +20,27 @@ export const ui = {
     'nav.projects': 'Proyek',
     'nav.techStack': 'Teknologi',
     'nav.experience': 'Pengalaman',
-    'nav.pricing': 'Layanan & Estimasi',
+    'nav.pricing': 'Layanan & Harga',
     'nav.publications': 'Publikasi',
     'nav.contact': 'Kontak',
 
     // Hero Section
-    'hero.badge': 'Tersedia untuk Kontrak & Proyek Rekayasa',
-    'hero.cta.projects': 'Eksplorasi Proyek',
+    'hero.badge': 'Terbuka untuk Kontrak & Proyek Sistem',
+    'hero.cta.projects': 'Lihat Portofolio',
     'hero.cta.resume': 'Unduh Resume',
-    'hero.cta.contact': 'Diskusi Proyek',
+    'hero.cta.contact': 'Konsultasi Proyek',
 
     // Section Headers
     'section.architecture.index': '[01 // ARSITEKTUR SISTEM]',
-    'section.architecture.title': 'Pola & Desain Arsitektur Rekayasa',
+    'section.architecture.title': 'Desain & Arsitektur Sistem',
     'section.projects.index': '[02 // SHOWCASE PROYEK]',
-    'section.projects.title': 'Studi Kasus Sistem Skala Nyata',
+    'section.projects.title': 'Proyek & Portofolio Sistem',
     'section.tech.index': '[03 // TECH STACK]',
     'section.tech.title': 'Taksonomi Penguasaan Teknologi',
     'section.experience.index': '[04 // PERJALANAN KARIER]',
     'section.experience.title': 'Pengalaman Profesional & Pendidikan',
     'section.pricing.index': '[05 // LAYANAN & ESTIMASI]',
-    'section.pricing.title': 'Lingkup Pengerjaan & Estimasi Investasi',
+    'section.pricing.title': 'Layanan & Harga',
     'section.publications.index': '[06 // PUBLIKASI]',
     'section.publications.title': 'Riset, Artikel & Wawasan Teknis',
 
@@ -56,7 +56,7 @@ export const ui = {
     // Pricing / Services
     'pricing.duration': 'Estimasi Pengerjaan',
     'pricing.deliverables': 'Lingkup Pengerjaan',
-    'pricing.cta': 'Konsultasikan via WhatsApp',
+    'pricing.cta': 'Konsultasikan Kebutuhan Anda',
 
     // Footer
     'footer.role': 'Fullstack Developer & Software Engineer',
@@ -76,22 +76,22 @@ export const ui = {
     'nav.contact': 'Contact',
 
     // Hero Section
-    'hero.badge': 'Available for Engineering Contracts & Roles',
-    'hero.cta.projects': 'Explore Projects',
+    'hero.badge': 'Open for Contracts & Systems Projects',
+    'hero.cta.projects': 'View Portfolio',
     'hero.cta.resume': 'Download Resume',
-    'hero.cta.contact': 'Discuss Project',
+    'hero.cta.contact': 'Project Consultation',
 
     // Section Headers
     'section.architecture.index': '[01 // SYSTEM ARCHITECTURE]',
-    'section.architecture.title': 'Engineering Architecture & Patterns',
+    'section.architecture.title': 'System Architecture & Design',
     'section.projects.index': '[02 // PROJECT SHOWCASE]',
-    'section.projects.title': 'Real-World Production Case Studies',
+    'section.projects.title': 'Projects & Systems Portfolio',
     'section.tech.index': '[03 // TECH STACK]',
     'section.tech.title': 'Master Technology Taxonomy',
     'section.experience.index': '[04 // CAREER JOURNEY]',
     'section.experience.title': 'Professional Experience & Education',
     'section.pricing.index': '[05 // SERVICES & PRICING]',
-    'section.pricing.title': 'Scope of Work & Investment Estimates',
+    'section.pricing.title': 'Services & Pricing',
     'section.publications.index': '[06 // PUBLICATIONS]',
     'section.publications.title': 'Research, Articles & Technical Insights',
 
@@ -107,7 +107,7 @@ export const ui = {
     // Pricing / Services
     'pricing.duration': 'Estimated Timeline',
     'pricing.deliverables': 'Deliverables & Scope',
-    'pricing.cta': 'Consult via WhatsApp',
+    'pricing.cta': 'Consult Your Requirements',
 
     // Footer
     'footer.role': 'Fullstack Developer & Software Engineer',

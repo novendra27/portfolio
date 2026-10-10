@@ -1,0 +1,159 @@
+---
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+import SectionHeading from '../SectionHeading.astro';
+import StatusPill from '../StatusPill.astro';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="contact" class="py-16 md:py-24">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <SectionHeading
+      index={lang === 'id' ? '[07 // KONTAK & DISKUSI]' : '[07 // CONTACT & INQUIRY]'}
+      title={lang === 'id' ? 'Mari Kolaborasi & Diskusikan Sistem Anda' : 'Let\'s Discuss Your Next Engineering System'}
+      subtitle={lang === 'id'
+        ? 'Terbuka untuk peluang Software Engineer, kontrak rekayasa sistem, pengembangan solusi kustom, dan konsultasi teknis.'
+        : 'Open for Software Engineering opportunities, systems engineering contracts, custom solution development, and technical consulting.'}
+    />
+
+    <!-- Architectural Communications Dispatch Terminal -->
+    <div class="arch-slice arch-reveal">
+      <div class="border-x border-border-architectural">
+        <!-- Blueprint Specification Header Bar -->
+        <div class="px-5 py-2.5 border-b border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
+        <div class="flex items-center gap-2">
+          <span class="text-accent-primary font-bold">// DISPATCH_CONSOLE: COMMUNICATIONS</span>
+          <span class="text-border-architectural">|</span>
+          <span>NODE_STATUS: ONLINE</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span>SLA: &lt; 2 HOURS VIA WHATSAPP</span>
+          <span class="text-border-architectural">|</span>
+          <span class="text-accent-primary font-medium">DISPATCH: ACTIVE</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural items-stretch">
+        <!-- Left Chamber: Status, Pitch & Diagnostic SLA (7 cols) -->
+        <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-canvas/30 arch-reveal arch-stagger-1">
+          <div class="space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 min-w-0">
+              <StatusPill text={t('hero.badge')} class="truncate max-w-full" />
+              <span class="font-mono text-[10px] text-text-dim shrink-0 whitespace-nowrap">// ROUTE: DIRECT_INQUIRY</span>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-bold text-text-contrast tracking-tight">
+              {lang === 'id'
+                ? 'Siap Mewujudkan Arsitektur Sistem yang Tangguh & Skalabel'
+                : 'Ready to Engineer Resilient, High-Performance Systems'}
+            </h3>
+            <p class="text-sm text-text-muted leading-relaxed">
+              {lang === 'id'
+                ? 'Terbuka untuk peluang karir Software Engineer, kontrak pengembangan sistem kustom, maupun konsultasi arsitektur perangkat lunak. Hubungi melalui WhatsApp untuk koordinasi awal yang responsif, atau kirimkan email resmi untuk pembahasan proposal teknis, spesifikasi kebutuhan, dan penjajakan kerja sama (NDA).'
+                : 'Open for Software Engineering opportunities, custom systems engineering contracts, and software architecture consulting. Reach out via WhatsApp for prompt preliminary coordination, or send an official email to discuss technical proposals, requirements specifications, and formal engagements (NDA).'}
+            </p>
+          </div>
+
+          <!-- Technical SLA Strip -->
+          <div class="pt-4 border-t border-border-architectural flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] text-text-dim">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-accent-primary animate-pulse"></span>
+              <span>LOCATION: MALANG, ID (UTC+7)</span>
+            </div>
+            <span class="text-accent-primary font-medium">ACCEPTING NEW PROJECTS</span>
+          </div>
+        </div>
+
+        <!-- Right Chamber: 2x2 Continuous Instrument Grid (5 cols) -->
+        <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 bg-surface-card/60 arch-reveal arch-stagger-2">
+          <!-- WhatsApp -->
+          <a
+            href="https://wa.me/628993580311"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="p-5 flex flex-col justify-between group hover:bg-accent-primary/10 transition-colors border-b border-border-architectural touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
+          >
+            <div>
+              <div class="flex items-center justify-between text-[10px] font-mono text-accent-primary font-semibold uppercase tracking-wider mb-2">
+                <span>CH_01 // WHATSAPP</span>
+                <span>FAST ↗</span>
+              </div>
+              <div class="font-mono font-bold text-sm text-text-contrast group-hover:text-accent-primary transition-colors">
+                +62 899-3580-311
+              </div>
+            </div>
+            <div class="pt-3 border-t border-border-architectural/60 mt-4 text-[10px] font-mono text-text-dim">
+              Direct chat & instant response
+            </div>
+          </a>
+
+          <!-- Email -->
+          <a
+            href="mailto:adi.novendra.p@gmail.com"
+            class="p-5 flex flex-col justify-between group hover:bg-surface-elevated/50 transition-colors border-b sm:border-l border-border-architectural touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
+          >
+            <div>
+              <div class="flex items-center justify-between text-[10px] font-mono text-text-dim font-semibold uppercase tracking-wider mb-2">
+                <span>CH_02 // EMAIL</span>
+                <span>INBOX ↗</span>
+              </div>
+              <div class="font-mono font-bold text-xs sm:text-sm text-text-contrast group-hover:text-accent-primary transition-colors break-all">
+                adi.novendra.p@gmail.com
+              </div>
+            </div>
+            <div class="pt-3 border-t border-border-architectural/60 mt-4 text-[10px] font-mono text-text-dim">
+              Formal RFPs, NDAs & proposals
+            </div>
+          </a>
+
+          <!-- LinkedIn -->
+          <a
+            href="https://linkedin.com/in/adi-novendra"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="p-5 flex flex-col justify-between group hover:bg-surface-elevated/50 transition-colors border-b sm:border-b-0 border-border-architectural touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
+          >
+            <div>
+              <div class="flex items-center justify-between text-[10px] font-mono text-text-dim font-semibold uppercase tracking-wider mb-2">
+                <span>CH_03 // LINKEDIN</span>
+                <span>CONNECT ↗</span>
+              </div>
+              <div class="font-mono font-bold text-sm text-text-contrast group-hover:text-accent-primary transition-colors">
+                in/adi-novendra
+              </div>
+            </div>
+            <div class="pt-3 border-t border-border-architectural/60 mt-4 text-[10px] font-mono text-text-dim">
+              Professional network & profile
+            </div>
+          </a>
+
+          <!-- GitHub -->
+          <a
+            href="https://github.com/novendra27"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="p-5 flex flex-col justify-between group hover:bg-surface-elevated/50 transition-colors sm:border-l border-border-architectural touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
+          >
+            <div>
+              <div class="flex items-center justify-between text-[10px] font-mono text-text-dim font-semibold uppercase tracking-wider mb-2">
+                <span>CH_04 // GITHUB</span>
+                <span>REPOS ↗</span>
+              </div>
+              <div class="font-mono font-bold text-sm text-text-contrast group-hover:text-accent-primary transition-colors">
+                @novendra27
+              </div>
+            </div>
+            <div class="pt-3 border-t border-border-architectural/60 mt-4 text-[10px] font-mono text-text-dim">
+              Public repos & code contributions
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

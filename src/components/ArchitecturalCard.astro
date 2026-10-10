@@ -1,0 +1,71 @@
+---
+interface Props {
+  as?: 'div' | 'article' | 'section' | 'aside';
+  withCrosshairs?: boolean;
+  interactive?: boolean;
+  class?: string;
+  id?: string;
+}
+
+const {
+  as: Component = 'div',
+  withCrosshairs = true,
+  interactive = false,
+  class: className = '',
+  id,
+} = Astro.props;
+---
+
+<Component
+  id={id}
+  class:list={[
+    'relative rounded-card border border-border-architectural bg-surface-card transition-all duration-200',
+    interactive &&
+      'group hover:border-border-architectural-hover hover:bg-surface-elevated/40 hover:shadow-tactile-surface',
+    className,
+  ]}
+>
+  {withCrosshairs && (
+    <>
+      <!-- Corner Crosshairs (+) Vector Icons on Border Intersections -->
+      <svg
+        aria-hidden="true"
+        width="7"
+        height="7"
+        viewBox="0 0 5 5"
+        class="absolute -top-[3.5px] -left-[3.5px] fill-accent-primary/80 group-hover:fill-accent-primary transition-colors pointer-events-none select-none z-10"
+      >
+        <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+      </svg>
+      <svg
+        aria-hidden="true"
+        width="7"
+        height="7"
+        viewBox="0 0 5 5"
+        class="absolute -top-[3.5px] -right-[3.5px] fill-accent-primary/80 group-hover:fill-accent-primary transition-colors pointer-events-none select-none z-10"
+      >
+        <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+      </svg>
+      <svg
+        aria-hidden="true"
+        width="7"
+        height="7"
+        viewBox="0 0 5 5"
+        class="absolute -bottom-[3.5px] -left-[3.5px] fill-accent-primary/80 group-hover:fill-accent-primary transition-colors pointer-events-none select-none z-10"
+      >
+        <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+      </svg>
+      <svg
+        aria-hidden="true"
+        width="7"
+        height="7"
+        viewBox="0 0 5 5"
+        class="absolute -bottom-[3.5px] -right-[3.5px] fill-accent-primary/80 group-hover:fill-accent-primary transition-colors pointer-events-none select-none z-10"
+      >
+        <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
+      </svg>
+    </>
+  )}
+
+  <slot />
+</Component>

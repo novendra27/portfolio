@@ -1,5 +1,8 @@
 ---
 import type { SupportedLanguage } from '@/i18n/ui';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
 import '@/styles/global.css';
 
 interface Props {
@@ -9,7 +12,7 @@ interface Props {
 }
 
 const {
-  title = 'Adi Novendra Putra | Fullstack Developer & Software Engineer',
+  title = 'Adi Novendra Putra, S.Kom. | Fullstack Developer & Software Engineer',
   description = 'Portfolio rekayasa perangkat lunak Adi Novendra Putra. Spesialisasi Java Spring Boot, Apache Kafka, Go, Laravel, React, Next.js, dan arsitektur sistem performa tinggi.',
   lang = 'id',
 } = Astro.props;
@@ -18,10 +21,12 @@ const siteUrl = 'https://novendra.dev';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const alternateIdUrl = new URL('/', siteUrl).toString();
 const alternateEnUrl = new URL('/en/', siteUrl).toString();
+const ogImageUrl = new URL('/images/avatar.webp', siteUrl).toString();
+const ogLocale = lang === 'id' ? 'id_ID' : 'en_US';
 ---
 
 <!doctype html>
-<html lang={lang} class="dark scroll-smooth">
+<html lang={lang} class="dark scroll-smooth overflow-x-clip">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -32,16 +37,104 @@ const alternateEnUrl = new URL('/en/', siteUrl).toString();
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
+    <meta name="author" content="Adi Novendra Putra" />
+    <meta name="theme-color" content="#090d16" />
 
     <!-- Canonical & Bilingual Hreflang SEO -->
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" hreflang="id" href={alternateIdUrl} />
     <link rel="alternate" hreflang="en" href={alternateEnUrl} />
     <link rel="alternate" hreflang="x-default" href={alternateIdUrl} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:site_name" content="Adi Novendra Putra Portfolio" />
+
+    <!-- Twitter Cards -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImageUrl} />
+    <meta property="twitter:creator" content="@novendra27" />
+
+    <!-- Schema.org JSON-LD (GEO, AEO, Traditional SEO) -->
+    <JsonLd lang={lang} canonicalUrl={canonicalUrl} />
   </head>
-  <body class="min-h-screen bg-canvas text-text-contrast antialiased selection:bg-accent-primary/20 selection:text-accent-primary-light">
-    <div class="relative min-h-screen flex flex-col">
-      <slot />
+  <body class="min-h-screen bg-canvas text-text-contrast antialiased selection:bg-accent-primary/20 selection:text-accent-primary-light flex flex-col relative overflow-x-clip">
+    <!-- Subtle Blueprint Grid Layer -->
+    <div class="fixed inset-0 bg-grid pointer-events-none z-0 opacity-80" aria-hidden="true"></div>
+
+    <!-- Outer Gutter Hatching on screens >= 1280px (xl) -->
+    <div
+      class="hidden xl:block fixed inset-y-0 left-0 w-[calc((100vw-72rem)/2)] bg-hatch-45 pointer-events-none z-0 border-r border-border-architectural opacity-70"
+      aria-hidden="true"
+    ></div>
+    <div
+      class="hidden xl:block fixed inset-y-0 right-0 w-[calc((100vw-72rem)/2)] bg-hatch-45 pointer-events-none z-0 border-l border-border-architectural opacity-70"
+      aria-hidden="true"
+    ></div>
+
+    <div class="relative z-10 flex flex-col min-h-screen w-full">
+      <Header lang={lang} />
+      <div class="flex-1 w-full max-w-6xl mx-auto xl:border-x xl:border-border-architectural bg-canvas/30">
+        <!-- Blueprint Global Coordinate Strip -->
+        <div class="hidden sm:flex items-center justify-between px-4 sm:px-6 py-1.5 border-b border-border-architectural bg-surface-card/60 font-mono text-[10px] text-text-dim select-none">
+          <div class="flex items-center gap-3">
+            <span class="text-accent-primary font-bold">GRID: 12-COL CARTESIAN</span>
+            <span class="text-border-architectural">|</span>
+            <span>DATUM: WGS-84</span>
+            <span class="text-border-architectural">|</span>
+            <span>PROJECTION: ORTHOGRAPHIC</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span>SCALE: 1:1</span>
+            <span class="text-border-architectural">|</span>
+            <span class="text-accent-primary font-medium">SYS_STATUS: OPTIMAL (100% ZERO-JS)</span>
+          </div>
+        </div>
+        <slot />
+      </div>
+      <Footer lang={lang} />
     </div>
+
+    <!-- Architectural Motion & Scroll Reveal Engine (Native & Zero-Dependency) -->
+    <script is:inline>
+      (() => {
+        const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const revealElements = document.querySelectorAll('.arch-reveal');
+
+        if (isReducedMotion) {
+          revealElements.forEach((el) => el.classList.add('is-revealed'));
+          return;
+        }
+
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-revealed');
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            {
+              rootMargin: '0px 0px -60px 0px',
+              threshold: 0.08,
+            }
+          );
+
+          revealElements.forEach((el) => observer.observe(el));
+        } else {
+          revealElements.forEach((el) => el.classList.add('is-revealed'));
+        }
+      })();
+    </script>
   </body>
 </html>

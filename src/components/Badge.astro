@@ -1,0 +1,34 @@
+---
+interface Props {
+  text?: string;
+  variant?: 'default' | 'accent' | 'outline' | 'muted';
+  class?: string;
+}
+
+const {
+  text,
+  variant = 'default',
+  class: className = '',
+} = Astro.props;
+
+const variantStyles = {
+  default:
+    'border-border-architectural bg-surface-elevated/40 text-text-muted hover:border-border-architectural-hover hover:text-text-contrast',
+  accent:
+    'border-accent-primary/30 bg-accent-primary/10 text-accent-primary-light font-medium',
+  outline:
+    'border-border-architectural bg-transparent text-text-dim hover:text-text-muted hover:border-border-architectural-hover',
+  muted:
+    'border-transparent bg-surface-card/60 text-text-dim',
+};
+---
+
+<span
+  class:list={[
+    'inline-flex items-center px-2 py-0.5 rounded text-xs font-mono transition-colors border',
+    variantStyles[variant],
+    className,
+  ]}
+>
+  {text ? text : <slot />}
+</span>

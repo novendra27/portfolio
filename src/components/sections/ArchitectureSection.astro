@@ -1,0 +1,135 @@
+---
+import { architectureRepository } from '@/lib/repositories';
+import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
+import SectionHeading from '../SectionHeading.astro';
+import Badge from '../Badge.astro';
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const architectures = await architectureRepository.getAllWithRelations();
+
+const patternLabels = {
+  event_driven: 'EVENT-DRIVEN ARCHITECTURE',
+  hybrid_algorithmic: 'HYBRID ALGORITHMIC ENGINE',
+  progressive_billing: 'PROGRESSIVE TIER BILLING',
+  serverless_edge: 'SERVERLESS HEADLESS EDGE',
+};
+---
+
+<section id="architecture" class="py-16 md:py-24 border-b border-border-architectural arch-bleed-line-bottom">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <SectionHeading
+      index={t('section.architecture.index')}
+      title={t('section.architecture.title')}
+      subtitle={lang === 'id'
+        ? 'Prinsip desain rekayasa perangkat lunak berskala tinggi yang diterapkan untuk menyelesaikan kendala komputasi, konkurensi, dan integritas data nyata.'
+        : 'Enterprise system design patterns implemented to eliminate computation bottlenecks, concurrency races, and transactional integrity issues.'}
+    />
+
+    <!-- Continuous 3-Bay Architectural Matrix -->
+    <div class="arch-slice arch-reveal">
+      <div class="border-x border-border-architectural">
+        <!-- Blueprint Specification Bar -->
+        <div class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
+          <div class="flex items-center gap-2">
+            <span class="text-accent-primary font-bold">// SPEC_01:SYSTEM_ARCHITECTURE</span>
+            <span class="text-border-architectural">|</span>
+            <span class="text-text-contrast uppercase font-semibold">DISTRIBUTED & ALGORITHMIC PATTERNS</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span>HIGH-CONCURRENCY</span>
+            <span class="text-border-architectural">|</span>
+            <span class="text-accent-primary font-medium">{architectures.length} PATTERNS DOCUMENTED</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural bg-canvas">
+        {architectures.map((arch, idx) => (
+          <div
+            class:list={[
+              'flex flex-col p-6 sm:p-7 h-full justify-between hover:bg-surface-elevated/30 transition-colors group arch-reveal',
+              idx === 0 && 'arch-stagger-1',
+              idx === 1 && 'arch-stagger-2',
+              idx === 2 && 'arch-stagger-3',
+            ]}
+          >
+            <div class="space-y-4">
+              <!-- Header Pattern Type -->
+              <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-3">
+                <Badge variant="accent" text={patternLabels[arch.pattern_type]} class="shrink-0 whitespace-nowrap" />
+                <span class="font-mono text-[10px] text-text-dim shrink-0 whitespace-nowrap">SPEC_0{arch.order}</span>
+              </div>
+
+              <!-- Title -->
+              <h3 class="text-base sm:text-lg font-semibold text-text-contrast leading-snug group-hover:text-accent-primary transition-colors">
+                {arch.title}
+              </h3>
+
+              <!-- Problem Domain Block -->
+              <div class="space-y-1 rounded bg-canvas/60 p-3 border border-border-architectural/60">
+                <div class="font-mono text-[11px] text-accent-primary font-medium uppercase tracking-wider">
+                  {lang === 'id' ? '// Tantangan Domain' : '// Problem Domain'}
+                </div>
+                <p class="text-xs text-text-muted leading-relaxed">
+                  {arch.problem_domain[lang]}
+                </p>
+              </div>
+
+              <!-- Architectural Solution Block -->
+              <div class="space-y-1 rounded bg-canvas/60 p-3 border border-border-architectural/60">
+                <div class="font-mono text-[11px] text-text-contrast font-medium uppercase tracking-wider">
+                  {lang === 'id' ? '// Solusi Rekayasa' : '// Engineered Solution'}
+                </div>
+                <p class="text-xs text-text-muted leading-relaxed">
+                  {arch.architectural_solution[lang]}
+                </p>
+              </div>
+
+              <!-- Resilience & Tradeoffs -->
+              <div class="space-y-1">
+                <div class="font-mono text-[11px] text-text-dim uppercase tracking-wider">
+                  {lang === 'id' ? '// Ketahanan & Kompromi' : '// Resilience & Tradeoffs'}
+                </div>
+                <p class="text-xs text-text-muted/80 leading-relaxed italic">
+                  "{arch.resilience_and_tradeoffs[lang]}"
+                </p>
+              </div>
+            </div>
+
+            <!-- Footer: Technologies Used & Connected Projects -->
+            <div class="pt-6 border-t border-border-architectural space-y-3 mt-6">
+              <div class="flex flex-wrap gap-1.5">
+                {arch.technologies.map((tech) => (
+                  <Badge variant="default" text={tech.name} />
+                ))}
+              </div>
+
+              {arch.projects.length > 0 && (
+                <div class="flex items-center justify-between text-[11px] font-mono pt-1">
+                  <span class="text-text-dim">
+                    {lang === 'id' ? 'Diimplementasikan pada:' : 'Implemented in:'}
+                  </span>
+                    <div class="flex items-center gap-2">
+                      {arch.projects.map((proj) => (
+                        <a
+                          href={`#project-${proj.slug}`}
+                          class="text-accent-primary hover:text-accent-primary-light underline transition-colors px-1 py-0.5 rounded touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary"
+                        >
+                          {proj.title.split(' ')[0]}
+                        </a>
+                      ))}
+                    </div>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

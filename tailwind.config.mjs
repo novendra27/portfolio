@@ -7,12 +7,14 @@ export default {
       colors: {
         canvas: '#090d16',
         surface: {
-          card: '#0f172a',
-          elevated: '#1e293b',
+          card: '#0c1220',
+          elevated: '#162035',
         },
         border: {
-          architectural: 'rgba(255, 255, 255, 0.08)',
-          'architectural-hover': 'rgba(255, 255, 255, 0.16)',
+          architectural: 'rgba(255, 255, 255, 0.22)',
+          'architectural-hover': 'rgba(255, 255, 255, 0.45)',
+          subtle: 'rgba(255, 255, 255, 0.14)',
+          accent: 'rgba(16, 185, 129, 0.50)',
         },
         accent: {
           primary: '#10b981',
@@ -31,6 +33,10 @@ export default {
       borderRadius: {
         card: '8px',
         control: '6px',
+      },
+      boxShadow: {
+        'tactile-primary': 'inset 0 -2px 0 0 hsl(160, 84%, 25%), 0 1px 3px 0 rgba(0, 0, 0, 0.3)',
+        'tactile-surface': 'inset 0 -1px 0 0 rgba(255, 255, 255, 0.08), 0 1px 2px 0 rgba(0, 0, 0, 0.4)',
       },
     },
   },
