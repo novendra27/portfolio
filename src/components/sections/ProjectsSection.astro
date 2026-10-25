@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import { projectRepository, categoryRepository } from '@/lib/repositories';
 import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
 import SectionHeading from '../SectionHeading.astro';
@@ -13,6 +15,19 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const projects = await projectRepository.getAllWithRelations();
 const allCategories = await categoryRepository.getAll();
+
+const projectImages = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/projects/*.webp',
+  { eager: true }
+);
+
+function getProjectImage(thumbnail: string | null): ImageMetadata | null {
+  if (!thumbnail) return null;
+  const filename = thumbnail.split('/').pop();
+  if (!filename) return null;
+  const key = `/src/assets/images/projects/${filename}`;
+  return projectImages[key]?.default ?? null;
+}
 
 // Compute categories with active projects for dynamic filtering
 const activeCategories = allCategories
@@ -35,7 +50,7 @@ const activeCategories = allCategories
 
     <!-- Unified Master-Detail Blueprint Showcase Console -->
     <div class="arch-slice arch-reveal">
-      <div class="border-x border-border-architectural bg-canvas" id="project-showcase-console">
+      <div class="border-x border-border-architectural bg-canvas w-full max-w-full overflow-hidden" id="project-showcase-console">
         
         <!-- ==================================================================== -->
         <!-- DESKTOP TIER 1: Blueprint Spec, Category Filter Bar & Navigation (md+) -->
@@ -43,9 +58,9 @@ const activeCategories = allCategories
         <div class="hidden md:flex px-4 sm:px-6 py-2 border-b border-border-architectural bg-surface-card/70 items-center justify-between gap-4 font-mono text-[10px] select-none">
           <!-- Left: Bounded Filter Control Chamber -->
           <div class="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
-            <span class="text-accent-primary font-bold hidden xl:inline shrink-0">// SPEC_02:SHOWCASE</span>
+            <span class="text-accent-primary font-bold hidden xl:inline shrink-0">PROJECT SHOWCASE</span>
             <span class="text-border-architectural hidden xl:inline shrink-0">|</span>
-            <span class="text-accent-primary font-bold shrink-0">// FILTER:</span>
+            <span class="text-accent-primary font-bold shrink-0">FILTER:</span>
             <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 min-w-0 flex-1" id="desktop-category-filters">
               <button
                 type="button"
@@ -156,7 +171,7 @@ const activeCategories = allCategories
         <!-- ==================================================================== -->
         <div class="md:hidden border-b border-border-architectural bg-surface-card/50 px-3 py-2 flex items-center justify-between font-mono text-xs select-none">
           <div class="flex items-center gap-2">
-            <span class="text-text-dim text-[10px]">// SPEC_02</span>
+            <span class="text-text-dim text-[10px]">CASE STUDY</span>
             <span class="text-border-architectural">|</span>
             <span class="text-accent-primary font-bold text-xs tabular-nums mobile-index-counter">
               01 / {String(projects.length).padStart(2, '0')}
@@ -181,10 +196,10 @@ const activeCategories = allCategories
         </div>
 
         <!-- ==================================================================== -->
-        <!-- MOBILE TIER 3: 9-Column Coordinate Matrix Keypad (1-Tap Access)      -->
+        <!-- MOBILE TIER 3: Number-Only Coordinate Matrix Keypad (1-Tap Access)   -->
         <!-- ==================================================================== -->
-        <div class="md:hidden border-b border-border-architectural bg-canvas select-none">
-          <div class="grid grid-cols-9 divide-x divide-border-architectural font-mono text-xs text-center" role="tablist" aria-label="Mobile Project Selector">
+        <div class="md:hidden border-b border-border-architectural bg-canvas/90 overflow-x-auto no-scrollbar scroll-smooth select-none w-full max-w-full" id="mobile-project-ribbon-container">
+          <div class="flex items-stretch min-w-max divide-x divide-border-architectural font-mono text-xs" role="tablist" aria-label="Mobile Project Case Studies">
             {projects.map((proj, idx) => (
               <button
                 type="button"
@@ -193,13 +208,13 @@ const activeCategories = allCategories
                 data-categories={proj.category_ids.join(' ')}
                 aria-label={`Project 0${idx + 1}: ${proj.title}`}
                 class:list={[
-                  'mobile-keypad-btn py-3 transition-all cursor-pointer font-bold touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary',
+                  'mobile-keypad-btn flex items-center justify-center min-w-[50px] h-11 px-3 transition-all cursor-pointer font-bold touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary shrink-0',
                   idx === 0
                     ? 'active-tab bg-surface-elevated text-accent-primary border-b-2 border-accent-primary shadow-tactile-primary'
                     : 'bg-surface-card/40 text-text-dim hover:text-text-contrast hover:bg-surface-card border-b-2 border-transparent',
                 ]}
               >
-                0{idx + 1}
+                <span class="text-xs tabular-nums tracking-wider">{String(idx + 1).padStart(2, '0')}</span>
               </button>
             ))}
           </div>
@@ -222,36 +237,74 @@ const activeCategories = allCategories
                 idx === 0 ? 'block' : 'hidden',
               ]}
             >
-              <!-- Full-Width Blueprint Header Bar -->
-              <div id={`project-${proj.slug}`} class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/50 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
-                <div class="flex items-center gap-2 min-w-0 flex-1">
-                  <span class="text-accent-primary font-bold shrink-0">[0{idx + 1} // CASE_STUDY]</span>
-                  <span class="text-border-architectural shrink-0">|</span>
-                  <span class="text-text-contrast font-semibold uppercase truncate">{proj.title}</span>
+              <!-- Blueprint Header Bar: Responsive Adaptive Layout -->
+              <div id={`project-${proj.slug}`} class="border-b border-border-architectural bg-surface-card/50 select-none w-full max-w-full">
+                <!-- Mobile 3-Tier Stacked Layout (< md) -->
+                <div class="md:hidden px-3.5 py-3 space-y-2 font-mono">
+                  <!-- Tier 1: Index + Confidentiality / Access Status Badge -->
+                  <div class="flex items-center justify-between gap-2 text-[10px] pb-1.5 border-b border-border-architectural/50">
+                    <span class="text-accent-primary font-bold">[{String(idx + 1).padStart(2, '0')} // CASE_STUDY]</span>
+                    {proj.confidentiality === 'confidential_nda' ? (
+                      <Badge variant="outline" text="CONFIDENTIAL (NDA)" class="text-[9px] shrink-0" />
+                    ) : (
+                      <Badge variant="accent" text="PUBLIC / OPEN" class="text-[9px] shrink-0" />
+                    )}
+                  </div>
+
+                  <!-- Tier 2: Full Project Title (100% Readable, No Truncation) -->
+                  <h3 class="text-sm font-bold text-text-contrast tracking-tight leading-snug">
+                    {proj.title}
+                  </h3>
+
+                  <!-- Tier 3: Client / Institution & Architecture System Details -->
+                  <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-text-dim pt-1 border-t border-border-architectural/40">
+                    {proj.organization && (
+                      <span class="text-text-muted">
+                        CLIENT: <strong class="text-text-contrast font-medium">{proj.organization.name}</strong>
+                      </span>
+                    )}
+                    {proj.architecture_system && (
+                      <>
+                        <span class="text-border-architectural hidden sm:inline">|</span>
+                        <span class="text-accent-primary/90 text-[10px]">
+                          SYS: {proj.architecture_system.title}
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <div class="flex items-center gap-2 shrink-0">
-                  {proj.organization && (
-                    <>
-                      <span class="whitespace-nowrap">CLIENT: {proj.organization.name}</span>
-                      <span class="text-border-architectural">|</span>
-                    </>
-                  )}
-                  {proj.confidentiality === 'confidential_nda' ? (
-                    <Badge variant="outline" text="CONFIDENTIAL (NDA)" class="text-[9px] shrink-0 whitespace-nowrap" />
-                  ) : (
-                    <Badge variant="accent" text="PUBLIC / OPEN" class="text-[9px] shrink-0 whitespace-nowrap" />
-                  )}
+
+                <!-- Desktop Single-Row Blueprint Header Bar (md+) -->
+                <div class="hidden md:flex px-4 sm:px-6 py-2.5 items-center justify-between gap-3 font-mono text-[10px] text-text-dim">
+                  <div class="flex items-center gap-2 min-w-0 flex-1">
+                    <span class="text-accent-primary font-bold shrink-0">[{String(idx + 1).padStart(2, '0')} // CASE_STUDY]</span>
+                    <span class="text-border-architectural shrink-0">|</span>
+                    <span class="text-text-contrast font-semibold uppercase truncate">{proj.title}</span>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    {proj.organization && (
+                      <>
+                        <span class="whitespace-nowrap">CLIENT: {proj.organization.name}</span>
+                        <span class="text-border-architectural">|</span>
+                      </>
+                    )}
+                    {proj.confidentiality === 'confidential_nda' ? (
+                      <Badge variant="outline" text="CONFIDENTIAL (NDA)" class="text-[9px] shrink-0 whitespace-nowrap" />
+                    ) : (
+                      <Badge variant="accent" text="PUBLIC / OPEN" class="text-[9px] shrink-0 whitespace-nowrap" />
+                    )}
+                  </div>
                 </div>
               </div>
 
               <!-- 7:5 Split Cartesian Chamber -->
-              <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural items-stretch">
+              <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural items-stretch min-w-0 max-w-full overflow-hidden">
                 <!-- Left: Interactive Preview Tabs (7 cols) -->
-                <div class="lg:col-span-7 w-full p-4 sm:p-6 bg-canvas/40 flex flex-col justify-between">
+                <div class="lg:col-span-7 w-full min-w-0 max-w-full p-3 sm:p-6 bg-canvas/40 flex flex-col justify-between overflow-hidden">
                   <ArchitecturalTabs
                     cardId={`tabs-${proj.id}`}
                     labels={{
-                      ui: t('tab.uiPreview'),
+                      ui: proj.thumbnail ? t('tab.uiPreview') : (lang === 'id' ? 'Skema Sistem' : 'System Topology'),
                       arch: t('tab.architecture'),
                       code: t('tab.codeSnippet'),
                     }}
@@ -261,67 +314,127 @@ const activeCategories = allCategories
                     <!-- Tab Panel 1: UI Preview / Thumbnail -->
                     {proj.thumbnail ? (
                       <div slot="ui" class="relative aspect-video w-full overflow-hidden bg-canvas flex items-center justify-center">
-                        <img
-                          src={proj.thumbnail}
-                          alt={proj.title}
-                          class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
-                          loading={idx === 0 ? 'eager' : 'lazy'}
-                        />
+                        {(() => {
+                          const optimizedImg = getProjectImage(proj.thumbnail);
+                          return optimizedImg ? (
+                            <Image
+                              src={optimizedImg}
+                              alt={proj.title}
+                              width={720}
+                              height={405}
+                              format="webp"
+                              quality={80}
+                              class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          ) : (
+                            <img
+                              src={proj.thumbnail}
+                              alt={proj.title}
+                              width="720"
+                              height="405"
+                              class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          );
+                        })()}
                         <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-canvas/80 backdrop-blur-sm border border-border-architectural text-[10px] font-mono text-text-dim">
                           FORMAT: {proj.media_type.toUpperCase()}
                         </div>
                       </div>
                     ) : (
-                      <div slot="ui" class="relative min-h-[280px] sm:min-h-0 sm:aspect-video w-full overflow-hidden bg-canvas border border-border-architectural flex flex-col items-center justify-center p-3 sm:p-6 text-center select-none bg-hatch-45">
-                        <!-- Corner Crosshairs (+) -->
-                        <svg aria-hidden="true" width="7" height="7" viewBox="0 0 5 5" class="absolute top-2 left-2 fill-accent-primary/60">
-                          <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
-                        </svg>
-                        <svg aria-hidden="true" width="7" height="7" viewBox="0 0 5 5" class="absolute top-2 right-2 fill-accent-primary/60">
-                          <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
-                        </svg>
-                        <svg aria-hidden="true" width="7" height="7" viewBox="0 0 5 5" class="absolute bottom-2 left-2 fill-accent-primary/60">
-                          <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
-                        </svg>
-                        <svg aria-hidden="true" width="7" height="7" viewBox="0 0 5 5" class="absolute bottom-2 right-2 fill-accent-primary/60">
-                          <path d="M2 0h1v2h2v1h-2v2h-1v-2h-2v-1h2z" />
-                        </svg>
-
-                        <!-- Blueprint Technical Card -->
-                        <div class="max-w-md w-full p-4 sm:p-5 rounded border border-border-architectural bg-canvas/95 backdrop-blur-sm shadow-tactile-surface flex flex-col items-center gap-2 sm:gap-2.5">
-                          <!-- Status Badge -->
-                          <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full animate-pulse bg-amber-400"></span>
-                            <span class="font-mono text-[10px] sm:text-[11px] font-bold tracking-wider uppercase text-amber-400">
-                              {proj.placeholder_info?.tag ?? '// CREDENTIAL / PHOTO NOT FOUND'}
+                      <div slot="ui" class="relative min-h-[300px] w-full overflow-hidden bg-canvas border border-border-architectural flex flex-col justify-between p-4 sm:p-5 select-none font-mono">
+                        <!-- Top Topology Header Bar -->
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-border-architectural/70 pb-3">
+                          <div class="flex items-center gap-2 min-w-0">
+                            <span class="w-1.5 h-1.5 rounded-full bg-accent-primary shrink-0"></span>
+                            <span class="text-[11px] font-bold text-accent-primary tracking-wide uppercase truncate">
+                              {proj.placeholder_info ? proj.placeholder_info.category[lang] : (lang === 'id' ? 'Topologi Sistem' : 'System Topology')}
                             </span>
                           </div>
-
-                          <!-- Icon / Monospace Tag -->
-                          <div class="font-mono text-xs sm:text-sm text-text-dim px-2 py-0.5 rounded bg-surface-card border border-border-architectural">
-                            {proj.placeholder_info?.icon ?? '// RESTRICTED_ASSET'}
-                          </div>
-
-                          <!-- Title -->
-                          <div class="font-bold text-xs sm:text-sm text-text-contrast tracking-tight">
-                            {proj.placeholder_info ? proj.placeholder_info.title[lang] : (lang === 'id' ? 'Visual Antarmuka Dibatasi' : 'Visual Preview Restricted')}
-                          </div>
-
-                          <!-- Note / Description -->
-                          <p class="font-mono text-[11px] sm:text-xs text-text-muted leading-relaxed max-w-sm">
-                            {proj.placeholder_info ? proj.placeholder_info.description[lang] : (lang === 'id' ? 'Aplikasi ini tidak memiliki foto pratinjau publik atau beroperasi tanpa antarmuka grafis (headless).' : 'This application has no public visual preview or operates as a headless backend system.')}
-                          </p>
-
-                          <!-- Bottom System Diagnostic Strip -->
-                          <div class="pt-2 border-t border-border-architectural/60 w-full flex items-center justify-between text-[9px] sm:text-[10px] font-mono text-text-dim">
-                            <span>SECURITY: RESTRICTED</span>
-                            <span class="text-accent-primary">ACTIVE_RUNTIME</span>
-                          </div>
+                          {proj.placeholder_info?.protocol && (
+                            <span class="text-[9px] text-text-dim px-1.5 py-0.5 rounded bg-surface-card border border-border-architectural shrink-0">
+                              {proj.placeholder_info.protocol}
+                            </span>
+                          )}
                         </div>
 
-                        <!-- Bottom Left Tag -->
-                        <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-canvas/90 border border-border-architectural text-[9px] sm:text-[10px] font-mono text-text-dim">
-                          PREVIEW: NOT_AVAILABLE
+                        <!-- Central 3-Node Architecture Pipeline -->
+                        {proj.placeholder_info?.nodes && (
+                          <div class="py-4 my-auto">
+                            <!-- Desktop Flow: 3 Horizontal Nodes with Telemetry -->
+                            <div class="hidden sm:grid sm:grid-cols-3 gap-3 items-stretch relative">
+                              {proj.placeholder_info.nodes.map((node, nIdx) => (
+                                <div class="relative flex flex-col justify-between p-3 rounded border border-border-architectural bg-surface-card/60 shadow-tactile-surface">
+                                  <div>
+                                    <div class="flex items-center justify-between gap-1 mb-1.5">
+                                      <span class="text-[9px] text-accent-primary font-bold">0{nIdx + 1}</span>
+                                      {node.badge && (
+                                        <span class="text-[8px] text-text-dim px-1 py-0.5 rounded bg-surface-elevated border border-border-architectural/50 truncate">
+                                          {node.badge}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div class="text-xs font-bold text-text-contrast tracking-tight leading-snug">
+                                      {node.title}
+                                    </div>
+                                  </div>
+                                  <div class="text-[10px] text-text-muted mt-2 pt-1 border-t border-border-architectural/40">
+                                    {node.subtitle}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            <!-- Mobile Flow: 3 Vertical Connected Steps (< sm) -->
+                            <div class="sm:hidden space-y-2">
+                              {proj.placeholder_info.nodes.map((node, nIdx) => (
+                                <div class="flex items-center gap-2 p-2 rounded border border-border-architectural bg-surface-card/60">
+                                  <span class="text-[10px] font-bold text-accent-primary shrink-0 w-5 text-center">0{nIdx + 1}</span>
+                                  <div class="min-w-0 flex-1">
+                                    <div class="flex items-center justify-between gap-1">
+                                      <span class="text-xs font-bold text-text-contrast truncate">{node.title}</span>
+                                      {node.badge && (
+                                        <span class="text-[8px] text-text-dim px-1 rounded bg-surface-elevated shrink-0">
+                                          {node.badge}
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div class="text-[10px] text-text-muted truncate">{node.subtitle}</div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            <!-- Bottom Storage State Sub-Tier (if exists) -->
+                            {proj.placeholder_info.storage && (
+                              <div class="mt-3 pt-2.5 border-t border-dashed border-border-architectural/60 flex items-center justify-between text-[10px] text-text-dim px-1">
+                                <div class="flex items-center gap-1.5 min-w-0">
+                                  <span class="text-accent-primary text-[11px]">↳</span>
+                                  <span class="text-text-muted truncate">PERSISTENCE:</span>
+                                  <span class="text-text-contrast font-medium truncate">{proj.placeholder_info.storage.title}</span>
+                                  <span class="hidden md:inline text-text-dim">({proj.placeholder_info.storage.subtitle})</span>
+                                </div>
+                                {proj.placeholder_info.storage.badge && (
+                                  <span class="text-[8px] text-text-dim px-1.5 py-0.5 rounded bg-surface-card border border-border-architectural shrink-0">
+                                    {proj.placeholder_info.storage.badge}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        <!-- Bottom Spec Diagnostic Description Strip -->
+                        <div class="pt-2.5 border-t border-border-architectural/70 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1.5 text-[10px] text-text-dim">
+                          <p class="text-text-muted text-[11px] leading-relaxed max-w-xl font-sans">
+                            {proj.placeholder_info?.description[lang]}
+                          </p>
+                          <span class="text-accent-primary font-bold text-[9px] shrink-0 font-mono">
+                            {proj.placeholder_info?.tag ?? 'HEADLESS SYSTEM'}
+                          </span>
                         </div>
                       </div>
                     )}
@@ -362,17 +475,17 @@ const activeCategories = allCategories
                     </div>
 
                     <!-- Tab Panel 3: Core Code Snippet -->
-                    <div slot="code" class="p-4 overflow-x-auto arch-scrollbar bg-canvas/95 font-mono text-[11px] text-text-contrast min-h-[220px] max-h-[340px]">
-                      <pre class="leading-relaxed"><code>{proj.core_code_snippet}</code></pre>
+                    <div slot="code" class="p-3 sm:p-4 overflow-x-auto arch-scrollbar bg-canvas/95 font-mono text-[11px] text-text-contrast min-h-[220px] max-h-[340px] w-full max-w-full">
+                      <pre class="leading-relaxed w-full max-w-full overflow-x-auto whitespace-pre"><code>{proj.core_code_snippet}</code></pre>
                     </div>
                   </ArchitecturalTabs>
                 </div>
 
                 <!-- Right: Metadata, BLUF Narrative & Links (5 cols) -->
-                <div class="lg:col-span-5 flex flex-col justify-between divide-y divide-border-architectural bg-surface-card/30">
-                  <div class="p-5 sm:p-6 space-y-4">
-                    <!-- Title & Organization -->
-                    <div>
+                <div class="lg:col-span-5 w-full min-w-0 max-w-full flex flex-col justify-between divide-y divide-border-architectural bg-surface-card/30 overflow-hidden">
+                  <div class="p-4 sm:p-6 space-y-4 min-w-0">
+                    <!-- Title & Organization (Desktop md+, on mobile displayed in top 3-tier header) -->
+                    <div class="hidden md:block">
                       <h3 class="text-lg sm:text-xl font-bold text-text-contrast tracking-tight mb-1">
                         {proj.title}
                       </h3>
@@ -390,13 +503,16 @@ const activeCategories = allCategories
 
                     <!-- Key Metrics (if available) -->
                     {proj.key_metrics && proj.key_metrics.length > 0 && (
-                      <div class="grid grid-cols-3 divide-x divide-border-architectural border border-border-architectural rounded bg-canvas/40 py-2">
+                      <div class:list={[
+                        'grid divide-x divide-border-architectural border border-border-architectural rounded bg-canvas/40 py-2',
+                        proj.key_metrics.length === 2 ? 'grid-cols-2' : 'grid-cols-3',
+                      ]}>
                         {proj.key_metrics.map((metric) => (
-                          <div class="text-center font-mono px-2">
-                            <div class="text-sm font-bold text-accent-primary tabular-nums">
+                          <div class="text-center font-mono px-1 sm:px-2 min-w-0">
+                            <div class="text-xs sm:text-sm font-bold text-accent-primary tabular-nums truncate">
                               {metric.value}
                             </div>
-                            <div class="text-[10px] text-text-dim truncate">
+                            <div class="text-[9px] sm:text-[10px] text-text-dim truncate">
                               {metric.label[lang]}
                             </div>
                           </div>
@@ -419,21 +535,21 @@ const activeCategories = allCategories
 
                   <!-- Dynamic Multi-Link Buttons Bottom Strip -->
                   {proj.links.length > 0 && (
-                    <div class="p-4 sm:px-6 bg-surface-card/70 flex flex-wrap gap-2">
+                    <div class="p-3 sm:px-6 sm:py-4 bg-surface-card/70 flex flex-wrap gap-2 min-w-0">
                       {proj.links.map((link) => (
                         <a
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
                           class:list={[
-                            'inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-3 sm:py-1.5 rounded-control text-xs font-mono transition-all active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[38px] sm:min-h-0',
+                            'inline-flex items-center gap-1.5 px-3 py-2 sm:px-3 sm:py-1.5 rounded-control text-xs font-mono transition-all active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[38px] sm:min-h-0 max-w-full',
                             link.is_primary
                               ? 'bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light shadow-tactile-primary'
                               : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast shadow-tactile-surface',
                           ]}
                         >
-                          <span>{link.title}</span>
-                          <span class="text-[11px]">↗</span>
+                          <span class="truncate max-w-[240px] sm:max-w-none">{link.title}</span>
+                          <span class="text-[11px] shrink-0">↗</span>
                         </a>
                       ))}
                     </div>
@@ -447,13 +563,13 @@ const activeCategories = allCategories
         <!-- ==================================================================== -->
         <!-- BOTTOM FOOTER: Blueprint Spec Summary Bar                            -->
         <!-- ==================================================================== -->
-        <div class="px-4 sm:px-6 py-2 border-t border-border-architectural bg-surface-card/60 flex items-center justify-between font-mono text-[10px] text-text-dim select-none">
-          <div class="flex items-center gap-2">
-            <span class="text-accent-primary font-bold">// WORKSTATION_SPEC: INTERACTIVE_SHOWCASE</span>
+        <div class="px-3 sm:px-6 py-2 border-t border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none w-full max-w-full">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="text-accent-primary font-bold truncate">ENGINEERING SHOWCASE</span>
             <span class="text-border-architectural hidden sm:inline">|</span>
-            <span class="hidden sm:inline">MODE: HYBRID_ADAPTIVE_GRID</span>
+            <span class="hidden sm:inline">PRODUCTION BENCHMARK</span>
           </div>
-          <span>SSG PRE-RENDERED // 100% ZERO-JS COMPATIBLE</span>
+          <span class="text-[9px] sm:text-[10px] shrink-0">SSG // 100% ZERO-JS</span>
         </div>
       </div>
     </div>
@@ -475,6 +591,7 @@ const activeCategories = allCategories
     const prevButtons = section.querySelectorAll<HTMLButtonElement>('.btn-prev-proj');
     const nextButtons = section.querySelectorAll<HTMLButtonElement>('.btn-next-proj');
     const ribbonContainer = section.querySelector<HTMLElement>('#project-ribbon-container');
+    const mobileRibbon = section.querySelector<HTMLElement>('#mobile-project-ribbon-container');
 
     let currentCat = 'all';
     let currentIdx = 0;
@@ -526,7 +643,7 @@ const activeCategories = allCategories
         }
       });
 
-      // Smoothly scroll ONLY the internal desktop ribbon container
+      // Smoothly scroll the desktop ribbon container
       if (scrollIntoView && ribbonContainer && desktopTabs[idx]) {
         const targetBtn = desktopTabs[idx];
         const containerWidth = ribbonContainer.clientWidth;
@@ -534,6 +651,19 @@ const activeCategories = allCategories
         const btnWidth = targetBtn.clientWidth;
         const targetScrollLeft = btnLeft - (containerWidth / 2) + (btnWidth / 2);
         ribbonContainer.scrollTo({
+          left: Math.max(0, targetScrollLeft),
+          behavior: 'smooth',
+        });
+      }
+
+      // Smoothly scroll the mobile keypad ribbon container
+      if (scrollIntoView && mobileRibbon && mobileKeys[idx]) {
+        const targetBtn = mobileKeys[idx];
+        const containerWidth = mobileRibbon.clientWidth;
+        const btnLeft = targetBtn.offsetLeft;
+        const btnWidth = targetBtn.clientWidth;
+        const targetScrollLeft = btnLeft - (containerWidth / 2) + (btnWidth / 2);
+        mobileRibbon.scrollTo({
           left: Math.max(0, targetScrollLeft),
           behavior: 'smooth',
         });

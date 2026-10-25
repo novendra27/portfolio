@@ -26,11 +26,20 @@ export interface ProjectMetric {
   value: string;
 }
 
+export interface SystemTopologyNode {
+  title: string;
+  subtitle: string;
+  badge?: string;
+}
+
 export interface ProjectPlaceholderInfo {
   tag: string;
-  icon?: string;
+  category: LocalizedString;
+  protocol: string;
   title: LocalizedString;
   description: LocalizedString;
+  nodes: [SystemTopologyNode, SystemTopologyNode, SystemTopologyNode];
+  storage?: SystemTopologyNode;
 }
 
 export interface Project {

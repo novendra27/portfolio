@@ -128,11 +128,20 @@ export const ProjectMetricSchema: z.ZodType<ProjectMetric> = z.object({
   value: z.string().min(1),
 });
 
+export const SystemTopologyNodeSchema = z.object({
+  title: z.string(),
+  subtitle: z.string(),
+  badge: z.string().optional(),
+});
+
 export const ProjectPlaceholderInfoSchema: z.ZodType<ProjectPlaceholderInfo> = z.object({
   tag: z.string(),
-  icon: z.string().optional(),
+  category: LocalizedStringSchema,
+  protocol: z.string(),
   title: LocalizedStringSchema,
   description: LocalizedStringSchema,
+  nodes: z.tuple([SystemTopologyNodeSchema, SystemTopologyNodeSchema, SystemTopologyNodeSchema]),
+  storage: SystemTopologyNodeSchema.optional(),
 });
 
 export const ProjectSchema: z.ZodType<Project> = z.object({
