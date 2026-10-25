@@ -84,19 +84,19 @@ const ogLocale = lang === 'id' ? 'id_ID' : 'en_US';
     <div class="relative z-10 flex flex-col min-h-screen w-full pb-20 md:pb-0">
       <Header lang={lang} />
       <div class="flex-1 w-full max-w-6xl mx-auto xl:border-x xl:border-border-architectural bg-canvas/30">
-        <!-- Blueprint Global Coordinate Strip -->
+        <!-- Architectural Telemetry Strip -->
         <div class="hidden sm:flex items-center justify-between px-4 sm:px-6 py-1.5 border-b border-border-architectural bg-surface-card/60 font-mono text-[10px] text-text-dim select-none">
           <div class="flex items-center gap-3">
-            <span class="text-accent-primary font-bold">GRID: 12-COL CARTESIAN</span>
+            <span class="text-accent-primary font-bold">STACK: ASTRO v5 // TAILWIND v3</span>
             <span class="text-border-architectural">|</span>
-            <span>DATUM: WGS-84</span>
+            <span>ARCHITECTURE: ZERO-JS SSG</span>
             <span class="text-border-architectural">|</span>
-            <span>PROJECTION: ORTHOGRAPHIC</span>
+            <span>RUNTIME: EDGE DEPLOYED</span>
           </div>
           <div class="flex items-center gap-3">
-            <span>SCALE: 1:1</span>
+            <span>PERFORMANCE: 100/100</span>
             <span class="text-border-architectural">|</span>
-            <span class="text-accent-primary font-medium">SYS_STATUS: OPTIMAL (100% ZERO-JS)</span>
+            <span class="text-accent-primary font-medium">SYS_STATUS: OPTIMAL</span>
           </div>
         </div>
         <slot />

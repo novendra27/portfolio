@@ -110,16 +110,26 @@ export const projects: Project[] = [
     confidentiality: 'public',
     thumbnail: null,
     placeholder_info: {
-      tag: '[ PURE BACKEND // HEADLESS ]',
-      icon: '⚙️ // 0xBACKEND',
+      tag: 'HEADLESS EVENT STREAM',
+      category: {
+        id: 'Arsitektur Microservices Asinkron',
+        en: 'Asynchronous Microservices Architecture',
+      },
+      protocol: 'TCP:9092 // BINARY STREAM PROTOCOL',
       title: {
-        id: 'Layanan Backend Murni (Tanpa GUI)',
-        en: 'Pure Backend Service (Headless Engine)',
+        id: 'Topologi Pemrosesan Event Kafka',
+        en: 'Kafka Event Processing Topology',
       },
       description: {
-        id: 'Sistem ini beroperasi pada level pemrosesan antrian pesan Apache Kafka dan microservices Spring Boot tanpa antarmuka grafis (headless).',
-        en: 'This system operates strictly at the asynchronous Apache Kafka message broker and Spring Boot microservice tier without a visual frontend.',
+        id: 'Pemisahan arsitektur antara Producer transaksi kasir dan Consumer gudang melalui cluster Apache Kafka untuk menjamin zero data loss dan eliminasi race condition inventaris.',
+        en: 'Decoupled architecture separating POS transaction Producers from Warehouse state Consumers via Apache Kafka to guarantee zero data loss and eliminate concurrent inventory races.',
       },
+      nodes: [
+        { title: 'Order Producer', subtitle: 'Kasir / Sales Ingest', badge: 'Spring Boot REST' },
+        { title: 'Kafka Cluster', subtitle: 'Topic: store.order.completed', badge: 'Partitioned Broker' },
+        { title: 'Inventory Consumer', subtitle: 'Stock Deduplication Service', badge: 'Idempotent Ingestion' },
+      ],
+      storage: { title: 'PostgreSQL Store', subtitle: 'Transactional State Ledger', badge: 'ACID Relational' },
     },
     media_type: 'image',
     core_code_snippet: `@Service
@@ -175,16 +185,26 @@ public class OrderEventProducer {
     confidentiality: 'public',
     thumbnail: null,
     placeholder_info: {
-      tag: '[ RESTRICTED // COMMERCIAL ASSET ]',
-      icon: '🔒 // 0xRESTRICTED',
+      tag: 'SECURE TRANSACTION PIPELINE',
+      category: {
+        id: 'Pipeline Transaksi & Webhook',
+        en: 'Transaction & Webhook Pipeline',
+      },
+      protocol: 'HTTPS // CRYPTOGRAPHIC WEBHOOK',
       title: {
-        id: 'Aset Komersial Terbatas',
-        en: 'Restricted Commercial Asset',
+        id: 'Alur Pembayaran & Pengiriman Aset',
+        en: 'Payment Verification & Asset Delivery',
       },
       description: {
-        id: 'Tangkapan layar antarmuka privat tidak dipublikasikan secara terbuka untuk melindungi privasi produk komersial.',
-        en: 'Private commercial user interface previews are restricted from public release to safeguard digital product assets.',
+        id: 'Siklus checkout aman dengan verifikasi tanda tangan digital token webhook gateway Xendit dan penerbitan URL download terenkripsi berbatas waktu.',
+        en: 'Secure checkout lifecycle featuring cryptographically signed Xendit payment webhooks and temporary signed asset download tokens.',
       },
+      nodes: [
+        { title: 'Storefront Client', subtitle: 'Catalog & Cart Checkout', badge: 'Inertia React' },
+        { title: 'Laravel Core', subtitle: 'Signature Verification Engine', badge: 'API Gateway' },
+        { title: 'Xendit Gateway', subtitle: 'Automated Payment Webhook', badge: 'FinTech Dispatcher' },
+      ],
+      storage: { title: 'Protected Asset Vault', subtitle: 'Temporary Signed S3 URLs', badge: 'Encrypted Storage' },
     },
     media_type: 'image',
     core_code_snippet: `public function handleXenditWebhook(Request $request): JsonResponse {
@@ -213,16 +233,26 @@ public class OrderEventProducer {
     confidentiality: 'confidential_nda',
     thumbnail: null,
     placeholder_info: {
-      tag: '[ CONFIDENTIAL // CLIENT NDA ]',
-      icon: '🛡️ // 0xNDA_PROTECTED',
+      tag: 'ENTERPRISE SAAS ORCHESTRATION',
+      category: {
+        id: 'Infrastruktur SaaS & Provisioning',
+        en: 'SaaS & Provisioning Infrastructure',
+      },
+      protocol: 'TLS // ORCHESTRATION API',
       title: {
-        id: 'Dilindungi Kerahasiaan Klien (NDA)',
-        en: 'Protected by Client NDA',
+        id: 'Orkestrasi Bot Trading & Node VPS',
+        en: 'Trading Bot & VPS Node Orchestration',
       },
       description: {
-        id: 'Tangkapan layar antarmuka internal dirahasiakan untuk mematuhi Non-Disclosure Agreement (NDA) dengan klien.',
-        en: 'Internal interface screenshots and client visual assets are kept confidential under a strict Non-Disclosure Agreement (NDA).',
+        id: 'Sistem otomatisasi sewa bot FinTech 24/7 dengan pengikatan lisensi nomor akun investor dan provisioning server VPS tanpa downtime.',
+        en: 'Automated 24/7 FinTech bot leasing platform with investor account license binding and zero-downtime VPS node provisioning.',
       },
+      nodes: [
+        { title: 'Customer Portal', subtitle: 'Subscription & License Billing', badge: 'SaaS Frontend' },
+        { title: 'Account Validator', subtitle: 'MT4/MT5 Broker Key Binding', badge: 'Auth Engine' },
+        { title: 'VPS Provisioner', subtitle: '24/7 EA Trading Daemon', badge: 'Dedicated Node' },
+      ],
+      storage: { title: 'License Key Vault', subtitle: 'Anti-Tamper License Ledger', badge: 'Secure DB' },
     },
     media_type: 'image',
     core_code_snippet: `// Confidential Client Code - Architecture Logic Sanitized
@@ -274,16 +304,26 @@ public function runMonthlyBillingGeneration(): void {
     confidentiality: 'confidential_nda',
     thumbnail: null,
     placeholder_info: {
-      tag: '[ INTERNAL CREDENTIALS REQUIRED ]',
-      icon: '🔑 // 0xCREDENTIAL',
+      tag: 'COMPLIANCE AUDIT MATRIX',
+      category: {
+        id: 'Platform Evaluasi Tata Kelola BLU',
+        en: 'BLU Governance Evaluation Platform',
+      },
+      protocol: 'TLS // ROLE-BASED ACCESS',
       title: {
-        id: 'Kredensial Asesor Internal Diperlukan',
-        en: 'Internal Auditor Credentials Required',
+        id: 'Mesin Evaluasi Maturitas Institusi',
+        en: 'Institutional Maturity Evaluation Engine',
       },
       description: {
-        id: 'Sistem evaluasi kepatuhan tata kelola universitas BLU; akses visual dibatasi khusus untuk asesor borang resmi.',
-        en: 'University public service compliance evaluation system; visual access is strictly restricted to authorized institutional auditors.',
+        id: 'Platform asesmen kepatuhan tata kelola Badan Layanan Umum (BLU) dengan kalkulasi matriks berbobot multi-dimensi dan validasi bukti borang bertingkat.',
+        en: 'Institutional compliance evaluation platform calculating multi-dimensional weighted governance metrics with multi-tier auditor evidence verification.',
       },
+      nodes: [
+        { title: 'Assessor Portal', subtitle: 'Multi-Criteria Questionnaire', badge: 'Auditor Form' },
+        { title: 'Maturity Engine', subtitle: 'Weighted Score Matrix Formula', badge: 'Calculation Core' },
+        { title: 'Executive Report', subtitle: 'Formal Institutional Scorecard', badge: 'PDF & Analytics' },
+      ],
+      storage: { title: 'Compliance Audit Vault', subtitle: 'Historical Evidence Store', badge: 'Relational DB' },
     },
     media_type: 'image',
     core_code_snippet: `// Multi-dimensional scoring formula for university governance
