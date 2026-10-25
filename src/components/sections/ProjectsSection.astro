@@ -50,7 +50,7 @@ const activeCategories = allCategories
 
     <!-- Unified Master-Detail Blueprint Showcase Console -->
     <div class="arch-slice arch-reveal">
-      <div class="border-x border-border-architectural bg-canvas" id="project-showcase-console">
+      <div class="border-x border-border-architectural bg-canvas w-full max-w-full overflow-hidden" id="project-showcase-console">
         
         <!-- ==================================================================== -->
         <!-- DESKTOP TIER 1: Blueprint Spec, Category Filter Bar & Navigation (md+) -->
@@ -196,10 +196,10 @@ const activeCategories = allCategories
         </div>
 
         <!-- ==================================================================== -->
-        <!-- MOBILE TIER 3: 9-Column Coordinate Matrix Keypad (1-Tap Access)      -->
+        <!-- MOBILE TIER 3: Number-Only Coordinate Matrix Keypad (1-Tap Access)   -->
         <!-- ==================================================================== -->
-        <div class="md:hidden border-b border-border-architectural bg-canvas select-none">
-          <div class="grid grid-cols-9 divide-x divide-border-architectural font-mono text-xs text-center" role="tablist" aria-label="Mobile Project Selector">
+        <div class="md:hidden border-b border-border-architectural bg-canvas/90 overflow-x-auto no-scrollbar scroll-smooth select-none w-full max-w-full" id="mobile-project-ribbon-container">
+          <div class="flex items-stretch min-w-max divide-x divide-border-architectural font-mono text-xs" role="tablist" aria-label="Mobile Project Case Studies">
             {projects.map((proj, idx) => (
               <button
                 type="button"
@@ -208,13 +208,13 @@ const activeCategories = allCategories
                 data-categories={proj.category_ids.join(' ')}
                 aria-label={`Project 0${idx + 1}: ${proj.title}`}
                 class:list={[
-                  'mobile-keypad-btn py-3 transition-all cursor-pointer font-bold touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary',
+                  'mobile-keypad-btn flex items-center justify-center min-w-[50px] h-11 px-3 transition-all cursor-pointer font-bold touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary shrink-0',
                   idx === 0
                     ? 'active-tab bg-surface-elevated text-accent-primary border-b-2 border-accent-primary shadow-tactile-primary'
                     : 'bg-surface-card/40 text-text-dim hover:text-text-contrast hover:bg-surface-card border-b-2 border-transparent',
                 ]}
               >
-                0{idx + 1}
+                <span class="text-xs tabular-nums tracking-wider">{String(idx + 1).padStart(2, '0')}</span>
               </button>
             ))}
           </div>
@@ -237,32 +237,70 @@ const activeCategories = allCategories
                 idx === 0 ? 'block' : 'hidden',
               ]}
             >
-              <!-- Full-Width Blueprint Header Bar -->
-              <div id={`project-${proj.slug}`} class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/50 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
-                <div class="flex items-center gap-2 min-w-0 flex-1">
-                  <span class="text-accent-primary font-bold shrink-0">[0{idx + 1} // CASE_STUDY]</span>
-                  <span class="text-border-architectural shrink-0">|</span>
-                  <span class="text-text-contrast font-semibold uppercase truncate">{proj.title}</span>
+              <!-- Blueprint Header Bar: Responsive Adaptive Layout -->
+              <div id={`project-${proj.slug}`} class="border-b border-border-architectural bg-surface-card/50 select-none w-full max-w-full">
+                <!-- Mobile 3-Tier Stacked Layout (< md) -->
+                <div class="md:hidden px-3.5 py-3 space-y-2 font-mono">
+                  <!-- Tier 1: Index + Confidentiality / Access Status Badge -->
+                  <div class="flex items-center justify-between gap-2 text-[10px] pb-1.5 border-b border-border-architectural/50">
+                    <span class="text-accent-primary font-bold">[{String(idx + 1).padStart(2, '0')} // CASE_STUDY]</span>
+                    {proj.confidentiality === 'confidential_nda' ? (
+                      <Badge variant="outline" text="CONFIDENTIAL (NDA)" class="text-[9px] shrink-0" />
+                    ) : (
+                      <Badge variant="accent" text="PUBLIC / OPEN" class="text-[9px] shrink-0" />
+                    )}
+                  </div>
+
+                  <!-- Tier 2: Full Project Title (100% Readable, No Truncation) -->
+                  <h3 class="text-sm font-bold text-text-contrast tracking-tight leading-snug">
+                    {proj.title}
+                  </h3>
+
+                  <!-- Tier 3: Client / Institution & Architecture System Details -->
+                  <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-text-dim pt-1 border-t border-border-architectural/40">
+                    {proj.organization && (
+                      <span class="text-text-muted">
+                        CLIENT: <strong class="text-text-contrast font-medium">{proj.organization.name}</strong>
+                      </span>
+                    )}
+                    {proj.architecture_system && (
+                      <>
+                        <span class="text-border-architectural hidden sm:inline">|</span>
+                        <span class="text-accent-primary/90 text-[10px]">
+                          SYS: {proj.architecture_system.title}
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <div class="flex items-center gap-2 shrink-0">
-                  {proj.organization && (
-                    <>
-                      <span class="whitespace-nowrap">CLIENT: {proj.organization.name}</span>
-                      <span class="text-border-architectural">|</span>
-                    </>
-                  )}
-                  {proj.confidentiality === 'confidential_nda' ? (
-                    <Badge variant="outline" text="CONFIDENTIAL (NDA)" class="text-[9px] shrink-0 whitespace-nowrap" />
-                  ) : (
-                    <Badge variant="accent" text="PUBLIC / OPEN" class="text-[9px] shrink-0 whitespace-nowrap" />
-                  )}
+
+                <!-- Desktop Single-Row Blueprint Header Bar (md+) -->
+                <div class="hidden md:flex px-4 sm:px-6 py-2.5 items-center justify-between gap-3 font-mono text-[10px] text-text-dim">
+                  <div class="flex items-center gap-2 min-w-0 flex-1">
+                    <span class="text-accent-primary font-bold shrink-0">[{String(idx + 1).padStart(2, '0')} // CASE_STUDY]</span>
+                    <span class="text-border-architectural shrink-0">|</span>
+                    <span class="text-text-contrast font-semibold uppercase truncate">{proj.title}</span>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    {proj.organization && (
+                      <>
+                        <span class="whitespace-nowrap">CLIENT: {proj.organization.name}</span>
+                        <span class="text-border-architectural">|</span>
+                      </>
+                    )}
+                    {proj.confidentiality === 'confidential_nda' ? (
+                      <Badge variant="outline" text="CONFIDENTIAL (NDA)" class="text-[9px] shrink-0 whitespace-nowrap" />
+                    ) : (
+                      <Badge variant="accent" text="PUBLIC / OPEN" class="text-[9px] shrink-0 whitespace-nowrap" />
+                    )}
+                  </div>
                 </div>
               </div>
 
               <!-- 7:5 Split Cartesian Chamber -->
-              <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural items-stretch">
+              <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural items-stretch min-w-0 max-w-full overflow-hidden">
                 <!-- Left: Interactive Preview Tabs (7 cols) -->
-                <div class="lg:col-span-7 w-full p-4 sm:p-6 bg-canvas/40 flex flex-col justify-between">
+                <div class="lg:col-span-7 w-full min-w-0 max-w-full p-3 sm:p-6 bg-canvas/40 flex flex-col justify-between overflow-hidden">
                   <ArchitecturalTabs
                     cardId={`tabs-${proj.id}`}
                     labels={{
@@ -397,17 +435,17 @@ const activeCategories = allCategories
                     </div>
 
                     <!-- Tab Panel 3: Core Code Snippet -->
-                    <div slot="code" class="p-4 overflow-x-auto arch-scrollbar bg-canvas/95 font-mono text-[11px] text-text-contrast min-h-[220px] max-h-[340px]">
-                      <pre class="leading-relaxed"><code>{proj.core_code_snippet}</code></pre>
+                    <div slot="code" class="p-3 sm:p-4 overflow-x-auto arch-scrollbar bg-canvas/95 font-mono text-[11px] text-text-contrast min-h-[220px] max-h-[340px] w-full max-w-full">
+                      <pre class="leading-relaxed w-full max-w-full overflow-x-auto whitespace-pre"><code>{proj.core_code_snippet}</code></pre>
                     </div>
                   </ArchitecturalTabs>
                 </div>
 
                 <!-- Right: Metadata, BLUF Narrative & Links (5 cols) -->
-                <div class="lg:col-span-5 flex flex-col justify-between divide-y divide-border-architectural bg-surface-card/30">
-                  <div class="p-5 sm:p-6 space-y-4">
-                    <!-- Title & Organization -->
-                    <div>
+                <div class="lg:col-span-5 w-full min-w-0 max-w-full flex flex-col justify-between divide-y divide-border-architectural bg-surface-card/30 overflow-hidden">
+                  <div class="p-4 sm:p-6 space-y-4 min-w-0">
+                    <!-- Title & Organization (Desktop md+, on mobile displayed in top 3-tier header) -->
+                    <div class="hidden md:block">
                       <h3 class="text-lg sm:text-xl font-bold text-text-contrast tracking-tight mb-1">
                         {proj.title}
                       </h3>
@@ -425,13 +463,16 @@ const activeCategories = allCategories
 
                     <!-- Key Metrics (if available) -->
                     {proj.key_metrics && proj.key_metrics.length > 0 && (
-                      <div class="grid grid-cols-3 divide-x divide-border-architectural border border-border-architectural rounded bg-canvas/40 py-2">
+                      <div class:list={[
+                        'grid divide-x divide-border-architectural border border-border-architectural rounded bg-canvas/40 py-2',
+                        proj.key_metrics.length === 2 ? 'grid-cols-2' : 'grid-cols-3',
+                      ]}>
                         {proj.key_metrics.map((metric) => (
-                          <div class="text-center font-mono px-2">
-                            <div class="text-sm font-bold text-accent-primary tabular-nums">
+                          <div class="text-center font-mono px-1 sm:px-2 min-w-0">
+                            <div class="text-xs sm:text-sm font-bold text-accent-primary tabular-nums truncate">
                               {metric.value}
                             </div>
-                            <div class="text-[10px] text-text-dim truncate">
+                            <div class="text-[9px] sm:text-[10px] text-text-dim truncate">
                               {metric.label[lang]}
                             </div>
                           </div>
@@ -454,21 +495,21 @@ const activeCategories = allCategories
 
                   <!-- Dynamic Multi-Link Buttons Bottom Strip -->
                   {proj.links.length > 0 && (
-                    <div class="p-4 sm:px-6 bg-surface-card/70 flex flex-wrap gap-2">
+                    <div class="p-3 sm:px-6 sm:py-4 bg-surface-card/70 flex flex-wrap gap-2 min-w-0">
                       {proj.links.map((link) => (
                         <a
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
                           class:list={[
-                            'inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-3 sm:py-1.5 rounded-control text-xs font-mono transition-all active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[38px] sm:min-h-0',
+                            'inline-flex items-center gap-1.5 px-3 py-2 sm:px-3 sm:py-1.5 rounded-control text-xs font-mono transition-all active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[38px] sm:min-h-0 max-w-full',
                             link.is_primary
                               ? 'bg-accent-primary text-canvas font-semibold hover:bg-accent-primary-light shadow-tactile-primary'
                               : 'border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast shadow-tactile-surface',
                           ]}
                         >
-                          <span>{link.title}</span>
-                          <span class="text-[11px]">↗</span>
+                          <span class="truncate max-w-[240px] sm:max-w-none">{link.title}</span>
+                          <span class="text-[11px] shrink-0">↗</span>
                         </a>
                       ))}
                     </div>
@@ -482,13 +523,13 @@ const activeCategories = allCategories
         <!-- ==================================================================== -->
         <!-- BOTTOM FOOTER: Blueprint Spec Summary Bar                            -->
         <!-- ==================================================================== -->
-        <div class="px-4 sm:px-6 py-2 border-t border-border-architectural bg-surface-card/60 flex items-center justify-between font-mono text-[10px] text-text-dim select-none">
-          <div class="flex items-center gap-2">
-            <span class="text-accent-primary font-bold">// WORKSTATION_SPEC: INTERACTIVE_SHOWCASE</span>
+        <div class="px-3 sm:px-6 py-2 border-t border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none w-full max-w-full">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="text-accent-primary font-bold truncate">// WORKSTATION_SPEC</span>
             <span class="text-border-architectural hidden sm:inline">|</span>
-            <span class="hidden sm:inline">MODE: HYBRID_ADAPTIVE_GRID</span>
+            <span class="hidden sm:inline">SHOWCASE_CONSOLE</span>
           </div>
-          <span>SSG PRE-RENDERED // 100% ZERO-JS COMPATIBLE</span>
+          <span class="text-[9px] sm:text-[10px] shrink-0">SSG // 100% ZERO-JS</span>
         </div>
       </div>
     </div>
@@ -510,6 +551,7 @@ const activeCategories = allCategories
     const prevButtons = section.querySelectorAll<HTMLButtonElement>('.btn-prev-proj');
     const nextButtons = section.querySelectorAll<HTMLButtonElement>('.btn-next-proj');
     const ribbonContainer = section.querySelector<HTMLElement>('#project-ribbon-container');
+    const mobileRibbon = section.querySelector<HTMLElement>('#mobile-project-ribbon-container');
 
     let currentCat = 'all';
     let currentIdx = 0;
@@ -561,7 +603,7 @@ const activeCategories = allCategories
         }
       });
 
-      // Smoothly scroll ONLY the internal desktop ribbon container
+      // Smoothly scroll the desktop ribbon container
       if (scrollIntoView && ribbonContainer && desktopTabs[idx]) {
         const targetBtn = desktopTabs[idx];
         const containerWidth = ribbonContainer.clientWidth;
@@ -569,6 +611,19 @@ const activeCategories = allCategories
         const btnWidth = targetBtn.clientWidth;
         const targetScrollLeft = btnLeft - (containerWidth / 2) + (btnWidth / 2);
         ribbonContainer.scrollTo({
+          left: Math.max(0, targetScrollLeft),
+          behavior: 'smooth',
+        });
+      }
+
+      // Smoothly scroll the mobile keypad ribbon container
+      if (scrollIntoView && mobileRibbon && mobileKeys[idx]) {
+        const targetBtn = mobileKeys[idx];
+        const containerWidth = mobileRibbon.clientWidth;
+        const btnLeft = targetBtn.offsetLeft;
+        const btnWidth = targetBtn.clientWidth;
+        const targetScrollLeft = btnLeft - (containerWidth / 2) + (btnWidth / 2);
+        mobileRibbon.scrollTo({
           left: Math.max(0, targetScrollLeft),
           behavior: 'smooth',
         });

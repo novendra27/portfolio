@@ -44,14 +44,16 @@ const patternLabels = {
             <span>HIGH-CONCURRENCY</span>
             <span class="text-border-architectural">|</span>
             <span class="text-accent-primary font-medium">{architectures.length} PATTERNS DOCUMENTED</span>
+            <span class="lg:hidden text-border-architectural">|</span>
+            <span class="lg:hidden text-accent-primary font-mono text-[9px] font-semibold tracking-wider">SWIPE →</span>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-border-architectural bg-canvas">
+        <div class="flex lg:grid flex-nowrap lg:grid-cols-3 overflow-x-auto lg:overflow-x-visible snap-x snap-mandatory lg:snap-none divide-x divide-border-architectural bg-canvas no-scrollbar">
         {architectures.map((arch, idx) => (
           <div
             class:list={[
-              'flex flex-col p-6 sm:p-7 h-full justify-between hover:bg-surface-elevated/30 transition-colors group arch-reveal',
+              'w-[86vw] sm:w-[65vw] lg:w-auto shrink-0 snap-start flex flex-col p-6 sm:p-7 justify-between hover:bg-surface-elevated/30 transition-colors group arch-reveal',
               idx === 0 && 'arch-stagger-1',
               idx === 1 && 'arch-stagger-2',
               idx === 2 && 'arch-stagger-3',

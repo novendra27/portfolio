@@ -22,9 +22,9 @@ const {
 } = Astro.props;
 ---
 
-<div class="arch-tabs-container w-full" data-card-id={cardId}>
+<div class="arch-tabs-container w-full min-w-0 max-w-full" data-card-id={cardId}>
   <!-- Segmented Control Tab Header -->
-  <div class="flex items-center gap-1.5 p-1 rounded-control bg-surface-card/80 border border-border-architectural mb-4 text-xs font-mono overflow-x-auto no-scrollbar">
+  <div class="flex items-center gap-1.5 p-1 rounded-control bg-surface-card/80 border border-border-architectural mb-4 text-xs font-mono overflow-x-auto no-scrollbar max-w-full">
     <button
       type="button"
       data-tab="ui"
@@ -55,7 +55,7 @@ const {
   </div>
 
   <!-- Tab Panels with Developer Viewport Bar -->
-  <div class="tab-panels relative overflow-hidden rounded-md border border-border-architectural bg-canvas">
+  <div class="tab-panels relative overflow-hidden rounded-md border border-border-architectural bg-canvas w-full min-w-0 max-w-full">
     <div class="flex items-center justify-between px-3 py-1.5 border-b border-border-architectural bg-surface-card/90 text-[10px] font-mono text-text-dim select-none">
       <div class="flex items-center gap-1.5">
         <span class="size-2 rounded-full bg-white/20"></span>

@@ -91,6 +91,15 @@ const stats = [
         {t('hero.cta.projects')} →
       </a>
       <a
+        href="https://www.linkedin.com/in/adi-novendra"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="px-5 py-3 sm:py-2.5 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast font-mono text-xs transition-all shadow-tactile-surface active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[44px] sm:min-h-0 inline-flex items-center justify-center gap-1.5"
+      >
+        <span>{t('hero.cta.resume')}</span>
+        <span>↗</span>
+      </a>
+      <a
         href="#architecture"
         class="px-5 py-3 sm:py-2.5 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast font-mono text-xs transition-all shadow-tactile-surface active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[44px] sm:min-h-0 inline-flex items-center justify-center"
       >
@@ -102,7 +111,6 @@ const stats = [
       >
         {t('hero.cta.contact')}
       </a>
-      <span class="font-mono text-[10px] text-text-dim ml-auto hidden sm:inline">// DISPATCH: 3 COMMANDS</span>
     </div>
   </div>
 
@@ -148,7 +156,7 @@ const stats = [
         </div>
 
         <!-- 4-Cell Metrics Matrix (Symmetrical Architectural Grid) -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 bg-surface-card/60">
+        <div class="grid grid-cols-2 sm:grid-cols-4 bg-surface-card/60 order-first sm:order-last">
           {stats.map((s, idx) => (
             <div
               class:list={[

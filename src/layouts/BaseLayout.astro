@@ -2,6 +2,7 @@
 import type { SupportedLanguage } from '@/i18n/ui';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
+import BottomNav from '@/components/BottomNav.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import '@/styles/global.css';
 
@@ -80,7 +81,7 @@ const ogLocale = lang === 'id' ? 'id_ID' : 'en_US';
       aria-hidden="true"
     ></div>
 
-    <div class="relative z-10 flex flex-col min-h-screen w-full">
+    <div class="relative z-10 flex flex-col min-h-screen w-full pb-20 md:pb-0">
       <Header lang={lang} />
       <div class="flex-1 w-full max-w-6xl mx-auto xl:border-x xl:border-border-architectural bg-canvas/30">
         <!-- Blueprint Global Coordinate Strip -->
@@ -101,6 +102,7 @@ const ogLocale = lang === 'id' ? 'id_ID' : 'en_US';
         <slot />
       </div>
       <Footer lang={lang} />
+      <BottomNav lang={lang} />
     </div>
 
     <!-- Architectural Motion & Scroll Reveal Engine (Native & Zero-Dependency) -->
@@ -135,6 +137,169 @@ const ogLocale = lang === 'id' ? 'id_ID' : 'en_US';
           revealElements.forEach((el) => el.classList.add('is-revealed'));
         }
       })();
+    </script>
+
+    <!-- Unified Architectural Scrollspy Engine (Single Source of Truth) -->
+    <script>
+      function initUnifiedScrollspy() {
+        const desktopLinks = document.querySelectorAll<HTMLAnchorElement>('.desktop-nav-link');
+        const desktopContactBtn = document.querySelector<HTMLAnchorElement>('.desktop-nav-contact');
+        const bottomLinks = document.querySelectorAll<HTMLAnchorElement>('.bottom-nav-link');
+
+        const SECTION_IDS = [
+          'hero',
+          'architecture',
+          'projects',
+          'tech-stack',
+          'experience',
+          'pricing',
+          'publications',
+          'contact',
+        ];
+
+        const SECTION_TO_HUB: Record<string, string> = {
+          'hero': 'hero',
+          'architecture': 'architecture',
+          'projects': 'projects',
+          'tech-stack': 'projects',
+          'experience': 'experience',
+          'pricing': 'experience',
+          'publications': 'experience',
+          'contact': 'contact',
+        };
+
+        let currentActiveSection = '';
+        let ticking = false;
+
+        function updateActiveState() {
+          const scrollY = window.scrollY;
+          const scrollBottom = window.innerHeight + scrollY;
+          const docHeight = document.documentElement.scrollHeight;
+
+          let newActiveId = 'hero';
+
+          if (scrollBottom >= docHeight - 80) {
+            newActiveId = 'contact';
+          } else if (scrollY > 100) {
+            const ACTIVATION_OFFSET = 150;
+            for (let i = SECTION_IDS.length - 1; i >= 0; i--) {
+              const id = SECTION_IDS[i];
+              const el = document.getElementById(id);
+              if (el) {
+                const top = el.offsetTop;
+                if (scrollY >= top - ACTIVATION_OFFSET) {
+                  newActiveId = id;
+                  break;
+                }
+              }
+            }
+          }
+
+          if (newActiveId === currentActiveSection) return;
+          currentActiveSection = newActiveId;
+
+          // 1. Update Desktop Header Navigation
+          desktopLinks.forEach((link) => {
+            const target = link.getAttribute('data-nav-href');
+            const isActive = target === `#${currentActiveSection}`;
+            if (isActive) {
+              link.classList.add('text-text-contrast', 'underline', 'font-semibold');
+              link.classList.remove('text-text-muted');
+            } else {
+              link.classList.remove('text-text-contrast', 'underline', 'font-semibold');
+              link.classList.add('text-text-muted');
+            }
+          });
+
+          if (desktopContactBtn) {
+            if (currentActiveSection === 'contact') {
+              desktopContactBtn.classList.add('border-accent-primary/60', 'bg-surface-elevated', 'text-accent-primary');
+              desktopContactBtn.classList.remove('border-border-architectural', 'bg-surface-card', 'text-text-contrast');
+            } else {
+              desktopContactBtn.classList.remove('border-accent-primary/60', 'bg-surface-elevated', 'text-accent-primary');
+              desktopContactBtn.classList.add('border-border-architectural', 'bg-surface-card', 'text-text-contrast');
+            }
+          }
+
+          // 2. Update Mobile Bottom Navigation
+          const targetHub = SECTION_TO_HUB[currentActiveSection] || 'hero';
+
+          bottomLinks.forEach((link) => {
+            const hub = link.getAttribute('data-bottom-hub');
+            const labelEl = link.querySelector<HTMLElement>('.bottom-nav-label');
+            const dotEl = link.querySelector<HTMLElement>('.bottom-nav-dot');
+            const defaultLabel = link.getAttribute('data-default-label') || '';
+            const subLabelsRaw = link.getAttribute('data-sublabels') || '{}';
+
+            let subLabels: Record<string, string> = {};
+            try {
+              subLabels = JSON.parse(subLabelsRaw);
+            } catch {
+              // fallback
+            }
+
+            const isActiveHub = hub === targetHub;
+
+            if (isActiveHub) {
+              link.classList.add('text-accent-primary', 'bg-surface-elevated', 'font-semibold', 'active-bottom-nav');
+              link.classList.remove('text-text-muted');
+
+              if (labelEl) {
+                const contextualLabel = subLabels[currentActiveSection] || defaultLabel;
+                labelEl.textContent = contextualLabel;
+              }
+
+              if (dotEl) {
+                const isSubSection = currentActiveSection !== hub;
+                if (isSubSection) {
+                  dotEl.classList.remove('opacity-0');
+                  dotEl.classList.add('opacity-100');
+                } else {
+                  dotEl.classList.remove('opacity-100');
+                  dotEl.classList.add('opacity-0');
+                }
+              }
+            } else {
+              link.classList.remove('text-accent-primary', 'bg-surface-elevated', 'font-semibold', 'active-bottom-nav');
+              link.classList.add('text-text-muted');
+
+              if (labelEl) {
+                labelEl.textContent = defaultLabel;
+              }
+              if (dotEl) {
+                dotEl.classList.remove('opacity-100');
+                dotEl.classList.add('opacity-0');
+              }
+            }
+          });
+        }
+
+        function onScroll() {
+          if (!ticking) {
+            window.requestAnimationFrame(() => {
+              updateActiveState();
+              ticking = false;
+            });
+            ticking = true;
+          }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+
+        // Defer initial calculation to eliminate synchronous forced layout reflow during initial page render
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(() => updateActiveState(), { timeout: 200 });
+        } else {
+          setTimeout(updateActiveState, 150);
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initUnifiedScrollspy);
+      } else {
+        initUnifiedScrollspy();
+      }
     </script>
   </body>
 </html>
