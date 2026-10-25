@@ -226,8 +226,12 @@ const navItems = [
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
-    // Initial run on load
-    updateActiveState();
+    // Defer initial run on load to eliminate synchronous forced layout reflow during initial page render
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => updateActiveState(), { timeout: 200 });
+    } else {
+      setTimeout(updateActiveState, 150);
+    }
   }
 
   if (document.readyState === 'loading') {
