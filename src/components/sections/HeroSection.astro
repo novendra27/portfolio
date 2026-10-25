@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import avatarImg from '@/assets/images/avatar.webp';
 import { useTranslations, type SupportedLanguage } from '@/i18n/ui';
 import StatusPill from '../StatusPill.astro';
 import Badge from '../Badge.astro';
@@ -51,10 +53,9 @@ const stats = [
       </div>
     </div>
 
-    <!-- 2. Typography Specification Annotation -->
-    <div aria-hidden="true" class="flex h-8 sm:h-14 items-end px-2 sm:px-4 font-mono text-[11px] sm:text-xs text-text-dim/60 select-none">
-      <span class="hidden sm:inline">text-4xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-tight // IDENTITY SPEC</span>
-      <span class="sm:hidden">// IDENTITY SPEC</span>
+    <!-- 2. Section Identity Tag -->
+    <div aria-hidden="true" class="flex h-6 sm:h-8 items-end px-2 sm:px-4 font-mono text-[11px] sm:text-xs text-text-dim/60 select-none">
+      <span class="tracking-widest uppercase text-accent-primary/80">PORTFOLIO & ENGINEERING PROFILE</span>
     </div>
 
     <!-- 3. Headline Slicing Row (Full-width infinite horizontal lines) -->
@@ -65,9 +66,8 @@ const stats = [
     </div>
 
     <!-- 4. Role Specification Annotation -->
-    <div aria-hidden="true" class="flex h-7 sm:h-10 items-end px-2 sm:px-4 font-mono text-[11px] sm:text-xs text-text-dim/60 select-none">
-      <span class="hidden sm:inline">text-lg font-medium // FULLSTACK DEVELOPER & SOFTWARE ENGINEER</span>
-      <span class="sm:hidden">// SOFTWARE ENGINEER SPEC</span>
+    <div aria-hidden="true" class="flex h-6 sm:h-8 items-end px-2 sm:px-4 font-mono text-[11px] sm:text-xs text-text-dim/60 select-none">
+      <span class="tracking-widest uppercase text-text-dim">FULLSTACK DEVELOPER & SOFTWARE ENGINEER</span>
     </div>
 
   <!-- 5. Bio Narrative Slicing Row -->
@@ -89,6 +89,15 @@ const stats = [
         {t('hero.cta.projects')} →
       </a>
       <a
+        href="https://www.linkedin.com/in/adi-novendra"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="px-5 py-3 sm:py-2.5 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast font-mono text-xs transition-all shadow-tactile-surface active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[44px] sm:min-h-0 inline-flex items-center justify-center gap-1.5"
+      >
+        <span>{t('hero.cta.resume')}</span>
+        <span>↗</span>
+      </a>
+      <a
         href="#architecture"
         class="px-5 py-3 sm:py-2.5 rounded-control border border-border-architectural bg-surface-card hover:bg-surface-elevated text-text-contrast font-mono text-xs transition-all shadow-tactile-surface active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[44px] sm:min-h-0 inline-flex items-center justify-center"
       >
@@ -100,7 +109,6 @@ const stats = [
       >
         {t('hero.cta.contact')}
       </a>
-      <span class="font-mono text-[10px] text-text-dim ml-auto hidden sm:inline">// DISPATCH: 3 COMMANDS</span>
     </div>
   </div>
 
@@ -146,7 +154,7 @@ const stats = [
         </div>
 
         <!-- 4-Cell Metrics Matrix (Symmetrical Architectural Grid) -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 bg-surface-card/60">
+        <div class="grid grid-cols-2 sm:grid-cols-4 bg-surface-card/60 order-first sm:order-last">
           {stats.map((s, idx) => (
             <div
               class:list={[
@@ -212,13 +220,16 @@ const stats = [
           </svg>
 
           <div class="relative w-full h-full overflow-hidden rounded bg-canvas">
-            <img
-              src="/images/avatar.webp"
+            <Image
+              src={avatarImg}
               alt="Adi Novendra Putra"
-              width="224"
-              height="224"
+              width={256}
+              height={256}
+              format="webp"
+              quality={85}
               class="w-full h-full object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-300"
               loading="eager"
+              fetchpriority="high"
             />
             <div class="absolute bottom-1.5 left-1.5 right-1.5 px-2 py-0.5 bg-canvas/90 backdrop-blur-sm border border-border-architectural rounded font-mono text-[9px] text-text-muted flex justify-between">
               <span>@novendra27</span>
@@ -227,7 +238,7 @@ const stats = [
           </div>
         </div>
         <div class="mt-3 font-mono text-[10px] text-text-dim text-center">
-          // PROFILE_MODULE: ADI_NOVENDRA_PUTRA
+          SOFTWARE ENGINEER // FULLSTACK
         </div>
       </div>
     </div>

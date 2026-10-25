@@ -4,7 +4,10 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://novendra.dev',
+  site: 'https://adino.my.id',
+  build: {
+    inlineStylesheets: 'always',
+  },
   integrations: [
     tailwind(),
     sitemap({

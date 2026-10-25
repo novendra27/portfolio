@@ -31,7 +31,7 @@ const waNumber = '628993580311';
         <!-- Blueprint Specification Bar -->
         <div class="px-4 sm:px-6 py-2.5 border-b border-border-architectural bg-surface-card/60 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
           <div class="flex items-center gap-2">
-            <span class="text-accent-primary font-bold">// SPEC_05:COMMERCIAL_SERVICES</span>
+            <span class="text-accent-primary font-bold">COMMERCIAL SERVICES</span>
             <span class="text-border-architectural">|</span>
             <span class="text-text-contrast uppercase font-semibold">ENGINEERING ENGAGEMENT TIERS</span>
           </div>
@@ -67,7 +67,7 @@ const waNumber = '628993580311';
                 {/* Integrated Architectural Top Ribbon for Flagship Tier */}
                 {isHero && (
                   <div class="px-4 py-1.5 -mx-6 md:-mx-8 -mt-6 md:-mt-8 mb-6 bg-accent-primary/10 border-b border-accent-primary/40 text-accent-primary font-mono text-[10px] font-semibold tracking-wider uppercase flex items-center justify-between select-none">
-                    <span>// FLAGSHIP ENGAGEMENT</span>
+                    <span>FLAGSHIP ENGAGEMENT</span>
                     <span>[ RECOMMENDED ]</span>
                   </div>
                 )}
@@ -76,7 +76,7 @@ const waNumber = '628993580311';
                   <!-- Header & Popular Badge -->
                   <div class="flex items-center justify-between gap-2 border-b border-border-architectural pb-4">
                     <span class="font-mono text-xs text-text-dim shrink-0 whitespace-nowrap">
-                      TIER_0{srv.order} // SPEC
+                      TIER 0{srv.order}
                     </span>
                     {isHero && (
                       <Badge
@@ -147,6 +147,7 @@ const waNumber = '628993580311';
                     href={waUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`${t('pricing.cta')} - Paket ${srv.tier_name}`}
                     class:list={[
                       'w-full inline-flex items-center justify-center gap-2 px-4 py-3 sm:py-2.5 rounded-control text-xs font-mono font-semibold transition-all active:translate-y-px touch-manipulation focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent-primary min-h-[44px]',
                       isHero
@@ -168,7 +169,7 @@ const waNumber = '628993580311';
           <!-- Header Bar -->
           <div class="px-4 sm:px-6 py-3 border-b border-border-architectural flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-text-dim select-none">
             <div class="flex items-center gap-2">
-              <span class="text-accent-primary font-bold">// FREQUENTLY_ASKED_QUESTIONS</span>
+              <span class="text-accent-primary font-bold">FREQUENTLY ASKED QUESTIONS</span>
               <span class="text-border-architectural">|</span>
               <span class="text-text-contrast uppercase font-semibold">
                 {lang === 'id' ? 'PROTOKOL KERJASAMA & KONTRAK TEKNIS' : 'TECHNICAL ENGAGEMENT & CONTRACT POLICIES'}

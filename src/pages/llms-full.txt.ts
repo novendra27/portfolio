@@ -17,7 +17,7 @@ export const GET: APIRoute = async () => {
   const publications = await publicationRepository.getAll();
 
   const content = `# Adi Novendra Putra (@novendra27) - Full Technical Specification & LLM Digest
-Site: https://novendra.dev | Contact: adi.novendra.p@gmail.com
+Site: https://adino.my.id | Contact: adi.novendra.p@gmail.com
 
 ---
 
