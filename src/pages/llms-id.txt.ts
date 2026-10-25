@@ -10,39 +10,33 @@ export const GET: APIRoute = async () => {
   const architectures = await architectureRepository.getAll();
   const coreTech = await technologyRepository.getCoreProficiencies();
 
-  const content = `# Adi Novendra Putra (@novendra27)
-> Fullstack Developer | Software Engineer | Spesialis Arsitektur Sistem
+  const content = `# Adi Novendra Putra
 
-## Identitas & Profil Profesional
-- Nama: Adi Novendra Putra, S.Kom.
-- Pendidikan: S1 Teknik Informatika, Universitas Islam Negeri Maulana Malik Ibrahim Malang (Fast-track 3,5 tahun, lulus Des 2025)
-- Domisili: Kota Malang, Jawa Timur, Indonesia (WIB / UTC+7)
-- Website: https://novendra.dev
-- Email: adi.novendra.p@gmail.com
-- GitHub: https://github.com/novendra27
-- LinkedIn: https://www.linkedin.com/in/adi-novendra
+> Fullstack Developer dan Software Engineer dengan spesialisasi arsitektur sistem terdistribusi, event-driven streaming, dan optimasi algoritma.
 
-## Keahlian Inti Rekayasa (Core Specialties)
-${coreTech.map((t) => `- ${t.name}: ${t.official_docs_url}`).join('\n')}
+## Profil Profesional
+- [Website Portofolio Resmi](https://adino.my.id): Platform web produksi dan showcase sistem arsitektur interaktif
+- [Profil GitHub](https://github.com/novendra27): Repositori kode sumber terbuka, microservices Kafka, dan sistem optimasi AI
+- [Profil LinkedIn](https://www.linkedin.com/in/adi-novendra): Rekam jejak profesional, aktivitas komunitas GDGoC, dan artikel teknologi
+- [Email Langsung](mailto:adi.novendra.p@gmail.com): Komunikasi resmi dan pertanyaan rekayasa perangkat lunak
+- [WhatsApp Langsung](https://wa.me/628993580311): Konsultasi proyek kilat dan diskusi ruang lingkup teknis
+
+## Keahlian Inti Rekayasa
+${coreTech.map((t) => `- [${t.name}](${t.official_docs_url}): Teknologi rekayasa inti enterprise`).join('\n')}
 
 ## Pola Arsitektur Sistem Unggulan
-${architectures.map((a) => `- ${a.title}: ${a.problem_domain.id} -> ${a.architectural_solution.id}`).join('\n')}
+${architectures.map((a) => `- [${a.title}](https://adino.my.id/#architecture): ${a.problem_domain.id} -> ${a.architectural_solution.id}`).join('\n')}
 
-## Inventaris Kasus Proyek Rekayasa
+## Kasus Proyek Rekayasa Unggulan
 ${projects
   .map(
-    (p) => `### ${p.title}
-- Identifikasi: ${p.slug}
-- Ringkasan Solusi: ${p.summary_bluf.id}
-- Kerahasiaan: ${p.confidentiality}
-- Teknologi: ${p.technologies.map((t) => t.name).join(', ')}
-${p.links.map((l) => `  - ${l.title}: ${l.url}`).join('\n')}`
+    (p) => `- [${p.title}](https://adino.my.id/#projects): ${p.summary_bluf.id} (Teknologi: ${p.technologies.map((t) => t.name).join(', ')})`
   )
-  .join('\n\n')}
+  .join('\n')}
 
-## Tautan LLM Tambahan
-- Versi Bahasa Inggris: https://novendra.dev/llms.txt
-- Versi Detail Lengkap: https://novendra.dev/llms-full.txt
+## Titik Temu LLM Tambahan
+- [Versi Bahasa Inggris](https://adino.my.id/llms.txt): Spesifikasi bahasa Inggris
+- [Versi Spesifikasi Lengkap](https://adino.my.id/llms-full.txt): Resume lengkap, studi kasus proyek, dan skema arsitektur
 `;
 
   return new Response(content, {
