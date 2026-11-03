@@ -11,6 +11,21 @@ import {
   StaticTechnologyRepository,
 } from './static';
 
+import {
+  NotionArchitectureRepository,
+  NotionCategoryRepository,
+  NotionCertificateRepository,
+  NotionEducationRepository,
+  NotionExperienceRepository,
+  NotionOrganizationRepository,
+  NotionPricingRepository,
+  NotionProjectRepository,
+  NotionPublicationRepository,
+  NotionTechnologyRepository,
+} from './notion';
+
+import { isNotionConfigured } from '@/lib/notion/client';
+
 import type {
   IArchitectureRepository,
   ICategoryRepository,
@@ -26,20 +41,53 @@ import type {
 
 export * from './contracts';
 export * from './static';
+export * from './notion';
 
 /**
- * Dependency Injection / Service Factory
+ * Dependency Injection / Service Factory (Hybrid Fallback)
  * Komponen UI Astro mengimpor instance dari berkas ini.
- * Saat bertransisi ke Fase 2 (Notion API), kita hanya perlu mengganti
- * instansiasi di bawah ke NotionRepository tanpa mengubah kode komponen.
+ * Jika NOTION_API_KEY disetel di environment, sistem secara otomatis
+ * mengaktifkan NotionRepository. Jika tidak, sistem anggun fallback
+ * ke StaticRepository lokal.
  */
-export const categoryRepository: ICategoryRepository = new StaticCategoryRepository();
-export const technologyRepository: ITechnologyRepository = new StaticTechnologyRepository();
-export const organizationRepository: IOrganizationRepository = new StaticOrganizationRepository();
-export const architectureRepository: IArchitectureRepository = new StaticArchitectureRepository();
-export const projectRepository: IProjectRepository = new StaticProjectRepository();
-export const experienceRepository: IExperienceRepository = new StaticExperienceRepository();
-export const educationRepository: IEducationRepository = new StaticEducationRepository();
-export const certificateRepository: ICertificateRepository = new StaticCertificateRepository();
-export const pricingRepository: IPricingRepository = new StaticPricingRepository();
-export const publicationRepository: IPublicationRepository = new StaticPublicationRepository();
+const useNotion = isNotionConfigured();
+
+export const categoryRepository: ICategoryRepository = useNotion
+  ? new NotionCategoryRepository()
+  : new StaticCategoryRepository();
+
+export const technologyRepository: ITechnologyRepository = useNotion
+  ? new NotionTechnologyRepository()
+  : new StaticTechnologyRepository();
+
+export const organizationRepository: IOrganizationRepository = useNotion
+  ? new NotionOrganizationRepository()
+  : new StaticOrganizationRepository();
+
+export const architectureRepository: IArchitectureRepository = useNotion
+  ? new NotionArchitectureRepository()
+  : new StaticArchitectureRepository();
+
+export const projectRepository: IProjectRepository = useNotion
+  ? new NotionProjectRepository()
+  : new StaticProjectRepository();
+
+export const experienceRepository: IExperienceRepository = useNotion
+  ? new NotionExperienceRepository()
+  : new StaticExperienceRepository();
+
+export const educationRepository: IEducationRepository = useNotion
+  ? new NotionEducationRepository()
+  : new StaticEducationRepository();
+
+export const certificateRepository: ICertificateRepository = useNotion
+  ? new NotionCertificateRepository()
+  : new StaticCertificateRepository();
+
+export const pricingRepository: IPricingRepository = useNotion
+  ? new NotionPricingRepository()
+  : new StaticPricingRepository();
+
+export const publicationRepository: IPublicationRepository = useNotion
+  ? new NotionPublicationRepository()
+  : new StaticPublicationRepository();
